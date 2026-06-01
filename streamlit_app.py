@@ -302,6 +302,139 @@ def schedule_jeopardy(sched, cfg):
 # ─────────────────────────────────────────────────────────────
 # EXCEL EXPORT
 # ─────────────────────────────────────────────────────────────
+def add_reference_sheet(wb, cfg):
+    """Add a Reference sheet listing all locked holidays, program no-call days, and individual no-call requests."""
+    from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
+    from openpyxl import Workbook
+    import copy
+    from collections import defaultdict
+
+    ws = wb.create_sheet("Reference")
+    ws.column_dimensions["A"].width = 24
+    ws.column_dimensions["B"].width = 14
+    ws.column_dimensions["C"].width = 12
+    ws.column_dimensions["D"].width = 18
+    ws.column_dimensions["E"].width = 18
+
+    C_HDR = "1E3A8A"; C_HOL = "FEE2E2"; C_PRG = "DBEAFE"
+    DAYS_ABB = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
+
+    def rfill(h): return PatternFill("solid", fgColor=h)
+    def rfont(bold=False, sz=10, color="111827"):
+        return Font(name="Arial", bold=bold, size=sz, color=color)
+    def rborder():
+        s = Side(style="thin", color="D1D5DB")
+        return Border(left=s, right=s, top=s, bottom=s)
+    def ralign(h="left"):
+        return Alignment(horizontal=h, vertical="center")
+
+    residents = cfg.get("residents", [])
+    active_res = [r for r in residents if r.get("active", True)]
+    SHORT = {r["id"]: r["full"] for r in residents}
+    pgy_map = {r["id"]: r["pgy"] for r in residents}
+    pgy_fill_map = {1:"FEF3C7", 2:"DBEAFE", 3:"EDE9FE", 4:"D1FAE5"}
+
+    row = 1
+
+    # Section 1: Holiday Assignments
+    for c, h in enumerate(["Holiday","Date","Day","APTU","Consult"], 1):
+        cell = ws.cell(row, c, h)
+        cell.fill = rfill(C_HDR); cell.font = rfont(bold=True, sz=11, color="FFFFFF")
+        cell.alignment = ralign("center"); cell.border = rborder()
+    row += 1
+
+    for hol in cfg.get("holidays", []):
+        for i, entry in enumerate(hol["entries"]):
+            try:
+                d = date.fromisoformat(entry["date"])
+            except:
+                continue
+            aptu_id = entry.get("aptu","")
+            con_id  = entry.get("consult","")
+            aptu_name = SHORT.get(aptu_id, aptu_id) if aptu_id else "—"
+            con_name  = SHORT.get(con_id,  con_id)  if con_id  else "—"
+            vals = [hol["name"] if i==0 else "", d.strftime("%b %d, %Y"),
+                    DAYS_ABB[d.weekday()], aptu_name, con_name]
+            for c, v in enumerate(vals, 1):
+                cell = ws.cell(row, c, v)
+                cell.fill = rfill(C_HOL); cell.font = rfont(sz=10)
+                cell.alignment = ralign("center" if c > 1 else "left")
+                cell.border = rborder()
+            row += 1
+        row += 1
+
+    # Section 2: Program No-Call Days
+    row += 1
+    ws.cell(row, 1, "Program No-Call Days").font = rfont(bold=True, sz=12)
+    row += 1
+    for c, h in enumerate(["Date","Day","Note"], 1):
+        cell = ws.cell(row, c, h)
+        cell.fill = rfill(C_HDR); cell.font = rfont(bold=True, sz=11, color="FFFFFF")
+        cell.alignment = ralign("center"); cell.border = rborder()
+    row += 1
+    for ds in sorted(cfg.get("program_no_call",[])):
+        try:
+            d = date.fromisoformat(ds)
+        except:
+            continue
+        for c, v in enumerate([d.strftime("%b %d, %Y"), DAYS_ABB[d.weekday()], "No call scheduled"], 1):
+            cell = ws.cell(row, c, v)
+            cell.fill = rfill(C_PRG); cell.font = rfont(sz=10)
+            cell.alignment = ralign("center" if c > 1 else "left"); cell.border = rborder()
+        row += 1
+
+    # Section 3: Individual No-Call Requests
+    row += 2
+    ws.cell(row, 1, "Individual No-Call Requests").font = rfont(bold=True, sz=12)
+    row += 1
+    ws.column_dimensions["D"].width = 60
+    for c, h in enumerate(["Resident","PGY","Month","Dates"], 1):
+        cell = ws.cell(row, c, h)
+        cell.fill = rfill(C_HDR); cell.font = rfont(bold=True, sz=11, color="FFFFFF")
+        cell.alignment = ralign("center"); cell.border = rborder()
+    row += 1
+
+    nc_by_res = defaultdict(list)
+    for entry in cfg.get("no_call_requests", []):
+        nc_by_res[entry["resident"]].append(entry["date"])
+
+    for r in active_res:
+        dates = sorted(nc_by_res.get(r["id"], []))
+        if not dates:
+            continue
+        by_month = defaultdict(list)
+        for ds in dates:
+            by_month[ds[:7]].append(ds)
+        first_row = row
+        pf = rfill(pgy_fill_map.get(r["pgy"],"FFFFFF"))
+        for ym in sorted(by_month.keys()):
+            date_strs = []
+            for ds in by_month[ym]:
+                try:
+                    date_strs.append(date.fromisoformat(ds).strftime("%b %-d"))
+                except:
+                    date_strs.append(ds)
+            ws.cell(row, 1, r["full"] if row == first_row else "").font = rfont(sz=10)
+            ws.cell(row, 1).fill = copy.copy(pf); ws.cell(row, 1).border = rborder()
+            ws.cell(row, 2, f"PGY-{r['pgy']}" if row == first_row else "").font = rfont(sz=10)
+            ws.cell(row, 2).fill = copy.copy(pf); ws.cell(row, 2).border = rborder()
+            ws.cell(row, 2).alignment = ralign("center")
+            try:
+                label = date.fromisoformat(by_month[ym][0]).strftime("%b %Y")
+            except:
+                label = ym
+            ws.cell(row, 3, label).font = rfont(sz=10)
+            ws.cell(row, 3).fill = copy.copy(pf); ws.cell(row, 3).border = rborder()
+            ws.cell(row, 3).alignment = ralign("center")
+            ws.cell(row, 4, ",  ".join(date_strs)).font = rfont(sz=10)
+            ws.cell(row, 4).fill = copy.copy(pf); ws.cell(row, 4).border = rborder()
+            ws.cell(row, 4).alignment = Alignment(horizontal="left", wrap_text=True)
+            ws.row_dimensions[row].height = 15
+            row += 1
+        if row > first_row:
+            row += 1
+
+
 def export_xlsx_bytes(all_scheds, all_warnings, cfg):
     from openpyxl import Workbook
     from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
@@ -452,9 +585,24 @@ def export_xlsx_bytes(all_scheds, all_warnings, cfg):
                                  combined[r["id"]]["we"],combined[r["id"]]["wf"]],1):
             cell=ws_c.cell(i,c,val); cell.fill=copy.copy(rf); cell.font=font(sz=10)
             cell.alignment=align(h="left" if c==1 else "center"); cell.border=border()
+        # Status column
+        SOFT_CAPS = {1:2, 2:5, 3:3, 4:2}
+        HARD_CAPS = {1:3, 2:6, 3:5, 4:4}
+        pgy_fill_c = {1:"FEF3C7", 2:"DBEAFE", 3:"EDE9FE", 4:"D1FAE5"}
+        for i,r in enumerate(cfg["residents"],2):
+            tot = combined[r["id"]]["total"]
+            sc = SOFT_CAPS.get(r["pgy"],5); hc = HARD_CAPS.get(r["pgy"],6)
+            if tot > hc:   status_txt="OVER HARD CAP"; sf="FCA5A5"; sbold=True
+            elif tot > sc: status_txt=f"Over soft cap ({tot}/{sc})"; sf="FDE68A"; sbold=False
+            else:          status_txt="OK ✓"; sf="A7F3D0"; sbold=False
+            scell = ws_c.cell(i, 7, status_txt)
+            scell.fill = fill(sf); scell.font = font(bold=sbold, sz=10)
+            scell.alignment = align(); scell.border = border()
 
     # Move All Counts to front
+    add_reference_sheet(wb, cfg)
     wb.move_sheet("All Counts", offset=-len(wb.sheetnames)+1)
+    wb.move_sheet("Reference", offset=-len(wb.sheetnames)+2)
 
     buf = io.BytesIO(); wb.save(buf); buf.seek(0)
     return buf.getvalue()
@@ -714,7 +862,7 @@ with tab_res:
         blocks = ", ".join(f"{b['name']} ({b['start'][:7]})" for b in r.get("blocked_rotations",[]))
         opacity = "1.0" if active else "0.45"
         with st.container():
-            c1,c2,c3,c4,c5,c6 = st.columns([3,1,1,2,3,1])
+            c1,c2,c3,c4,c5,c6,c7 = st.columns([3,1,1,2,2,1,1])
             c1.markdown(f'<span style="opacity:{opacity};font-weight:500">{r["full"]}</span>',
                        unsafe_allow_html=True)
             c2.write(f"PGY-{r['pgy']}")
@@ -724,6 +872,36 @@ with tab_res:
             if c6.button("✎", key=f"edit_{r['id']}"):
                 st.session_state.res_action = "edit"
                 st.session_state.res_edit_id = r["id"]
+                if c7.button("🗑", key=f"del_{r['id']}", help="Remove resident"):
+                    st.session_state.res_del_id = r["id"]
+                    st.session_state.res_del_name = r["full"]
+                    st.rerun()
+
+    # Delete confirm dialog
+    if "res_del_id" in st.session_state:
+        del_id   = st.session_state.res_del_id
+        del_name = st.session_state.get("res_del_name", del_id)
+        st.warning(f"Remove **{del_name}**?")
+        dc1, dc2, dc3 = st.columns([2,2,4])
+        if dc1.button("Mark Inactive", key="del_inactive"):
+            cfg2 = get_cfg()
+            for r in cfg2["residents"]:
+                if r["id"] == del_id: r["active"] = False
+            save_cfg(cfg2)
+            del st.session_state["res_del_id"]
+            st.session_state.pop("res_del_name", None)
+            st.rerun()
+        if dc2.button("Delete Permanently", key="del_perm"):
+            cfg2 = get_cfg()
+            cfg2["residents"] = [r for r in cfg2["residents"] if r["id"] != del_id]
+            save_cfg(cfg2)
+            del st.session_state["res_del_id"]
+            st.session_state.pop("res_del_name", None)
+            st.rerun()
+        if dc3.button("Cancel", key="del_cancel"):
+            del st.session_state["res_del_id"]
+            st.session_state.pop("res_del_name", None)
+            st.rerun()
 
     # Add/Edit form
     action = st.session_state.get("res_action")
@@ -739,20 +917,68 @@ with tab_res:
                                 index=(existing["pgy"]-1 if existing else 0))
             active_sw = st.checkbox("Active", value=True if not existing else existing.get("active",True))
 
-            st.markdown("**Away Periods** (weekdays blocked)")
-            away_raw = st.text_area("One per line: YYYY-MM-DD to YYYY-MM-DD",
-                value="\n".join(f"{p['start']} to {p['end']}" for p in (existing or {}).get("away_periods",[])),
-                height=80)
+            st.markdown("**Away Periods** (weekdays blocked — enter YYYY-MM-DD)")
 
-            st.markdown("**Blocked Rotations** (Medicine Wards / Emergency Medicine / Neurology)")
+            # Away periods — structured add/remove using session state
+            away_key = f"away_data_{action}_{edit_id or 'new'}"
+            if away_key not in st.session_state:
+                st.session_state[away_key] = list((existing or {}).get("away_periods", []))
+
+            if st.session_state[away_key]:
+                for p in st.session_state[away_key]:
+                    st.caption(f"  \u2022 {p['start']}  →  {p['end']}")
+            else:
+                st.caption("  (none)")
+
+            ac1, ac2, ac3, ac4 = st.columns([2, 2, 1, 1])
+            new_away_start = ac1.text_input("Start", key=f"aws_{away_key}", placeholder="2026-07-01", label_visibility="collapsed")
+            new_away_end   = ac2.text_input("End",   key=f"awe_{away_key}", placeholder="2026-07-31", label_visibility="collapsed")
+            if ac3.button("+ Add", key=f"awa_{away_key}"):
+                try:
+                    date.fromisoformat(new_away_start.strip())
+                    date.fromisoformat(new_away_end.strip())
+                    st.session_state[away_key].append({"start": new_away_start.strip(), "end": new_away_end.strip()})
+                    st.rerun()
+                except:
+                    st.error("Invalid dates (use YYYY-MM-DD).")
+            if ac4.button("Remove Last", key=f"awd_{away_key}"):
+                if st.session_state[away_key]:
+                    st.session_state[away_key].pop()
+                    st.rerun()
+
+            st.markdown("**Blocked Rotations** (Medicine Wards / Emergency Medicine / Neurology block call)")
+
+            # Blocked rotations — structured add/remove using session state
             ROTATION_NAMES = ["Orientation","Medicine Wards","Emergency Medicine","Neurology",
                               "Emergency Psychiatry","Substance Use","Geriatric Psychiatry","Other"]
-            blocks_raw = st.text_area("One per line: RotationName YYYY-MM-DD to YYYY-MM-DD",
-                value="\n".join(f"{b['name']} {b['start']} to {b['end']}"
-                                for b in (existing or {}).get("blocked_rotations",[])),
-                height=80)
+            blk_key = f"blk_data_{action}_{edit_id or 'new'}"
+            if blk_key not in st.session_state:
+                st.session_state[blk_key] = list((existing or {}).get("blocked_rotations", []))
 
-            col_s, col_c = st.columns(2)
+            if st.session_state[blk_key]:
+                for b in st.session_state[blk_key]:
+                    st.caption(f"  \u2022 {b['name']}:  {b['start']}  →  {b['end']}")
+            else:
+                st.caption("  (none)")
+
+            bc1, bc2, bc3, bc4, bc5 = st.columns([2, 2, 2, 1, 1])
+            new_blk_name  = bc1.selectbox("Rotation", ROTATION_NAMES, key=f"bkn_{blk_key}", label_visibility="collapsed")
+            new_blk_start = bc2.text_input("Start", key=f"bks_{blk_key}", placeholder="2026-07-01", label_visibility="collapsed")
+            new_blk_end   = bc3.text_input("End",   key=f"bke_{blk_key}", placeholder="2026-09-30", label_visibility="collapsed")
+            if bc4.button("+ Add", key=f"bka_{blk_key}"):
+                try:
+                    date.fromisoformat(new_blk_start.strip())
+                    date.fromisoformat(new_blk_end.strip())
+                    st.session_state[blk_key].append({"name": new_blk_name, "start": new_blk_start.strip(), "end": new_blk_end.strip()})
+                    st.rerun()
+                except:
+                    st.error("Invalid dates (use YYYY-MM-DD).")
+            if bc5.button("Remove Last", key=f"bkd_{blk_key}"):
+                if st.session_state[blk_key]:
+                    st.session_state[blk_key].pop()
+                    st.rerun()
+
+                        col_s, col_c = st.columns(2)
             submitted = col_s.form_submit_button("Save", type="primary")
             cancelled = col_c.form_submit_button("Cancel")
 
@@ -764,21 +990,9 @@ with tab_res:
             if not full.strip():
                 st.error("Enter a full name.")
             else:
-                # Parse away periods
-                away_data = []
-                for line in away_raw.strip().split("\n"):
-                    line=line.strip()
-                    if not line: continue
-                    m = re.match(r"(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})", line)
-                    if m: away_data.append({"start":m.group(1),"end":m.group(2)})
-
-                # Parse blocked rotations
-                block_data = []
-                for line in blocks_raw.strip().split("\n"):
-                    line=line.strip()
-                    if not line: continue
-                    m = re.match(r"(.+?)\s+(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})", line)
-                    if m: block_data.append({"name":m.group(1).strip(),"start":m.group(2),"end":m.group(3)})
+                # Use session-state structured data (from UI above)
+                away_data  = st.session_state.get(f"away_data_{action}_{edit_id or 'new'}", [])
+                block_data = st.session_state.get(f"blk_data_{action}_{edit_id or 'new'}", [])
 
                 cfg2 = get_cfg()
                 if action=="add":

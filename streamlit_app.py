@@ -127,6 +127,26 @@ def save_cfg(cfg):
 # ─────────────────────────────────────────────────────────────
 BLOCKED_ROTATIONS = {"Medicine Wards", "Emergency Medicine", "Neurology"}
 
+def active_residents(cfg):
+    return [r for r in cfg["residents"] if r.get("active", True)]
+
+def res_by_id(cfg):
+    return {r["id"]: r for r in cfg["residents"]}
+
+def pgy_pools(cfg):
+    rs = active_residents(cfg)
+    return {
+        "interns":  [r["id"] for r in rs if r["pgy"] == 1],
+        "pgy34":    [r["id"] for r in rs if r["pgy"] >= 3],
+        "upper":    [r["id"] for r in rs if r["pgy"] >= 2],
+        "all":      [r["id"] for r in rs],
+    }
+
+def make_res_id(full_name):
+    parts = full_name.lower().split()
+    slug = "_".join(reversed(parts))
+    return re.sub(r"[^a-z0-9_]", "", slug)[:32]
+
 def is_off_service(res_id, d, cfg):
     """Return True if resident is off service (away or on a blocking rotation) on weekday d."""
     for r in cfg["residents"]:

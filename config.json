@@ -102,7 +102,34 @@
       "pgy": 4,
       "active": true,
       "away_periods": [],
-      "blocked_rotations": []
+      "blocked_rotations": [],
+      "off_service": [
+        {
+          "start": "2026-07-01",
+          "end": "2026-07-03",
+          "reason": "Away"
+        },
+        {
+          "start": "2026-07-06",
+          "end": "2026-07-10",
+          "reason": "Away"
+        },
+        {
+          "start": "2026-07-13",
+          "end": "2026-07-17",
+          "reason": "Away"
+        },
+        {
+          "start": "2026-07-20",
+          "end": "2026-07-24",
+          "reason": "Away"
+        },
+        {
+          "start": "2026-07-27",
+          "end": "2026-07-31",
+          "reason": "Away"
+        }
+      ]
     },
     {
       "id": "brych",

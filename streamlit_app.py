@@ -36,6 +36,11 @@ def get_cfg():
 
 def save_cfg(cfg):
     st.session_state.config = cfg
+    try:
+        with open(DEFAULT_CONFIG_PATH, "w") as f:
+            json.dump(cfg, f, indent=2)
+    except Exception:
+        pass  # read-only filesystem; changes live in session only
 
 # ─────────────────────────────────────────────────────────────
 # RESIDENT HELPERS

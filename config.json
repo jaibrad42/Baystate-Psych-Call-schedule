@@ -1,4 +1,22 @@
 {
+  "residents": [
+    {"id": "holsonback",   "full": "Evan Holsonback",    "pgy": 1, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "li",           "full": "Danielle Li",         "pgy": 1, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "tsandilas",    "full": "Yanni Tsandilas",     "pgy": 1, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "gervais",      "full": "Michaela Gervais",    "pgy": 1, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "auclair",      "full": "Jessie Auclair",      "pgy": 2, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "ramirez",      "full": "Virginia Ramirez",    "pgy": 2, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "kurtz",        "full": "Jeremy Kurtz",        "pgy": 2, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "mizrach",      "full": "Helen Mizrach",       "pgy": 2, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "smith",        "full": "Jewel Smith",         "pgy": 3, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "ali",          "full": "Humza Ali",           "pgy": 3, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "siemiatkoski", "full": "Kayley Siemiatkoski", "pgy": 3, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "wilson_braun", "full": "Peter Wilson-Braun",  "pgy": 3, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "mastalerz",    "full": "Paige Mastalerz",     "pgy": 4, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "brych",        "full": "Anya Brych",          "pgy": 4, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "mann",         "full": "Arjun Mann",          "pgy": 4, "active": true, "away_periods": [], "blocked_rotations": []},
+    {"id": "dame",         "full": "Alexis Dame",         "pgy": 4, "active": true, "away_periods": [], "blocked_rotations": []}
+  ],
   "holidays": [
     {
       "name": "4th of July",

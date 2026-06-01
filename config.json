@@ -75,6 +75,11 @@
           "start": "2026-10-26",
           "end": "2026-11-22",
           "reason": "Neurology"
+        },
+        {
+          "start": "2026-11-23",
+          "end": "2026-12-20",
+          "reason": "Medicine Wards"
         }
       ]
     },

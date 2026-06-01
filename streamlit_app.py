@@ -127,46 +127,45 @@ def save_cfg(cfg):
 # ─────────────────────────────────────────────────────────────
 BLOCKED_ROTATIONS = {"Medicine Wards", "Emergency Medicine", "Neurology"}
 
-def active_residents(cfg):
-    return [r for r in cfg["residents"] if r.get("active", True)]
-
-def res_by_id(cfg):
-    return {r["id"]: r for r in cfg["residents"]}
-
-def pgy_pools(cfg):
-    rs = active_residents(cfg)
-    return {
-        "interns":  [r["id"] for r in rs if r["pgy"] == 1],
-        "pgy34":    [r["id"] for r in rs if r["pgy"] >= 3],
-        "upper":    [r["id"] for r in rs if r["pgy"] >= 2],
-        "all":      [r["id"] for r in rs],
-    }
-
-def make_res_id(full_name):
-    parts = full_name.lower().split()
-    slug = "_".join(reversed(parts))
-    return re.sub(r"[^a-z0-9_]", "", slug)[:32]
-
-# ─────────────────────────────────────────────────────────────
-# SCHEDULING LOGIC  (ported from scheduler_app.py)
-# ─────────────────────────────────────────────────────────────
-def is_away(res_id, d, cfg):
+def is_off_service(res_id, d, cfg):
+    """Return True if resident is off service (away or on a blocking rotation) on weekday d."""
     for r in cfg["residents"]:
         if r["id"] != res_id: continue
-        for period in r.get("away_periods", []):
+        # New unified off_service field
+        for o in r.get("off_service", []):
             try:
-                if date.fromisoformat(period["start"]) <= d <= date.fromisoformat(period["end"]):
+                if date.fromisoformat(o["start"]) <= d <= date.fromisoformat(o["end"]):
+                    return d.weekday() < 5
+            except (KeyError, ValueError): pass
+        # Backward compat: old away_periods field
+        for p in r.get("away_periods", []):
+            try:
+                if date.fromisoformat(p["start"]) <= d <= date.fromisoformat(p["end"]):
+                    return d.weekday() < 5
+            except (KeyError, ValueError): pass
+        # Backward compat: old blocked_rotations field
+        for b in r.get("blocked_rotations", []):
+            try:
+                if date.fromisoformat(b["start"]) <= d <= date.fromisoformat(b["end"]):
                     return d.weekday() < 5
             except (KeyError, ValueError): pass
     return False
 
-def pgy1_blocked(res_id, d, cfg):
+def is_blocking_rotation(res_id, d, cfg):
+    """Return True if resident is on a call-blocking rotation (Medicine Wards, EM, Neurology)."""
     for r in cfg["residents"]:
         if r["id"] != res_id: continue
-        for block in r.get("blocked_rotations", []):
+        for o in r.get("off_service", []):
             try:
-                if date.fromisoformat(block["start"]) <= d <= date.fromisoformat(block["end"]):
-                    return block.get("name", "") in BLOCKED_ROTATIONS
+                if (date.fromisoformat(o["start"]) <= d <= date.fromisoformat(o["end"])
+                        and o.get("reason","") in BLOCKED_ROTATIONS):
+                    return True
+            except (KeyError, ValueError): pass
+        for b in r.get("blocked_rotations", []):
+            try:
+                if (date.fromisoformat(b["start"]) <= d <= date.fromisoformat(b["end"])
+                        and b.get("name","") in BLOCKED_ROTATIONS):
+                    return True
             except (KeyError, ValueError): pass
     return False
 
@@ -220,7 +219,7 @@ class State:
             self._current_month = (year, month)
 
     def eligible(self, res_id, d, role, cfg):
-        if is_away(res_id, d, cfg): return False
+        if is_off_service(res_id, d, cfg): return False
         if is_no_call(res_id, d, cfg): return False
         if is_program_nc(d, cfg): return False
         if holiday_soon(res_id, d, cfg): return False
@@ -230,12 +229,12 @@ class State:
         if role == "aptu_wd":      return p >= 2
         if role == "aptu_we_jul":  return p >= 2 and not self._over_consec(res_id, d)
         if role == "aptu_we_aug":
-            if p == 1 and pgy1_blocked(res_id, d, cfg): return False
+            if p == 1 and is_blocking_rotation(res_id, d, cfg): return False
             return not self._over_consec(res_id, d)
         if role == "consult":
             return p >= 3 and not self._over_consec(res_id, d)
         if role == "intern":
-            return p == 1 and not pgy1_blocked(res_id, d, cfg)
+            return p == 1 and not is_blocking_rotation(res_id, d, cfg)
         return False
 
     def _over_consec(self, res_id, d):
@@ -371,7 +370,7 @@ def schedule_jeopardy(sched, cfg):
         assigned = {entry.get(k) for k in ("aptu","consult","intern") if entry.get(k)}
         cands = [r["id"] for r in active_residents(cfg)
                  if r["pgy"] >= 3 and r["id"] not in assigned
-                 and not is_away(r["id"], d, cfg) and not is_no_call(r["id"], d, cfg)]
+                 and not is_off_service(r["id"], d, cfg) and not is_no_call(r["id"], d, cfg)]
         if cands:
             def month_load(rid):
                 return sum(1 for dk2,e2 in sched.items()
@@ -974,30 +973,33 @@ with tab_res:
     rows = sorted(active_residents(cfg) + [r for r in cfg["residents"] if not r.get("active",True)],
                   key=lambda r:(r["pgy"], r["full"]))
     # Column headers for resident table
-    _hc1,_hc2,_hc3,_hc4,_hc5,_hc6,_hc7 = st.columns([3,1,1,2,2,1,1])
+    _hc1,_hc2,_hc3,_hc4,_hc5,_hc6 = st.columns([3,1,1,3,1,1])
     _hc1.markdown("**Name**"); _hc2.markdown("**PGY**"); _hc3.markdown("**Active**")
-    _hc4.markdown("**Away Periods**"); _hc5.markdown("**Blocked Rotations**")
+    _hc4.markdown("**Off Service**")
     st.divider()
     for r in rows:
         active = r.get("active",True)
-        away = ", ".join(f"{p['start']} – {p['end']}" for p in r.get("away_periods",[]))
-        blocks = ", ".join(f"{b['name']} ({b['start'][:7]})" for b in r.get("blocked_rotations",[]))
+        # Merge old away_periods + blocked_rotations into off_service for display
+        _offs = r.get("off_service", [])
+        if not _offs:
+            _offs = [{"start":p["start"],"end":p["end"],"reason":"Away"} for p in r.get("away_periods",[])]
+            _offs += [{"start":b["start"],"end":b["end"],"reason":b.get("name","Rotation")} for b in r.get("blocked_rotations",[])]
+        off_str = "; ".join(f"{o['reason']} {o['start'][:7]}→{o['end'][:7]}" for o in _offs) or "—"
         opacity = "1.0" if active else "0.45"
         with st.container():
-            c1,c2,c3,c4,c5,c6,c7 = st.columns([3,1,1,2,2,1,1])
+            c1,c2,c3,c4,c5,c6 = st.columns([3,1,1,3,1,1])
             c1.markdown(f'<span style="opacity:{opacity};font-weight:500">{r["full"]}</span>',
                        unsafe_allow_html=True)
             c2.write(f"PGY-{r['pgy']}")
             c3.write("✅" if active else "⏸")
-            c4.write(away or "—")
-            c5.write(blocks or "—")
-            if c6.button("✎", key=f"edit_{r['id']}"):
-                for _k in [f"away_data_edit_{r['id']}", f"blk_data_edit_{r['id']}"]:
+            c4.write(off_str)
+            if c5.button("✎", key=f"edit_{r['id']}"):
+                for _k in [f"off_svc_edit_{r['id']}"]:
                     if _k in st.session_state: del st.session_state[_k]
                 st.session_state.res_action = "edit"
                 st.session_state.res_edit_id = r["id"]
                 st.rerun()
-            if c7.button("🗑", key=f"del_{r['id']}", help="Remove resident"):
+            if c6.button("🗑", key=f"del_{r['id']}", help="Remove resident"):
                 st.session_state.res_del_id = r["id"]
                 st.session_state.res_del_name = r["full"]
                 st.rerun()
@@ -1036,64 +1038,49 @@ with tab_res:
         st.markdown("---")
         st.markdown(f"#### {'Add' if action=='add' else 'Edit'} Resident")
 
-        # Away periods — structured add/remove using session state
-        away_key = f"away_data_{action}_{edit_id or 'new'}"
-        if away_key not in st.session_state:
-            st.session_state[away_key] = list((existing or {}).get("away_periods", []))
+        # Off Service periods — combined away + blocked rotations
+        OFF_SERVICE_REASONS = ["Away","Medicine Wards","Emergency Medicine","Neurology",
+                               "Emergency Psychiatry","Substance Use","Geriatric Psychiatry",
+                               "Orientation","Other"]
+        ofs_key = f"off_svc_{action}_{edit_id or 'new'}"
+        if ofs_key not in st.session_state:
+            # Load existing off_service, or migrate from old fields
+            _existing_ofs = (existing or {}).get("off_service", [])
+            if not _existing_ofs:
+                _existing_ofs  = [{"start":p["start"],"end":p["end"],"reason":"Away"}
+                                   for p in (existing or {}).get("away_periods", [])]
+                _existing_ofs += [{"start":b["start"],"end":b["end"],"reason":b.get("name","Rotation")}
+                                   for b in (existing or {}).get("blocked_rotations", [])]
+            st.session_state[ofs_key] = list(_existing_ofs)
 
-        st.markdown("**Away Periods** (weekdays blocked — enter YYYY-MM-DD)")
-        if st.session_state[away_key]:
-            for p in st.session_state[away_key]:
-                st.caption(f"  \u2022 {p['start']}  \u2192  {p['end']}")
+        st.markdown("**Off Service Periods**")
+        _ofs_list = st.session_state[ofs_key]
+        if _ofs_list:
+            for _oi, _o in enumerate(_ofs_list):
+                _ocols = st.columns([3,1])
+                _ocols[0].caption(f"• {_o['reason']}: {_o['start']} → {_o['end']}")
+                if _ocols[1].button("Remove", key=f"ofs_rm_{ofs_key}_{_oi}"):
+                    st.session_state[ofs_key].pop(_oi)
+                    st.rerun()
         else:
             st.caption("  (none)")
 
-        ac1, ac2, ac3, ac4 = st.columns([2, 2, 1, 1])
-        new_away_start = ac1.text_input("Start", key=f"aws_{away_key}", placeholder="2026-07-01", label_visibility="collapsed")
-        new_away_end   = ac2.text_input("End",   key=f"awe_{away_key}", placeholder="2026-07-31", label_visibility="collapsed")
-        if ac3.button("+ Add", key=f"awa_{away_key}"):
-            try:
-                date.fromisoformat(new_away_start.strip())
-                date.fromisoformat(new_away_end.strip())
-                st.session_state[away_key].append({"start": new_away_start.strip(), "end": new_away_end.strip()})
+        st.markdown("**Add Off Service Period:**")
+        _nr1, _nr2, _nr3 = st.columns([2,2,2])
+        _new_reason = _nr1.selectbox("Reason", OFF_SERVICE_REASONS, key=f"ofs_rsn_{ofs_key}", label_visibility="collapsed")
+        _new_dates = _nr2.date_input("Date range", value=[], key=f"ofs_dt_{ofs_key}",
+                                     min_value=date(2025,1,1), max_value=date(2030,12,31),
+                                     label_visibility="collapsed")
+        if _nr3.button("+ Add", key=f"ofs_add_{ofs_key}"):
+            if isinstance(_new_dates, (list,tuple)) and len(_new_dates) == 2:
+                st.session_state[ofs_key].append({
+                    "start": _new_dates[0].isoformat(),
+                    "end":   _new_dates[1].isoformat(),
+                    "reason": _new_reason
+                })
                 st.rerun()
-            except:
-                st.error("Invalid dates (use YYYY-MM-DD).")
-        if ac4.button("Remove Last", key=f"awd_{away_key}"):
-            if st.session_state[away_key]:
-                st.session_state[away_key].pop()
-                st.rerun()
-
-        # Blocked rotations — structured add/remove using session state
-        ROTATION_NAMES = ["Orientation","Medicine Wards","Emergency Medicine","Neurology",
-                          "Emergency Psychiatry","Substance Use","Geriatric Psychiatry","Other"]
-        blk_key = f"blk_data_{action}_{edit_id or 'new'}"
-        if blk_key not in st.session_state:
-            st.session_state[blk_key] = list((existing or {}).get("blocked_rotations", []))
-
-        st.markdown("**Blocked Rotations** (Medicine Wards / Emergency Medicine / Neurology block call)")
-        if st.session_state[blk_key]:
-            for b in st.session_state[blk_key]:
-                st.caption(f"  \u2022 {b['name']}:  {b['start']}  \u2192  {b['end']}")
-        else:
-            st.caption("  (none)")
-
-        bc1, bc2, bc3, bc4, bc5 = st.columns([2, 2, 2, 1, 1])
-        new_blk_name  = bc1.selectbox("Rotation", ROTATION_NAMES, key=f"bkn_{blk_key}", label_visibility="collapsed")
-        new_blk_start = bc2.text_input("Start", key=f"bks_{blk_key}", placeholder="2026-07-01", label_visibility="collapsed")
-        new_blk_end   = bc3.text_input("End",   key=f"bke_{blk_key}", placeholder="2026-09-30", label_visibility="collapsed")
-        if bc4.button("+ Add", key=f"bka_{blk_key}"):
-            try:
-                date.fromisoformat(new_blk_start.strip())
-                date.fromisoformat(new_blk_end.strip())
-                st.session_state[blk_key].append({"name": new_blk_name, "start": new_blk_start.strip(), "end": new_blk_end.strip()})
-                st.rerun()
-            except:
-                st.error("Invalid dates (use YYYY-MM-DD).")
-        if bc5.button("Remove Last", key=f"bkd_{blk_key}"):
-            if st.session_state[blk_key]:
-                st.session_state[blk_key].pop()
-                st.rerun()
+            else:
+                st.warning("Please select both a start and end date using the calendar.")
 
         with st.form("res_form"):
             full = st.text_input("Full Name", value="" if not existing else existing["full"])
@@ -1112,10 +1099,7 @@ with tab_res:
             if not full.strip():
                 st.error("Enter a full name.")
             else:
-                # Use session-state structured data (from UI above)
-                away_data  = st.session_state.get(f"away_data_{action}_{edit_id or 'new'}", [])
-                block_data = st.session_state.get(f"blk_data_{action}_{edit_id or 'new'}", [])
-
+                ofs_data = st.session_state.get(f"off_svc_{action}_{edit_id or 'new'}", [])
                 cfg2 = get_cfg()
                 if action=="add":
                     new_id = make_res_id(full)
@@ -1123,13 +1107,12 @@ with tab_res:
                     suffix=2; base=new_id
                     while new_id in existing_ids: new_id=f"{base}_{suffix}"; suffix+=1
                     cfg2["residents"].append({"id":new_id,"full":full.strip(),"pgy":pgy,
-                                              "active":True,"away_periods":away_data,
-                                              "blocked_rotations":block_data})
+                                              "active":True,"off_service":ofs_data})
                 else:
                     for r in cfg2["residents"]:
                         if r["id"]==edit_id:
                             r["full"]=full.strip(); r["pgy"]=pgy; r["active"]=active_sw
-                            r["away_periods"]=away_data; r["blocked_rotations"]=block_data
+                            r["off_service"]=ofs_data
                 save_cfg(cfg2)
                 del st.session_state["res_action"]
                 st.rerun()

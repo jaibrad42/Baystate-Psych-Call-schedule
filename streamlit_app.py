@@ -16,24 +16,84 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────────────────────
-# CONFIG — stored in st.session_state so it persists across
-# reruns within a session. Changes are also written to
-# /tmp/config_override.json which persists within the running
-# container. Use Download/Upload in the sidebar to persist
-# across app restarts or redeploys.
+# CONFIG — persisted to GitHub repo via API when GITHUB_TOKEN
+# secret is set. Falls back to /tmp cache, then local file.
+# Setup: Streamlit Cloud → App settings → Secrets → add GITHUB_TOKEN
 # ─────────────────────────────────────────────────────────────
 
+import urllib.request, base64
+
+GITHUB_REPO   = "jaibrad42/Baystate-Psych-Call-schedule"
+GITHUB_FILE   = "config.json"
+GITHUB_BRANCH = "main"
 DEFAULT_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config.json")
 TMP_CONFIG_PATH = "/tmp/baystate_config_override.json"
 
+def _gh_token():
+    try:
+        return st.secrets.get("GITHUB_TOKEN", "")
+    except Exception:
+        return ""
+
+def _gh_fetch():
+    """Fetch config.json content + SHA from GitHub API."""
+    token = _gh_token()
+    if not token:
+        return None, None
+    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{GITHUB_FILE}?ref={GITHUB_BRANCH}"
+    req = urllib.request.Request(url, headers={
+        "Authorization": f"token {token}",
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "BaystateScheduler/1.0"
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            data = json.loads(resp.read().decode())
+            content = base64.b64decode(data["content"].replace("\n","")).decode()
+            return json.loads(content), data["sha"]
+    except Exception:
+        return None, None
+
+def _gh_push(cfg, sha):
+    """Commit updated config.json to GitHub."""
+    token = _gh_token()
+    if not token:
+        return False
+    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{GITHUB_FILE}"
+    body = json.dumps({
+        "message": "chore: auto-save config from Baystate Scheduler",
+        "content": base64.b64encode(json.dumps(cfg, indent=2).encode()).decode(),
+        "sha": sha,
+        "branch": GITHUB_BRANCH,
+    }).encode()
+    req = urllib.request.Request(url, data=body, method="PUT", headers={
+        "Authorization": f"token {token}",
+        "Accept": "application/vnd.github.v3+json",
+        "Content-Type": "application/json",
+        "User-Agent": "BaystateScheduler/1.0"
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            result = json.loads(resp.read().decode())
+            st.session_state["_cfg_sha"] = result["content"]["sha"]
+            return True
+    except Exception:
+        return False
+
 def _load_default_config():
-    # Check /tmp override first (survives page refreshes within same container)
+    # 1. Try GitHub API (permanent cross-session persistence)
+    cfg, sha = _gh_fetch()
+    if cfg is not None:
+        st.session_state["_cfg_sha"] = sha
+        return cfg
+    # 2. Try /tmp cache (survives page refresh within container)
     if os.path.exists(TMP_CONFIG_PATH):
         try:
             with open(TMP_CONFIG_PATH) as f:
                 return json.load(f)
         except Exception:
             pass
+    # 3. Fall back to bundled config.json
     if os.path.exists(DEFAULT_CONFIG_PATH):
         with open(DEFAULT_CONFIG_PATH) as f:
             return json.load(f)
@@ -46,11 +106,21 @@ def get_cfg():
 
 def save_cfg(cfg):
     st.session_state.config = cfg
+    # Write to /tmp for fast in-session persistence
     try:
         with open(TMP_CONFIG_PATH, "w") as f:
             json.dump(cfg, f, indent=2)
     except Exception:
-        pass  # fallback: changes live in session state only
+        pass
+    # Push to GitHub for permanent cross-session persistence
+    sha = st.session_state.get("_cfg_sha")
+    if sha:
+        _gh_push(cfg, sha)
+    else:
+        _, sha = _gh_fetch()
+        if sha:
+            st.session_state["_cfg_sha"] = sha
+            _gh_push(cfg, sha)
 
 # ─────────────────────────────────────────────────────────────
 # RESIDENT HELPERS

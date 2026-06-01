@@ -858,6 +858,11 @@ with tab_res:
     # Resident table
     rows = sorted(active_residents(cfg) + [r for r in cfg["residents"] if not r.get("active",True)],
                   key=lambda r:(r["pgy"], r["full"]))
+    # Column headers for resident table
+    _hc1,_hc2,_hc3,_hc4,_hc5,_hc6,_hc7 = st.columns([3,1,1,2,2,1,1])
+    _hc1.markdown("**Name**"); _hc2.markdown("**PGY**"); _hc3.markdown("**Active**")
+    _hc4.markdown("**Away Periods**"); _hc5.markdown("**Blocked Rotations**")
+    st.divider()
     for r in rows:
         active = r.get("active",True)
         away = ", ".join(f"{p['start']} – {p['end']}" for p in r.get("away_periods",[]))
@@ -1069,9 +1074,15 @@ with tab_hol:
             hinfo = hol_lookup.get(dk)
             if hinfo:
                 hname_lbl,entry_lbl,_,_ = hinfo
-                aptu_id = entry_lbl.get("aptu","")
-                aptu_last = rb.get(aptu_id,{}).get("full","?").split()[-1] if aptu_id else ""
-                lbl = str(day_num)+"\n"+hname_lbl[:6]+(("\n"+aptu_last) if aptu_last else "")
+                aptu_id  = entry_lbl.get("aptu","")
+                con_id   = entry_lbl.get("consult","")
+                aptu_last = rb.get(aptu_id,{}).get("full","").split()[-1] if aptu_id else ""
+                con_last  = rb.get(con_id,{}).get("full","").split()[-1] if con_id else ""
+                hname_short = hname_lbl[:10]
+                lbl_parts = [str(day_num), hname_short]
+                if aptu_last: lbl_parts.append("A: "+aptu_last)
+                if con_last:  lbl_parts.append("C: "+con_last)
+                lbl = "\n".join(lbl_parts)
                 btype = "primary"
             else:
                 lbl = str(day_num)

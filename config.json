@@ -1,0 +1,1868 @@
+{
+  "holidays": [
+    {
+      "name": "4th of July",
+      "entries": [
+        {
+          "date": "2026-07-03",
+          "aptu": "mizrach",
+          "consult": "mastalerz"
+        },
+        {
+          "date": "2026-07-04",
+          "aptu": "ramirez",
+          "consult": "smith"
+        },
+        {
+          "date": "2026-07-05",
+          "aptu": "kurtz",
+          "consult": "mann"
+        }
+      ]
+    },
+    {
+      "name": "Labor Day",
+      "entries": [
+        {
+          "date": "2026-09-05",
+          "aptu": "gervais",
+          "consult": "mann"
+        },
+        {
+          "date": "2026-09-06",
+          "aptu": "holsonback",
+          "consult": "wilson_braun"
+        },
+        {
+          "date": "2026-09-07",
+          "aptu": "li",
+          "consult": "brych"
+        }
+      ]
+    },
+    {
+      "name": "Thanksgiving",
+      "entries": [
+        {
+          "date": "2026-11-26",
+          "aptu": "kurtz",
+          "consult": "mastalerz"
+        },
+        {
+          "date": "2026-11-27",
+          "aptu": "auclair",
+          "consult": ""
+        },
+        {
+          "date": "2026-11-28",
+          "aptu": "li",
+          "consult": "brych"
+        },
+        {
+          "date": "2026-11-29",
+          "aptu": "holsonback",
+          "consult": "siemiatkoski"
+        }
+      ]
+    },
+    {
+      "name": "Christmas",
+      "entries": [
+        {
+          "date": "2026-12-25",
+          "aptu": "kurtz",
+          "consult": "ali"
+        },
+        {
+          "date": "2026-12-26",
+          "aptu": "mizrach",
+          "consult": "mann"
+        },
+        {
+          "date": "2026-12-27",
+          "aptu": "ramirez",
+          "consult": "siemiatkoski"
+        }
+      ]
+    },
+    {
+      "name": "New Year's",
+      "entries": [
+        {
+          "date": "2027-01-01",
+          "aptu": "holsonback",
+          "consult": "dame"
+        },
+        {
+          "date": "2027-01-02",
+          "aptu": "tsandilas",
+          "consult": "auclair"
+        },
+        {
+          "date": "2027-01-03",
+          "aptu": "gervais",
+          "consult": "smith"
+        }
+      ]
+    },
+    {
+      "name": "MLK Day",
+      "entries": [
+        {
+          "date": "2027-01-16",
+          "aptu": "wilson_braun",
+          "consult": "siemiatkoski"
+        },
+        {
+          "date": "2027-01-17",
+          "aptu": "ramirez",
+          "consult": "ali"
+        },
+        {
+          "date": "2027-01-18",
+          "aptu": "mizrach",
+          "consult": "dame"
+        }
+      ]
+    },
+    {
+      "name": "Memorial Day",
+      "entries": [
+        {
+          "date": "2027-05-29",
+          "aptu": "auclair",
+          "consult": "wilson_braun"
+        },
+        {
+          "date": "2027-05-30",
+          "aptu": "gervais",
+          "consult": "smith"
+        },
+        {
+          "date": "2027-05-31",
+          "aptu": "tsandilas",
+          "consult": "brych"
+        }
+      ]
+    }
+  ],
+  "program_no_call": [
+    "2027-06-01",
+    "2026-09-30",
+    "2026-10-09"
+  ],
+  "no_call_requests": [
+    {
+      "resident": "holsonback",
+      "date": "2026-08-19"
+    },
+    {
+      "resident": "holsonback",
+      "date": "2026-08-20"
+    },
+    {
+      "resident": "holsonback",
+      "date": "2026-08-21"
+    },
+    {
+      "resident": "holsonback",
+      "date": "2026-08-22"
+    },
+    {
+      "resident": "holsonback",
+      "date": "2026-08-23"
+    },
+    {
+      "resident": "holsonback",
+      "date": "2026-10-10"
+    },
+    {
+      "resident": "li",
+      "date": "2026-07-06"
+    },
+    {
+      "resident": "li",
+      "date": "2026-07-07"
+    },
+    {
+      "resident": "li",
+      "date": "2026-07-08"
+    },
+    {
+      "resident": "li",
+      "date": "2026-07-09"
+    },
+    {
+      "resident": "li",
+      "date": "2026-07-10"
+    },
+    {
+      "resident": "li",
+      "date": "2026-07-11"
+    },
+    {
+      "resident": "li",
+      "date": "2026-08-21"
+    },
+    {
+      "resident": "li",
+      "date": "2026-08-22"
+    },
+    {
+      "resident": "li",
+      "date": "2026-08-23"
+    },
+    {
+      "resident": "li",
+      "date": "2026-08-24"
+    },
+    {
+      "resident": "li",
+      "date": "2026-09-04"
+    },
+    {
+      "resident": "li",
+      "date": "2026-09-05"
+    },
+    {
+      "resident": "li",
+      "date": "2026-09-06"
+    },
+    {
+      "resident": "li",
+      "date": "2026-10-29"
+    },
+    {
+      "resident": "li",
+      "date": "2026-10-30"
+    },
+    {
+      "resident": "li",
+      "date": "2026-10-31"
+    },
+    {
+      "resident": "li",
+      "date": "2026-11-19"
+    },
+    {
+      "resident": "li",
+      "date": "2026-11-20"
+    },
+    {
+      "resident": "li",
+      "date": "2026-11-21"
+    },
+    {
+      "resident": "li",
+      "date": "2026-11-22"
+    },
+    {
+      "resident": "tsandilas",
+      "date": "2026-07-25"
+    },
+    {
+      "resident": "tsandilas",
+      "date": "2026-07-26"
+    },
+    {
+      "resident": "tsandilas",
+      "date": "2026-08-21"
+    },
+    {
+      "resident": "tsandilas",
+      "date": "2026-08-22"
+    },
+    {
+      "resident": "tsandilas",
+      "date": "2026-08-23"
+    },
+    {
+      "resident": "tsandilas",
+      "date": "2026-10-10"
+    },
+    {
+      "resident": "tsandilas",
+      "date": "2026-10-11"
+    },
+    {
+      "resident": "tsandilas",
+      "date": "2026-11-19"
+    },
+    {
+      "resident": "tsandilas",
+      "date": "2026-12-03"
+    },
+    {
+      "resident": "tsandilas",
+      "date": "2026-12-04"
+    },
+    {
+      "resident": "tsandilas",
+      "date": "2026-12-05"
+    },
+    {
+      "resident": "tsandilas",
+      "date": "2026-12-06"
+    },
+    {
+      "resident": "tsandilas",
+      "date": "2026-12-07"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-07-10"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-07-11"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-07-12"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-07-25"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-07-28"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-08-07"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-08-08"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-08-09"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-10-10"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-10-31"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-11-06"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-11-07"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-12-21"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-12-22"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-12-23"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-12-24"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-12-25"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-12-26"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-12-27"
+    },
+    {
+      "resident": "gervais",
+      "date": "2026-12-28"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-08-07"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-08-08"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-08-09"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-10-10"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-10-29"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-10-30"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-10-31"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-11-01"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-11-02"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-12-04"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-12-05"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-12-06"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-12-07"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-12-08"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-12-09"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-12-10"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-12-11"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-12-12"
+    },
+    {
+      "resident": "auclair",
+      "date": "2026-12-13"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-07-02"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-07-18"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-08-04"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-08-05"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-08-06"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-08-07"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-08-08"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-08-09"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-10-03"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-10-04"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-10-05"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-10-06"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-10-07"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-10-08"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-10-09"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-10-10"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-10-11"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-10-22"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-10-23"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-10-24"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-10-25"
+    },
+    {
+      "resident": "ramirez",
+      "date": "2026-10-26"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-07-18"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-07-19"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-08-15"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-08-16"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-08-17"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-08-18"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-08-19"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-08-20"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-08-21"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-08-22"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-08-23"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-10-08"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-10-09"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-10-10"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-10-11"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-10-30"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-10-31"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-11-01"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-12-11"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-12-12"
+    },
+    {
+      "resident": "kurtz",
+      "date": "2026-12-13"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-08-14"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-08-15"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-08-16"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-08-28"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-08-29"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-08-30"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-09-02"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-10-23"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-10-24"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-10-25"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-10-26"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-10-27"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-10-28"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-10-29"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-10-30"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-10-31"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-07"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-08"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-09"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-10"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-11"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-12"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-13"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-14"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-15"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-16"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-17"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-18"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-25"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-26"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-27"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-28"
+    },
+    {
+      "resident": "mizrach",
+      "date": "2026-11-29"
+    },
+    {
+      "resident": "smith",
+      "date": "2026-07-10"
+    },
+    {
+      "resident": "smith",
+      "date": "2026-07-11"
+    },
+    {
+      "resident": "smith",
+      "date": "2026-07-12"
+    },
+    {
+      "resident": "smith",
+      "date": "2026-10-09"
+    },
+    {
+      "resident": "smith",
+      "date": "2026-10-10"
+    },
+    {
+      "resident": "smith",
+      "date": "2026-10-11"
+    },
+    {
+      "resident": "smith",
+      "date": "2026-11-17"
+    },
+    {
+      "resident": "smith",
+      "date": "2026-11-18"
+    },
+    {
+      "resident": "smith",
+      "date": "2026-11-19"
+    },
+    {
+      "resident": "smith",
+      "date": "2026-11-20"
+    },
+    {
+      "resident": "smith",
+      "date": "2026-11-21"
+    },
+    {
+      "resident": "smith",
+      "date": "2026-11-22"
+    },
+    {
+      "resident": "smith",
+      "date": "2026-12-31"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-07-11"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-07-12"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-07-25"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-07-26"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-07-27"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-07-28"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-07-29"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-07-30"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-07-31"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-08-01"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-08-02"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-08-03"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-08-04"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-08-05"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-08-06"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-08-07"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-09-25"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-09-26"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-09-27"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-10-01"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-10-09"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-10-10"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-11-07"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-11-08"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-11-17"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-11-18"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-11-19"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-11-20"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-11-21"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-11-22"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-11-27"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-12-11"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-12-12"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-12-13"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-12-14"
+    },
+    {
+      "resident": "ali",
+      "date": "2026-12-15"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-07-16"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-07-17"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-07-18"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-07-19"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-09-03"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-09-04"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-09-05"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-09-06"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-09-07"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-09-08"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-09-09"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-10-02"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-10-03"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-10-04"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-10-05"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-10-16"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-10-17"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-10-18"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-10-19"
+    },
+    {
+      "resident": "siemiatkoski",
+      "date": "2026-10-31"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-07-02"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-07-10"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-07-11"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-07-12"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-04"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-05"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-06"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-07"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-08"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-09"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-10"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-11"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-12"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-13"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-14"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-15"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-16"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-29"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-08-30"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-09-04"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-09-05"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-09-11"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-09-12"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-09-13"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-09-14"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-09-15"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-09-16"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-09-17"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-09-18"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-09-19"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-09-20"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-11-10"
+    },
+    {
+      "resident": "wilson_braun",
+      "date": "2026-11-11"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-06"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-07"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-08"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-09"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-10"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-13"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-14"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-15"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-16"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-17"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-20"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-21"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-22"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-23"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-24"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-27"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-28"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-29"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-30"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-07-31"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-09-01"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-09-02"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-09-03"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-09-04"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-09-05"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-09-06"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-09-07"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-09-08"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-10-28"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-10-29"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-10-30"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-10-31"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-11-01"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-11-15"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-11-16"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-11-17"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-11-18"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-11-19"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-11-20"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-11-21"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-12-20"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-12-21"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-12-22"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-12-23"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-12-24"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-12-25"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-12-26"
+    },
+    {
+      "resident": "mastalerz",
+      "date": "2026-12-27"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-07-02"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-07-03"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-07-04"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-07-05"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-07-06"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-07-07"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-07-08"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-07-09"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-07-10"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-07-11"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-07-12"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-07-13"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-07-18"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-07-23"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-08-15"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-08-20"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-09-09"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-09-12"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-09-13"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-09-15"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-09-16"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-09-17"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-09-18"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-09-19"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-09-20"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-09-21"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-09-30"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-10-01"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-10-08"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-10-10"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-10-28"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-10-29"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-10-30"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-10-31"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-11-01"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-11-02"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-12-18"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-12-19"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-12-20"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-12-21"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-12-22"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-12-23"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-12-24"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-12-25"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-12-26"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-12-27"
+    },
+    {
+      "resident": "brych",
+      "date": "2026-12-28"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-07-10"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-07-11"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-07-12"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-07-16"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-07-17"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-07-18"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-07-19"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-07-25"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-07-30"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-09-11"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-09-12"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-09-13"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-09-26"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-09-27"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-10-02"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-10-03"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-10-04"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-10-10"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-10-20"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-10-21"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-10-22"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-10-23"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-10-24"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-10-25"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-11-27"
+    },
+    {
+      "resident": "mann",
+      "date": "2026-12-05"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-07-01"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-07-02"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-07-03"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-07-04"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-07-05"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-07-06"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-08-01"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-08-02"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-08-03"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-08-04"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-08-05"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-08-06"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-08-07"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-08-08"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-08-09"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-08-10"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-09-16"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-09-17"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-09-18"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-09-19"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-09-20"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-10-15"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-10-16"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-10-17"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-10-18"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-10-19"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-10-23"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-10-24"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-10-25"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-10-26"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-10-30"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-10-31"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-11-01"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-11-25"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-11-26"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-11-27"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-11-28"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-11-29"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-11-30"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-12-18"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-12-19"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-12-20"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-12-21"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-12-22"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-12-23"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-12-24"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-12-25"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-12-26"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-12-27"
+    },
+    {
+      "resident": "dame",
+      "date": "2026-12-28"
+    },
+    {
+      "resident": "holsonback",
+      "date": "2026-07-01"
+    }
+  ]
+}

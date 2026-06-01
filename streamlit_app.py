@@ -870,12 +870,15 @@ with tab_res:
             c4.write(away or "—")
             c5.write(blocks or "—")
             if c6.button("✎", key=f"edit_{r['id']}"):
+                for _k in [f"away_data_edit_{r['id']}", f"blk_data_edit_{r['id']}"]:
+                    if _k in st.session_state: del st.session_state[_k]
                 st.session_state.res_action = "edit"
                 st.session_state.res_edit_id = r["id"]
-                if c7.button("🗑", key=f"del_{r['id']}", help="Remove resident"):
-                    st.session_state.res_del_id = r["id"]
-                    st.session_state.res_del_name = r["full"]
-                    st.rerun()
+                st.rerun()
+            if c7.button("🗑", key=f"del_{r['id']}", help="Remove resident"):
+                st.session_state.res_del_id = r["id"]
+                st.session_state.res_del_name = r["full"]
+                st.rerun()
 
     # Delete confirm dialog
     if "res_del_id" in st.session_state:
@@ -1017,13 +1020,12 @@ with tab_res:
 with tab_hol:
     cfg = get_cfg()
     st.markdown("### Holiday Coverage")
-    st.caption("Holidays are pre-assigned and locked into the generated schedule.")
+    st.caption("Click any date to assign or edit its holiday coverage.")
 
     rb = res_by_id(cfg)
     all_names = [""] + [r["full"] for r in active_residents(cfg)]
     res_id_map = {r["full"]:r["id"] for r in cfg["residents"]}
 
-    # Navigation
     if "hol_ym" not in st.session_state: st.session_state.hol_ym = (2026,7)
     hy, hm = st.session_state.hol_ym
     c1,c2,c3 = st.columns([1,3,1])
@@ -1037,46 +1039,71 @@ with tab_hol:
         if hm>12: hm=1; hy+=1
         st.session_state.hol_ym=(hy,hm); st.rerun()
 
-    # Build holiday lookup
     hol_lookup = {}
     for hi,hol in enumerate(cfg["holidays"]):
         for ei,entry in enumerate(hol["entries"]):
             hol_lookup[entry["date"]] = (hol["name"],entry,hi,ei)
 
-    first_dow = date(hy,hm,1).weekday(); num_days = calendar.monthrange(hy,hm)[1]
-    html = '<div class="cal-header-row">'
-    for d in ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]:
-        html += f'<div class="dow-hdr">{d}</div>'
-    html += '</div><div class="cal-grid">'
-    for slot in range(42):
-        day_num = slot - first_dow + 1
-        if day_num<1 or day_num>num_days: html+='<div class="cal-cell empty"></div>'; continue
-        d=date(hy,hm,day_num); dk=d.isoformat()
-        if dk in hol_lookup:
-            hname,entry,_,_ = hol_lookup[dk]
-            aptu_name = rb[entry.get("aptu","")]["full"].split()[-1] if entry.get("aptu","") in rb else "—"
-            con_name  = rb[entry.get("consult","")]["full"].split()[-1] if entry.get("consult","") in rb else "—"
-            html+=f'<div class="cal-cell holiday"><div class="day-num">{day_num} 🔒</div>'
-            html+=f'<div style="font-size:9px;color:#FCA5A5;margin-bottom:2px">{hname[:14]}</div>'
-            html+=f'<div class="pill pill-hol">A: {aptu_name}</div>'
-            html+=f'<div class="pill pill-hol">C: {con_name}</div></div>'
-        else:
-            dow=d.weekday(); cls="cal-cell"+('' if dow<5 else ' weekend')
-            html+=f'<div class="{cls}"><div class="day-num" style="color:#555">{day_num}</div>'
-            html+=f'<div style="font-size:9px;color:#3A3A3C">+ assign</div></div>'
-    html+='</div>'
-    st.markdown(html, unsafe_allow_html=True)
+    first_dow = date(hy,hm,1).weekday()
+    num_days  = calendar.monthrange(hy,hm)[1]
+
+    dow_hdr = st.columns(7)
+    for i,dn in enumerate(["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]):
+        dow_hdr[i].markdown(f"<div style='text-align:center;font-weight:600;font-size:0.8em'>{dn}</div>", unsafe_allow_html=True)
+
+    for week in range(6):
+        cols = st.columns(7)
+        any_day = False
+        for dow in range(7):
+            slot = week*7+dow
+            day_num = slot-first_dow+1
+            col = cols[dow]
+            if day_num<1 or day_num>num_days:
+                col.markdown("&nbsp;", unsafe_allow_html=True)
+                continue
+            any_day = True
+            d  = date(hy,hm,day_num)
+            dk = d.isoformat()
+            hinfo = hol_lookup.get(dk)
+            if hinfo:
+                hname_lbl,entry_lbl,_,_ = hinfo
+                aptu_id = entry_lbl.get("aptu","")
+                aptu_last = rb.get(aptu_id,{}).get("full","?").split()[-1] if aptu_id else ""
+                lbl = str(day_num)+"\n"+hname_lbl[:6]+(("\n"+aptu_last) if aptu_last else "")
+                btype = "primary"
+            else:
+                lbl = str(day_num)
+                btype = "secondary"
+            if col.button(lbl, key=f"hd_{dk}", type=btype, use_container_width=True):
+                st.session_state.hol_sel_date = dk; st.rerun()
+        if not any_day: break
 
     st.markdown("---")
     st.markdown("#### Assign / Edit Holiday")
+
+    sel_ds = st.session_state.get("hol_sel_date", "")
+    try:
+        default_date = date.fromisoformat(sel_ds) if sel_ds else date(hy,hm,1)
+    except ValueError:
+        default_date = date(hy,hm,1)
+
+    ex_on_date = hol_lookup.get(default_date.isoformat())
+    def_hname  = ex_on_date[0] if ex_on_date else ""
+    def_aptu   = rb.get(ex_on_date[1].get("aptu",""),{}).get("full","") if ex_on_date else ""
+    def_con    = rb.get(ex_on_date[1].get("consult",""),{}).get("full","") if ex_on_date else ""
+
     with st.form("hol_form"):
-        hol_date = st.date_input("Date", value=date(hy,hm,1),
+        hol_date = st.date_input("Date", value=default_date,
                                  min_value=date(2026,1,1), max_value=date(2027,12,31))
         existing_hol_names = list({h["name"] for h in cfg["holidays"]}) + ["— New holiday —"]
-        hol_name_sel = st.selectbox("Holiday group", existing_hol_names)
-        new_hol_name = st.text_input("Or enter new holiday name")
-        aptu_sel    = st.selectbox("APTU", all_names)
-        consult_sel = st.selectbox("Consult (blank = none)", all_names)
+        def_hidx = existing_hol_names.index(def_hname) if def_hname in existing_hol_names else len(existing_hol_names)-1
+        hol_name_sel = st.selectbox("Holiday group", existing_hol_names, index=def_hidx)
+        new_hol_name = st.text_input("Or enter new holiday name",
+                                     value="" if def_hname in existing_hol_names[:-1] else def_hname)
+        def_aptu_idx = all_names.index(def_aptu) if def_aptu in all_names else 0
+        def_con_idx  = all_names.index(def_con)  if def_con  in all_names else 0
+        aptu_sel    = st.selectbox("APTU",                   all_names, index=def_aptu_idx)
+        consult_sel = st.selectbox("Consult (blank = none)", all_names, index=def_con_idx)
         c1,c2 = st.columns(2)
         save_h = c1.form_submit_button("Assign / Update", type="primary")
         del_h  = c2.form_submit_button("Delete this date's assignment")
@@ -1086,97 +1113,103 @@ with tab_hol:
         if not hname: st.error("Enter a holiday name.")
         else:
             cfg2=get_cfg(); dk2=hol_date.isoformat()
-            entry_new={"date":dk2,"aptu":res_id_map.get(aptu_sel,""),
-                       "consult":res_id_map.get(consult_sel,"")}
-            existing_group = next((h for h in cfg2["holidays"] if h["name"]==hname), None)
-            if existing_group:
-                existing_entry = next((e for e in existing_group["entries"] if e["date"]==dk2), None)
-                if existing_entry: existing_entry.update(entry_new)
-                else: existing_group["entries"].append(entry_new)
+            aptu_id2    = res_id_map.get(aptu_sel,"")
+            consult_id2 = res_id_map.get(consult_sel,"")
+            entry2 = {"date":dk2,"aptu":aptu_id2,"consult":consult_id2}
+            hg = next((h for h in cfg2["holidays"] if h["name"]==hname),None)
+            if hg is None: cfg2["holidays"].append({"name":hname,"entries":[entry2]})
             else:
-                cfg2["holidays"].append({"name":hname,"entries":[entry_new]})
-            save_cfg(cfg2); st.success("Saved!"); st.rerun()
+                ex2 = next((e for e in hg["entries"] if e["date"]==dk2),None)
+                if ex2: ex2.update(entry2)
+                else: hg["entries"].append(entry2)
+            save_cfg(cfg2); st.session_state.hol_sel_date=dk2; st.rerun()
 
     if del_h:
         cfg2=get_cfg(); dk2=hol_date.isoformat()
-        for h in cfg2["holidays"]:
-            h["entries"]=[e for e in h["entries"] if e["date"]!=dk2]
+        for hg in cfg2["holidays"]: hg["entries"]=[e for e in hg["entries"] if e["date"]!=dk2]
         cfg2["holidays"]=[h for h in cfg2["holidays"] if h["entries"]]
-        save_cfg(cfg2); st.success("Deleted."); st.rerun()
-
+        save_cfg(cfg2)
+        if "hol_sel_date" in st.session_state: del st.session_state["hol_sel_date"]
+        st.rerun()
 
 # ─── Tab 4: No-Call Requests ─────────────────────────────────
 with tab_nc:
     cfg = get_cfg()
     st.markdown("### No-Call Requests")
+    st.caption("Click a day to toggle the selected resident's no-call for that date. 🚫=no-call, 🔒=holiday, 📵=program no-call")
 
-    if not active_residents(cfg):
-        st.info("No residents in config.")
-    else:
-        res_options = {r["full"]:r["id"] for r in active_residents(cfg)}
-        sel_res_name = st.selectbox("Resident", list(res_options.keys()))
-        sel_res_id   = res_options[sel_res_name]
+    res_options = {r["full"]:r["id"] for r in active_residents(cfg)}
+    sel_res_name = st.selectbox("Resident", list(res_options.keys()), key="nc_res_sel")
+    sel_res_id   = res_options[sel_res_name]
 
-        if "nc_ym" not in st.session_state: st.session_state.nc_ym = (2026,7)
-        ny,nm = st.session_state.nc_ym
-        c1,c2,c3 = st.columns([1,3,1])
-        if c1.button("◀", key="nc_prev"):
-            nm-=1
-            if nm<1: nm=12; ny-=1
-            st.session_state.nc_ym=(ny,nm); st.rerun()
-        c2.markdown(f"<h4 style='text-align:center'>{date(ny,nm,1).strftime('%B %Y')}</h4>", unsafe_allow_html=True)
-        if c3.button("▶", key="nc_next"):
-            nm+=1
-            if nm>12: nm=1; ny+=1
-            st.session_state.nc_ym=(ny,nm); st.rerun()
+    if "nc_ym" not in st.session_state: st.session_state.nc_ym = (2026,7)
+    ny, nm = st.session_state.nc_ym
+    c1,c2,c3 = st.columns([1,3,1])
+    if c1.button("◀", key="nc_prev"):
+        nm-=1
+        if nm<1: nm=12; ny-=1
+        st.session_state.nc_ym=(ny,nm); st.rerun()
+    c2.markdown(f"<h4 style='text-align:center'>{date(ny,nm,1).strftime('%B %Y')}</h4>", unsafe_allow_html=True)
+    if c3.button("▶", key="nc_next"):
+        nm+=1
+        if nm>12: nm=1; ny+=1
+        st.session_state.nc_ym=(ny,nm); st.rerun()
 
-        nc_dates = {e["date"] for e in cfg.get("no_call_requests",[])
-                    if e["resident"]==sel_res_id}
+    nc_set   = {e["date"] for e in cfg.get("no_call_requests",[]) if e["resident"]==sel_res_id}
+    prog_nc  = set(cfg.get("program_no_call",[]))
 
-        first_dow=date(ny,nm,1).weekday(); num_days=calendar.monthrange(ny,nm)[1]
-        html='<div class="cal-header-row">'
-        for d in ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]:
-            html+=f'<div class="dow-hdr">{d}</div>'
-        html+='</div><div class="cal-grid">'
-        for slot in range(42):
-            day_num=slot-first_dow+1
-            if day_num<1 or day_num>num_days: html+='<div class="cal-cell empty"></div>'; continue
-            d=date(ny,nm,day_num); dk=d.isoformat(); is_nc=dk in nc_dates
-            dow=d.weekday(); cls="cal-cell"+('' if dow<5 else ' weekend')
-            if is_nc: cls+=' no-call'
-            html+=f'<div class="{cls}"><div class="day-num">{day_num}</div>'
-            if is_nc: html+='<div style="font-size:10px;color:#93C5FD">🚫 no call</div>'
-            html+='</div>'
-        html+='</div>'
-        st.markdown(html, unsafe_allow_html=True)
+    first_dow = date(ny,nm,1).weekday()
+    num_days  = calendar.monthrange(ny,nm)[1]
 
-        st.markdown("---")
-        st.markdown("**Toggle no-call dates**")
-        with st.form("nc_form"):
-            nc_date_input = st.date_input("Date", value=date(ny,nm,1))
-            c1,c2 = st.columns(2)
-            add_nc = c1.form_submit_button("🚫 Mark no-call", type="primary")
-            rem_nc = c2.form_submit_button("✅ Remove no-call")
+    dow_hdr = st.columns(7)
+    for i,dn in enumerate(["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]):
+        dow_hdr[i].markdown(f"<div style='text-align:center;font-weight:600;font-size:0.8em'>{dn}</div>", unsafe_allow_html=True)
 
-        if add_nc:
-            cfg2=get_cfg(); dk2=nc_date_input.isoformat()
-            if not any(e["resident"]==sel_res_id and e["date"]==dk2
-                       for e in cfg2["no_call_requests"]):
-                cfg2["no_call_requests"].append({"resident":sel_res_id,"date":dk2})
-            save_cfg(cfg2); st.rerun()
-        if rem_nc:
-            cfg2=get_cfg(); dk2=nc_date_input.isoformat()
-            cfg2["no_call_requests"]=[e for e in cfg2["no_call_requests"]
-                                      if not (e["resident"]==sel_res_id and e["date"]==dk2)]
-            save_cfg(cfg2); st.rerun()
+    for week in range(6):
+        cols = st.columns(7)
+        any_day = False
+        for dow in range(7):
+            slot = week*7+dow
+            day_num = slot-first_dow+1
+            col = cols[dow]
+            if day_num<1 or day_num>num_days:
+                col.markdown("&nbsp;", unsafe_allow_html=True)
+                continue
+            any_day = True
+            d   = date(ny,nm,day_num)
+            dk  = d.isoformat()
+            is_nc      = dk in nc_set
+            is_prog_nc = dk in prog_nc
+            is_hol     = bool(get_holiday(d,cfg))
+            if is_nc: badge = " 🚫"
+            elif is_hol: badge = " 🔒"
+            elif is_prog_nc: badge = " 📵"
+            else: badge = ""
+            lbl = str(day_num)+badge
+            btype = "primary" if is_nc else "secondary"
+            if col.button(lbl, key=f"nc_{dk}_{sel_res_id}", type=btype, use_container_width=True):
+                cfg2=get_cfg()
+                if is_nc:
+                    cfg2["no_call_requests"]=[e for e in cfg2.get("no_call_requests",[])
+                                              if not (e["resident"]==sel_res_id and e["date"]==dk)]
+                else:
+                    cfg2.setdefault("no_call_requests",[]).append({"resident":sel_res_id,"date":dk})
+                save_cfg(cfg2); st.rerun()
+        if not any_day: break
 
-        # List all no-call dates for this resident
-        all_nc = sorted(e["date"] for e in cfg.get("no_call_requests",[])
-                        if e["resident"]==sel_res_id)
-        if all_nc:
-            with st.expander(f"All no-call dates for {sel_res_name} ({len(all_nc)})"):
-                for dk in all_nc:
-                    st.write(f"• {date.fromisoformat(dk).strftime('%A, %B %-d, %Y')}")
+    st.markdown("---")
+    all_nc = sorted(e["date"] for e in cfg.get("no_call_requests",[]) if e["resident"]==sel_res_id)
+    if all_nc:
+        with st.expander(f"All no-call dates for {sel_res_name} ({len(all_nc)})"):
+            for dk in all_nc:
+                c1,c2 = st.columns([4,1])
+                c1.write(f"• {date.fromisoformat(dk).strftime('%A, %B %-d, %Y')}")
+                if c2.button("✕", key=f"rmnc_{dk}_{sel_res_id}"):
+                    cfg2=get_cfg()
+                    cfg2["no_call_requests"]=[e for e in cfg2.get("no_call_requests",[])
+                                              if not (e["resident"]==sel_res_id and e["date"]==dk)]
+                    save_cfg(cfg2); st.rerun()
+
 
 
 # ─── Tab 5: Program No-Call Days ─────────────────────────────

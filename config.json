@@ -2096,13 +2096,11 @@
         "2026-07-01": {
           "type": "weekday",
           "aptu": "brych",
-          "intern": "li",
           "jeopardy": "ali"
         },
         "2026-07-02": {
           "type": "weekday",
           "aptu": "ali",
-          "intern": "holsonback",
           "jeopardy": "mann"
         },
         "2026-07-03": {
@@ -2141,7 +2139,7 @@
         "2026-07-08": {
           "type": "weekday",
           "aptu": "wilson_braun",
-          "intern": "gervais",
+          "intern": "holsonback",
           "jeopardy": "dame"
         },
         "2026-07-09": {
@@ -2186,7 +2184,7 @@
         "2026-07-16": {
           "type": "weekday",
           "aptu": "brych",
-          "intern": "gervais",
+          "intern": "li",
           "jeopardy": "smith"
         },
         "2026-07-17": {
@@ -2219,6 +2217,7 @@
         "2026-07-22": {
           "type": "weekday",
           "aptu": "siemiatkoski",
+          "intern": "gervais",
           "jeopardy": "smith"
         },
         "2026-07-23": {
@@ -2256,6 +2255,7 @@
         "2026-07-29": {
           "type": "weekday",
           "aptu": "dame",
+          "intern": "gervais",
           "jeopardy": "smith"
         },
         "2026-07-30": {
@@ -2438,7 +2438,7 @@
         "2026-08-31": {
           "type": "weekday",
           "aptu": "dame",
-          "intern": "tsandilas",
+          "intern": "gervais",
           "jeopardy": "smith"
         }
       },
@@ -2457,13 +2457,11 @@
         "2026-09-03": {
           "type": "weekday",
           "aptu": "smith",
-          "intern": "li",
           "jeopardy": "dame"
         },
         "2026-09-04": {
           "type": "weekday",
           "aptu": "ali",
-          "intern": "tsandilas",
           "jeopardy": "mann"
         },
         "2026-09-05": {
@@ -2538,7 +2536,7 @@
         "2026-09-17": {
           "type": "weekday",
           "aptu": "siemiatkoski",
-          "intern": "li",
+          "intern": "gervais",
           "jeopardy": "mann"
         },
         "2026-09-18": {
@@ -2566,13 +2564,12 @@
         "2026-09-22": {
           "type": "weekday",
           "aptu": "dame",
-          "intern": "tsandilas",
+          "intern": "gervais",
           "jeopardy": "brych"
         },
         "2026-09-23": {
           "type": "weekday",
           "aptu": "wilson_braun",
-          "intern": "gervais",
           "jeopardy": "dame"
         },
         "2026-09-24": {
@@ -2583,7 +2580,6 @@
         "2026-09-25": {
           "type": "weekday",
           "aptu": "siemiatkoski",
-          "intern": "gervais",
           "jeopardy": "brych"
         },
         "2026-09-26": {
@@ -2626,35 +2622,35 @@
         "2026-10-03": {
           "type": "weekend",
           "consult": "smith",
-          "aptu": "mizrach",
+          "aptu": "tsandilas",
           "jeopardy": "brych"
         },
         "2026-10-04": {
           "type": "weekend",
           "consult": "ali",
-          "aptu": "wilson_braun",
+          "aptu": "mizrach",
           "jeopardy": "mastalerz"
         },
         "2026-10-05": {
           "type": "weekday",
-          "aptu": "auclair",
+          "aptu": "wilson_braun",
+          "intern": "tsandilas",
           "jeopardy": "mann"
         },
         "2026-10-06": {
           "type": "weekday",
           "aptu": "siemiatkoski",
-          "intern": "holsonback",
+          "intern": "gervais",
           "jeopardy": "smith"
         },
         "2026-10-07": {
           "type": "weekday",
-          "aptu": "mizrach",
+          "aptu": "auclair",
           "jeopardy": "siemiatkoski"
         },
         "2026-10-08": {
           "type": "weekday",
-          "aptu": "smith",
-          "intern": "holsonback",
+          "aptu": "mizrach",
           "jeopardy": "wilson_braun"
         },
         "2026-10-09": {
@@ -2684,14 +2680,14 @@
         },
         "2026-10-14": {
           "type": "weekday",
-          "aptu": "mastalerz",
-          "intern": "li",
-          "jeopardy": "siemiatkoski"
+          "aptu": "mizrach",
+          "jeopardy": "mastalerz"
         },
         "2026-10-15": {
           "type": "weekday",
-          "aptu": "mizrach",
-          "jeopardy": "mastalerz"
+          "aptu": "smith",
+          "intern": "tsandilas",
+          "jeopardy": "siemiatkoski"
         },
         "2026-10-16": {
           "type": "weekday",
@@ -2700,13 +2696,13 @@
         },
         "2026-10-17": {
           "type": "weekend",
-          "consult": "brych",
+          "consult": "mastalerz",
           "aptu": "kurtz",
           "jeopardy": "wilson_braun"
         },
         "2026-10-18": {
           "type": "weekend",
-          "consult": "mann",
+          "consult": "brych",
           "aptu": "auclair",
           "jeopardy": "ali"
         },
@@ -2723,7 +2719,7 @@
         "2026-10-21": {
           "type": "weekday",
           "aptu": "dame",
-          "intern": "li",
+          "intern": "gervais",
           "jeopardy": "mastalerz"
         },
         "2026-10-22": {
@@ -2734,46 +2730,45 @@
         "2026-10-23": {
           "type": "weekday",
           "aptu": "smith",
-          "intern": "tsandilas",
           "jeopardy": "wilson_braun"
         },
         "2026-10-24": {
           "type": "weekend",
           "consult": "ali",
-          "aptu": "auclair",
+          "aptu": "tsandilas",
           "jeopardy": "smith"
         },
         "2026-10-25": {
           "type": "weekend",
           "consult": "siemiatkoski",
-          "aptu": "wilson_braun",
+          "aptu": "auclair",
           "jeopardy": "ali"
         },
         "2026-10-26": {
           "type": "weekday",
-          "aptu": "kurtz",
-          "jeopardy": "mann"
+          "aptu": "mann",
+          "intern": "li",
+          "jeopardy": "brych"
         },
         "2026-10-27": {
           "type": "weekday",
           "aptu": "ramirez",
-          "jeopardy": "brych"
+          "jeopardy": "mann"
         },
         "2026-10-28": {
           "type": "weekday",
-          "aptu": "mann",
-          "intern": "tsandilas",
+          "aptu": "wilson_braun",
+          "intern": "li",
           "jeopardy": "dame"
         },
         "2026-10-29": {
           "type": "weekday",
-          "aptu": "dame",
-          "intern": "gervais",
+          "aptu": "kurtz",
           "jeopardy": "mann"
         },
         "2026-10-30": {
           "type": "weekday",
-          "aptu": "wilson_braun",
+          "aptu": "mann",
           "jeopardy": "siemiatkoski"
         },
         "2026-10-31": {
@@ -2792,17 +2787,19 @@
         },
         "2026-11-02": {
           "type": "weekday",
-          "aptu": "kurtz",
+          "aptu": "dame",
+          "intern": "li",
           "jeopardy": "ali"
         },
         "2026-11-03": {
           "type": "weekday",
-          "aptu": "auclair",
+          "aptu": "wilson_braun",
+          "intern": "tsandilas",
           "jeopardy": "brych"
         },
         "2026-11-04": {
           "type": "weekday",
-          "aptu": "ramirez",
+          "aptu": "auclair",
           "jeopardy": "dame"
         },
         "2026-11-05": {
@@ -2812,77 +2809,73 @@
         },
         "2026-11-06": {
           "type": "weekday",
-          "aptu": "brych",
-          "intern": "holsonback",
+          "aptu": "ramirez",
           "jeopardy": "siemiatkoski"
         },
         "2026-11-07": {
           "type": "weekend",
           "consult": "smith",
-          "aptu": "auclair",
+          "aptu": "kurtz",
           "jeopardy": "wilson_braun"
         },
         "2026-11-08": {
           "type": "weekend",
           "consult": "siemiatkoski",
-          "aptu": "ramirez",
+          "aptu": "auclair",
           "jeopardy": "smith"
         },
         "2026-11-09": {
           "type": "weekday",
-          "aptu": "kurtz",
-          "jeopardy": "ali"
+          "aptu": "ali",
+          "intern": "li",
+          "jeopardy": "brych"
         },
         "2026-11-10": {
           "type": "weekday",
-          "aptu": "ali",
-          "intern": "holsonback",
-          "jeopardy": "brych"
+          "aptu": "ramirez",
+          "jeopardy": "ali"
         },
         "2026-11-11": {
           "type": "weekday",
           "aptu": "mastalerz",
-          "intern": "li",
+          "intern": "tsandilas",
           "jeopardy": "dame"
         },
         "2026-11-12": {
           "type": "weekday",
-          "aptu": "wilson_braun",
-          "intern": "tsandilas",
+          "aptu": "kurtz",
           "jeopardy": "mann"
         },
         "2026-11-13": {
           "type": "weekday",
-          "aptu": "mann",
-          "intern": "li",
+          "aptu": "brych",
           "jeopardy": "mastalerz"
         },
         "2026-11-14": {
           "type": "weekend",
-          "consult": "dame",
+          "consult": "wilson_braun",
           "aptu": "auclair",
           "jeopardy": "siemiatkoski"
         },
         "2026-11-15": {
           "type": "weekend",
-          "consult": "smith",
+          "consult": "mann",
           "aptu": "ramirez",
-          "jeopardy": "wilson_braun"
+          "jeopardy": "smith"
         },
         "2026-11-16": {
           "type": "weekday",
           "aptu": "kurtz",
-          "jeopardy": "smith"
+          "jeopardy": "wilson_braun"
         },
         "2026-11-17": {
           "type": "weekday",
-          "aptu": "siemiatkoski",
-          "intern": "tsandilas",
+          "aptu": "dame",
           "jeopardy": "brych"
         },
         "2026-11-18": {
           "type": "weekday",
-          "aptu": "auclair",
+          "aptu": "siemiatkoski",
           "jeopardy": "dame"
         },
         "2026-11-19": {
@@ -2893,19 +2886,18 @@
         "2026-11-20": {
           "type": "weekday",
           "aptu": "wilson_braun",
-          "intern": "gervais",
           "jeopardy": "siemiatkoski"
         },
         "2026-11-21": {
           "type": "weekend",
           "consult": "brych",
-          "aptu": "kurtz",
+          "aptu": "auclair",
           "jeopardy": "wilson_braun"
         },
         "2026-11-22": {
           "type": "weekend",
           "consult": "mastalerz",
-          "aptu": "auclair",
+          "aptu": "ramirez",
           "jeopardy": "brych"
         },
         "2026-11-23": {
@@ -2915,13 +2907,13 @@
         },
         "2026-11-24": {
           "type": "weekday",
-          "aptu": "ramirez",
+          "aptu": "smith",
+          "intern": "holsonback",
           "jeopardy": "mastalerz"
         },
         "2026-11-25": {
           "type": "weekday",
           "aptu": "ali",
-          "intern": "gervais",
           "jeopardy": "smith"
         },
         "2026-11-26": {
@@ -3006,8 +2998,7 @@
         },
         "2026-12-09": {
           "type": "weekday",
-          "aptu": "dame",
-          "intern": "tsandilas",
+          "aptu": "mann",
           "jeopardy": "ali"
         },
         "2026-12-10": {
@@ -3017,20 +3008,19 @@
         },
         "2026-12-11": {
           "type": "weekday",
-          "aptu": "mann",
-          "intern": "tsandilas",
-          "jeopardy": "dame"
+          "aptu": "dame",
+          "jeopardy": "mann"
         },
         "2026-12-12": {
           "type": "weekend",
           "consult": "smith",
           "aptu": "mizrach",
-          "jeopardy": "mann"
+          "jeopardy": "dame"
         },
         "2026-12-13": {
           "type": "weekend",
           "consult": "siemiatkoski",
-          "aptu": "gervais",
+          "aptu": "wilson_braun",
           "jeopardy": "mastalerz"
         },
         "2026-12-14": {
@@ -3040,12 +3030,12 @@
         },
         "2026-12-15": {
           "type": "weekday",
-          "aptu": "ramirez",
+          "aptu": "kurtz",
           "jeopardy": "smith"
         },
         "2026-12-16": {
           "type": "weekday",
-          "aptu": "kurtz",
+          "aptu": "ramirez",
           "jeopardy": "wilson_braun"
         },
         "2026-12-17": {
@@ -3061,13 +3051,13 @@
         "2026-12-19": {
           "type": "weekend",
           "consult": "ali",
-          "aptu": "ramirez",
+          "aptu": "kurtz",
           "jeopardy": "mastalerz"
         },
         "2026-12-20": {
           "type": "weekend",
-          "consult": "wilson_braun",
-          "aptu": "kurtz",
+          "consult": "mann",
+          "aptu": "ramirez",
           "jeopardy": "siemiatkoski"
         },
         "2026-12-21": {
@@ -3082,12 +3072,13 @@
         },
         "2026-12-23": {
           "type": "weekday",
-          "aptu": "siemiatkoski",
+          "aptu": "smith",
+          "intern": "tsandilas",
           "jeopardy": "ali"
         },
         "2026-12-24": {
           "type": "weekday",
-          "aptu": "smith",
+          "aptu": "wilson_braun",
           "jeopardy": "mann"
         },
         "2026-12-25": {
@@ -3118,19 +3109,19 @@
         },
         "2026-12-29": {
           "type": "weekday",
-          "aptu": "mastalerz",
-          "intern": "gervais",
+          "aptu": "kurtz",
           "jeopardy": "brych"
         },
         "2026-12-30": {
           "type": "weekday",
-          "aptu": "brych",
+          "aptu": "mastalerz",
+          "intern": "gervais",
           "jeopardy": "dame"
         },
         "2026-12-31": {
           "type": "weekday",
-          "aptu": "wilson_braun",
-          "jeopardy": "brych"
+          "aptu": "brych",
+          "jeopardy": "dame"
         }
       }
     },

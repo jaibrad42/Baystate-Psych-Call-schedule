@@ -17,13 +17,23 @@ st.set_page_config(
 
 # ─────────────────────────────────────────────────────────────
 # CONFIG — stored in st.session_state so it persists across
-# reruns within a session. On Streamlit Cloud the user can
-# download/upload config.json to persist across sessions.
+# reruns within a session. Changes are also written to
+# /tmp/config_override.json which persists within the running
+# container. Use Download/Upload in the sidebar to persist
+# across app restarts or redeploys.
 # ─────────────────────────────────────────────────────────────
 
 DEFAULT_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config.json")
+TMP_CONFIG_PATH = "/tmp/baystate_config_override.json"
 
 def _load_default_config():
+    # Check /tmp override first (survives page refreshes within same container)
+    if os.path.exists(TMP_CONFIG_PATH):
+        try:
+            with open(TMP_CONFIG_PATH) as f:
+                return json.load(f)
+        except Exception:
+            pass
     if os.path.exists(DEFAULT_CONFIG_PATH):
         with open(DEFAULT_CONFIG_PATH) as f:
             return json.load(f)
@@ -37,10 +47,10 @@ def get_cfg():
 def save_cfg(cfg):
     st.session_state.config = cfg
     try:
-        with open(DEFAULT_CONFIG_PATH, "w") as f:
+        with open(TMP_CONFIG_PATH, "w") as f:
             json.dump(cfg, f, indent=2)
     except Exception:
-        pass  # read-only filesystem; changes live in session only
+        pass  # fallback: changes live in session state only
 
 # ─────────────────────────────────────────────────────────────
 # RESIDENT HELPERS
@@ -659,7 +669,8 @@ with st.sidebar:
     st.markdown("---")
 
     # Config upload/download
-    with st.expander("💾 Config file", expanded=False):
+    with st.expander("💾 Config file", expanded=True):
+        st.caption("Download after making changes to save your data.")
         cfg_bytes = json.dumps(get_cfg(), indent=2).encode()
         st.download_button("⬇ Download config.json", cfg_bytes,
                            file_name="config.json", mime="application/json",

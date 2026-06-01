@@ -64,7 +64,19 @@
       "pgy": 1,
       "active": true,
       "away_periods": [],
-      "blocked_rotations": []
+      "blocked_rotations": [],
+      "off_service": [
+        {
+          "start": "2026-07-01",
+          "end": "2026-07-03",
+          "reason": "Orientation"
+        },
+        {
+          "start": "2026-10-26",
+          "end": "2026-11-22",
+          "reason": "Neurology"
+        }
+      ]
     },
     {
       "id": "auclair",

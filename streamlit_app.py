@@ -460,6 +460,7 @@ def export_xlsx_bytes(all_scheds, all_warnings, cfg):
     ROWS_PER_WEEK=5; ROW_H_DAY=15; ROW_H_ROLE=18
 
     combined = {r["id"]:{"total":0,"wk":0,"we":0,"wf":0} for r in cfg["residents"]}
+    monthly_counts = {r["id"]: [] for r in cfg["residents"]}
 
     for (year, month), sched in all_scheds.items():
         warnings = all_warnings.get((year,month),[])
@@ -556,6 +557,7 @@ def export_xlsx_bytes(all_scheds, all_warnings, cfg):
                 ws_w.cell(i,1,f"•  {w}").font=font(sz=10,color="7F1D1D" if "UNCOVERED" in w or "back-to-back" in w else "92400E")
 
         # Accumulate
+        _mc = {r["id"]: 0 for r in cfg["residents"]}
         for dk,ev in sched.items():
             d=date.fromisoformat(dk)
             if d.month!=month: continue
@@ -564,19 +566,21 @@ def export_xlsx_bytes(all_scheds, all_warnings, cfg):
                 rid=ev.get(role)
                 if rid and rid in combined:
                     combined[rid]["total"]+=1
+                    _mc[rid]+=1
                     if is_we: combined[rid]["we"]+=1
                     else: combined[rid]["wk"]+=1
             aptu=ev.get("aptu")
             if aptu and not is_we and d.weekday() in (2,4): combined[aptu]["wf"]+=1
-
+        for rid in monthly_counts: monthly_counts[rid].append(_mc.get(rid,0))
     # All Counts sheet
     ws_c=wb.create_sheet("All Counts")
-    hdrs=["Resident","PGY","Total Calls","Weekday","Weekend","Wed/Fri APTU"]
+    hdrs=["Resident","PGY","Total Calls","Weekday","Weekend","Wed/Fri APTU","Status"]
     for c,h in enumerate(hdrs,1):
         cell=ws_c.cell(1,c,h); cell.fill=fill(C_HDR)
         cell.font=font(bold=True,sz=11,color="FFFFFF"); cell.alignment=align(); cell.border=border()
     ws_c.column_dimensions["A"].width=24
     for col in "BCDEF": ws_c.column_dimensions[col].width=14
+    ws_c.column_dimensions["G"].width=22
     pgy_fill={1:"FEF3C7",2:"DBEAFE",3:"EDE9FE",4:"D1FAE5"}
     for i,r in enumerate(cfg["residents"],2):
         rf=fill(pgy_fill.get(r["pgy"],"FFFFFF"))
@@ -585,19 +589,17 @@ def export_xlsx_bytes(all_scheds, all_warnings, cfg):
                                  combined[r["id"]]["we"],combined[r["id"]]["wf"]],1):
             cell=ws_c.cell(i,c,val); cell.fill=copy.copy(rf); cell.font=font(sz=10)
             cell.alignment=align(h="left" if c==1 else "center"); cell.border=border()
-        # Status column
-        SOFT_CAPS = {1:2, 2:5, 3:3, 4:2}
-        HARD_CAPS = {1:3, 2:6, 3:5, 4:4}
-        pgy_fill_c = {1:"FEF3C7", 2:"DBEAFE", 3:"EDE9FE", 4:"D1FAE5"}
-        for i,r in enumerate(cfg["residents"],2):
-            tot = combined[r["id"]]["total"]
-            sc = SOFT_CAPS.get(r["pgy"],5); hc = HARD_CAPS.get(r["pgy"],6)
-            if tot > hc:   status_txt="OVER HARD CAP"; sf="FCA5A5"; sbold=True
-            elif tot > sc: status_txt=f"Over soft cap ({tot}/{sc})"; sf="FDE68A"; sbold=False
-            else:          status_txt="OK ✓"; sf="A7F3D0"; sbold=False
-            scell = ws_c.cell(i, 7, status_txt)
-            scell.fill = fill(sf); scell.font = font(bold=sbold, sz=10)
-            scell.alignment = align(); scell.border = border()
+        # Status column (max calls in any single month vs monthly cap)
+        sc2 = SOFT_CAPS.get(r["pgy"], 5)
+        hc2 = HARD_CAPS.get(r["pgy"], 6)
+        mo_counts = monthly_counts.get(r["id"], [0])
+        max_mo = max(mo_counts) if mo_counts else 0
+        if max_mo > hc2:   status_txt=f"OVER HARD CAP ({max_mo}/{hc2}/mo)"; sf="FCA5A5"; sbold=True
+        elif max_mo > sc2: status_txt=f"Over soft cap ({max_mo}/{sc2}/mo)"; sf="FDE68A"; sbold=False
+        else:               status_txt=f"OK ✓ ({combined[r['id']]['total']} calls)"; sf="A7F3D0"; sbold=False
+        scell = ws_c.cell(i, 7, status_txt)
+        scell.fill = fill(sf); scell.font = font(bold=sbold, sz=10)
+        scell.alignment = align(); scell.border = border()
 
     # Move All Counts to front
     add_reference_sheet(wb, cfg)
@@ -632,9 +634,9 @@ st.markdown("""
 .pill-ul      { background: #1e3a8a33; color: #93C5FD; }
 .pill-aptu    { background: #3d247333; color: #C4B5FD; }
 .pill-consult { background: #06574633; color: #6EE7B7; }
-.pill-intern  { background: #78350f33; color: #FCD34D; }
+.pill-intern  { background: #7c2d1233; color: #FB923C; font-weight: 600; }
 .pill-hol     { background: #7f1d1d55; color: #FCA5A5; }
-.pill-jep     { background: #78350f22; color: #FCD34D; font-style: italic; }
+.pill-jep     { background: #06474733; color: #2DD4BF; font-style: italic; }
 .pill-uncov   { background: #7f1d1d; color: white; font-weight: 700; }
 .role-lbl     { font-size: 9px; color: #555; margin-bottom: 1px; }
 .warn-hard    { background: #3B1515; border-left: 3px solid #EF4444; padding: 6px 10px; border-radius: 4px; font-family: monospace; font-size: 12px; margin-bottom: 4px; color: #FCA5A5; }

@@ -372,7 +372,7 @@ def schedule_month(year, month, state, cfg):
             rb = res_by_id(cfg)
             if aptu and rb.get(aptu,{}).get("pgy",0) >= 3 and iwd_lim > 0:
                 for r in pools["interns"]:
-                    if state.iwd.get(r,0) < iwd_lim and state.eligible(r, d, "intern", cfg) and r != prev_intern:
+                    if state.iwd.get(r,0) < iwd_lim and state.eligible(r, d, "intern", cfg) and r != prev_intern and (state.last.get(r) is None or (d - state.last[r]).days >= 4):
                         intern = r; break
             if aptu:   entry["aptu"]   = aptu;   state.record(aptu, d, "aptu_wd")
             if intern: entry["intern"] = intern; state.record(intern, d, "intern_wd")

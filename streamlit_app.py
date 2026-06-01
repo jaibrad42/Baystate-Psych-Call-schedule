@@ -781,6 +781,16 @@ with st.sidebar:
                     if m > 12: m = 1; y += 1
                 st.session_state.all_scheds = all_scheds
                 st.session_state.all_warns  = all_warns
+                # Save schedule to config for cross-session persistence
+                try:
+                    _cfg2 = get_cfg()
+                    _cfg2["last_schedule"] = {
+                        "scheds": {f"{y}-{m}": v for (y,m),v in all_scheds.items()},
+                        "warns":  {f"{y}-{m}": v for (y,m),v in all_warns.items()},
+                    }
+                    save_cfg(_cfg2)
+                except Exception:
+                    pass
                 total_warns = sum(len(v) for v in all_warns.values())
                 if total_warns:
                     st.warning(f"{total_warns} warning(s) — check Warnings tab")
@@ -805,6 +815,25 @@ with st.sidebar:
             del st.session_state["all_warns"]
             st.rerun()
 
+
+# ─────────────────────────────────────────────────────────────
+# STARTUP: restore last saved schedule from config
+# ─────────────────────────────────────────────────────────────
+if "all_scheds" not in st.session_state:
+    _saved = get_cfg().get("last_schedule")
+    if _saved:
+        try:
+            # Keys stored as "YYYY-M" strings; restore to (year,month) tuples
+            st.session_state.all_scheds = {
+                tuple(int(x) for x in k.split("-")): v
+                for k, v in _saved.get("scheds", {}).items()
+            }
+            st.session_state.all_warns = {
+                tuple(int(x) for x in k.split("-")): v
+                for k, v in _saved.get("warns", {}).items()
+            }
+        except Exception:
+            pass
 
 # ─────────────────────────────────────────────────────────────
 # MAIN TABS

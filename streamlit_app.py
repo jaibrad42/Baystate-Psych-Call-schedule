@@ -978,7 +978,7 @@ with tab_res:
                     st.session_state[blk_key].pop()
                     st.rerun()
 
-                        col_s, col_c = st.columns(2)
+            col_s, col_c = st.columns(2)
             submitted = col_s.form_submit_button("Save", type="primary")
             cancelled = col_c.form_submit_button("Cancel")
 

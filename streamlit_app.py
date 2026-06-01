@@ -921,73 +921,70 @@ with tab_res:
         st.markdown("---")
         st.markdown(f"#### {'Add' if action=='add' else 'Edit'} Resident")
 
+        # Away periods — structured add/remove using session state
+        away_key = f"away_data_{action}_{edit_id or 'new'}"
+        if away_key not in st.session_state:
+            st.session_state[away_key] = list((existing or {}).get("away_periods", []))
+
+        st.markdown("**Away Periods** (weekdays blocked — enter YYYY-MM-DD)")
+        if st.session_state[away_key]:
+            for p in st.session_state[away_key]:
+                st.caption(f"  \u2022 {p['start']}  \u2192  {p['end']}")
+        else:
+            st.caption("  (none)")
+
+        ac1, ac2, ac3, ac4 = st.columns([2, 2, 1, 1])
+        new_away_start = ac1.text_input("Start", key=f"aws_{away_key}", placeholder="2026-07-01", label_visibility="collapsed")
+        new_away_end   = ac2.text_input("End",   key=f"awe_{away_key}", placeholder="2026-07-31", label_visibility="collapsed")
+        if ac3.button("+ Add", key=f"awa_{away_key}"):
+            try:
+                date.fromisoformat(new_away_start.strip())
+                date.fromisoformat(new_away_end.strip())
+                st.session_state[away_key].append({"start": new_away_start.strip(), "end": new_away_end.strip()})
+                st.rerun()
+            except:
+                st.error("Invalid dates (use YYYY-MM-DD).")
+        if ac4.button("Remove Last", key=f"awd_{away_key}"):
+            if st.session_state[away_key]:
+                st.session_state[away_key].pop()
+                st.rerun()
+
+        # Blocked rotations — structured add/remove using session state
+        ROTATION_NAMES = ["Orientation","Medicine Wards","Emergency Medicine","Neurology",
+                          "Emergency Psychiatry","Substance Use","Geriatric Psychiatry","Other"]
+        blk_key = f"blk_data_{action}_{edit_id or 'new'}"
+        if blk_key not in st.session_state:
+            st.session_state[blk_key] = list((existing or {}).get("blocked_rotations", []))
+
+        st.markdown("**Blocked Rotations** (Medicine Wards / Emergency Medicine / Neurology block call)")
+        if st.session_state[blk_key]:
+            for b in st.session_state[blk_key]:
+                st.caption(f"  \u2022 {b['name']}:  {b['start']}  \u2192  {b['end']}")
+        else:
+            st.caption("  (none)")
+
+        bc1, bc2, bc3, bc4, bc5 = st.columns([2, 2, 2, 1, 1])
+        new_blk_name  = bc1.selectbox("Rotation", ROTATION_NAMES, key=f"bkn_{blk_key}", label_visibility="collapsed")
+        new_blk_start = bc2.text_input("Start", key=f"bks_{blk_key}", placeholder="2026-07-01", label_visibility="collapsed")
+        new_blk_end   = bc3.text_input("End",   key=f"bke_{blk_key}", placeholder="2026-09-30", label_visibility="collapsed")
+        if bc4.button("+ Add", key=f"bka_{blk_key}"):
+            try:
+                date.fromisoformat(new_blk_start.strip())
+                date.fromisoformat(new_blk_end.strip())
+                st.session_state[blk_key].append({"name": new_blk_name, "start": new_blk_start.strip(), "end": new_blk_end.strip()})
+                st.rerun()
+            except:
+                st.error("Invalid dates (use YYYY-MM-DD).")
+        if bc5.button("Remove Last", key=f"bkd_{blk_key}"):
+            if st.session_state[blk_key]:
+                st.session_state[blk_key].pop()
+                st.rerun()
+
         with st.form("res_form"):
             full = st.text_input("Full Name", value="" if not existing else existing["full"])
             pgy  = st.selectbox("PGY Level", [1,2,3,4],
                                 index=(existing["pgy"]-1 if existing else 0))
             active_sw = st.checkbox("Active", value=True if not existing else existing.get("active",True))
-
-            st.markdown("**Away Periods** (weekdays blocked — enter YYYY-MM-DD)")
-
-            # Away periods — structured add/remove using session state
-            away_key = f"away_data_{action}_{edit_id or 'new'}"
-            if away_key not in st.session_state:
-                st.session_state[away_key] = list((existing or {}).get("away_periods", []))
-
-            if st.session_state[away_key]:
-                for p in st.session_state[away_key]:
-                    st.caption(f"  \u2022 {p['start']}  →  {p['end']}")
-            else:
-                st.caption("  (none)")
-
-            ac1, ac2, ac3, ac4 = st.columns([2, 2, 1, 1])
-            new_away_start = ac1.text_input("Start", key=f"aws_{away_key}", placeholder="2026-07-01", label_visibility="collapsed")
-            new_away_end   = ac2.text_input("End",   key=f"awe_{away_key}", placeholder="2026-07-31", label_visibility="collapsed")
-            if ac3.button("+ Add", key=f"awa_{away_key}"):
-                try:
-                    date.fromisoformat(new_away_start.strip())
-                    date.fromisoformat(new_away_end.strip())
-                    st.session_state[away_key].append({"start": new_away_start.strip(), "end": new_away_end.strip()})
-                    st.rerun()
-                except:
-                    st.error("Invalid dates (use YYYY-MM-DD).")
-            if ac4.button("Remove Last", key=f"awd_{away_key}"):
-                if st.session_state[away_key]:
-                    st.session_state[away_key].pop()
-                    st.rerun()
-
-            st.markdown("**Blocked Rotations** (Medicine Wards / Emergency Medicine / Neurology block call)")
-
-            # Blocked rotations — structured add/remove using session state
-            ROTATION_NAMES = ["Orientation","Medicine Wards","Emergency Medicine","Neurology",
-                              "Emergency Psychiatry","Substance Use","Geriatric Psychiatry","Other"]
-            blk_key = f"blk_data_{action}_{edit_id or 'new'}"
-            if blk_key not in st.session_state:
-                st.session_state[blk_key] = list((existing or {}).get("blocked_rotations", []))
-
-            if st.session_state[blk_key]:
-                for b in st.session_state[blk_key]:
-                    st.caption(f"  \u2022 {b['name']}:  {b['start']}  →  {b['end']}")
-            else:
-                st.caption("  (none)")
-
-            bc1, bc2, bc3, bc4, bc5 = st.columns([2, 2, 2, 1, 1])
-            new_blk_name  = bc1.selectbox("Rotation", ROTATION_NAMES, key=f"bkn_{blk_key}", label_visibility="collapsed")
-            new_blk_start = bc2.text_input("Start", key=f"bks_{blk_key}", placeholder="2026-07-01", label_visibility="collapsed")
-            new_blk_end   = bc3.text_input("End",   key=f"bke_{blk_key}", placeholder="2026-09-30", label_visibility="collapsed")
-            if bc4.button("+ Add", key=f"bka_{blk_key}"):
-                try:
-                    date.fromisoformat(new_blk_start.strip())
-                    date.fromisoformat(new_blk_end.strip())
-                    st.session_state[blk_key].append({"name": new_blk_name, "start": new_blk_start.strip(), "end": new_blk_end.strip()})
-                    st.rerun()
-                except:
-                    st.error("Invalid dates (use YYYY-MM-DD).")
-            if bc5.button("Remove Last", key=f"bkd_{blk_key}"):
-                if st.session_state[blk_key]:
-                    st.session_state[blk_key].pop()
-                    st.rerun()
-
             col_s, col_c = st.columns(2)
             submitted = col_s.form_submit_button("Save", type="primary")
             cancelled = col_c.form_submit_button("Cancel")

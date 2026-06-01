@@ -14,7 +14,24 @@
       "pgy": 1,
       "active": true,
       "away_periods": [],
-      "blocked_rotations": []
+      "blocked_rotations": [],
+      "off_service": [
+        {
+          "start": "2026-07-01",
+          "end": "2026-07-03",
+          "reason": "Orientation"
+        },
+        {
+          "start": "2026-08-31",
+          "end": "2026-09-27",
+          "reason": "Neurology"
+        },
+        {
+          "start": "2026-09-28",
+          "end": "2026-10-25",
+          "reason": "Medicine Wards"
+        }
+      ]
     },
     {
       "id": "tsandilas",

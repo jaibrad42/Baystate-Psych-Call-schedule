@@ -2914,11 +2914,7 @@
         },
         "2026-11-25": {
           "type": "weekday",
-          "intern": "holsonback",
-          "jeopardy": "smith",
-          "flags": [
-            "holsonback"
-          ]
+          "jeopardy": "smith"
         },
         "2026-11-26": {
           "type": "holiday",
@@ -2949,10 +2945,7 @@
           "name": "Thanksgiving",
           "aptu": "holsonback",
           "consult": "siemiatkoski",
-          "jeopardy": "smith",
-          "flags": [
-            "holsonback"
-          ]
+          "jeopardy": "smith"
         },
         "2026-11-30": {
           "type": "weekday",
@@ -3160,10 +3153,8 @@
       "2026-9": [],
       "2026-10": [],
       "2026-11": [
-        "2026-11-25: \u26a0 INTERN holsonback at q2 \u2014 needs review",
         "2026-11-26: \u26a0 APTU kurtz at q4 \u2014 needs review",
-        "2026-11-26: \u26a0 CONSULT mastalerz at q4 \u2014 needs review",
-        "2026-11-29: \u26a0 APTU holsonback at q4 \u2014 needs review"
+        "2026-11-26: \u26a0 CONSULT mastalerz at q4 \u2014 needs review"
       ],
       "2026-12": [
         "2026-12-02: \u26a0 Intern holsonback at q3 \u2014 needs review",

@@ -2639,11 +2639,7 @@
         "2026-10-05": {
           "type": "weekday",
           "aptu": "ali",
-          "intern": "tsandilas",
-          "jeopardy": "mann",
-          "flags": [
-            "tsandilas"
-          ]
+          "jeopardy": "mann"
         },
         "2026-10-06": {
           "type": "weekday",
@@ -3179,7 +3175,6 @@
       "2026-8": [],
       "2026-9": [],
       "2026-10": [
-        "2026-10-05: \u26a0 INTERN tsandilas at q3 \u2014 needs review",
         "2026-10-06: \u26a0 INTERN gervais at q2 \u2014 needs review",
         "2026-10-20: \u26a0 INTERN tsandilas at q3 \u2014 needs review",
         "2026-10-24: \u26a0 APTU tsandilas at q4 \u2014 needs review",

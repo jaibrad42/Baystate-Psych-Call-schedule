@@ -272,7 +272,13 @@ class State:
         cap = SOFT_CAPS.get(pgy, 5)
         cnt_pen = self.month[res_id] * (100 / max(cap, 1))
         wf_pen  = self.wf[res_id] * 12 if role == "aptu_wd" and d.weekday() in (2,4) else 0
-        return q + cnt_pen + wf_pen - pgy * 0.5
+        # Weekend balance penalty: count weekends worked (we_sats persists across months)
+        we_count = len(self.we_sats.get(res_id, set()))
+        is_we_role = role in ("aptu_we_jul", "aptu_we_aug", "consult")
+        # PGY3/4 consult is the most constrained pool - weight their weekend penalty higher
+        we_weight = 200 if (role == "consult" or pgy >= 3) else 80
+        we_pen = we_count * we_weight if is_we_role else 0
+        return q + cnt_pen + wf_pen + we_pen - pgy * 0.5
 
     def best(self, pool, d, role, cfg, exclude=()):
         cands = [r for r in pool if r not in exclude and self.eligible(r, d, role, cfg)]

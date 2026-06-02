@@ -2760,11 +2760,7 @@
         "2026-10-28": {
           "type": "weekday",
           "aptu": "wilson_braun",
-          "intern": "li",
-          "jeopardy": "dame",
-          "flags": [
-            "li"
-          ]
+          "jeopardy": "dame"
         },
         "2026-10-29": {
           "type": "weekday",
@@ -3163,9 +3159,7 @@
       ],
       "2026-8": [],
       "2026-9": [],
-      "2026-10": [
-        "2026-10-28: \u26a0 INTERN li at q2 \u2014 needs review"
-      ],
+      "2026-10": [],
       "2026-11": [
         "2026-11-25: \u26a0 Intern holsonback at q2 \u2014 needs review",
         "2026-11-26: \u26a0 APTU kurtz at q4 \u2014 needs review",

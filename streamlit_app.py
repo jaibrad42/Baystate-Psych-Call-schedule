@@ -928,18 +928,15 @@ def render_calendar(sched, cfg, year, month):
             html += f'<div class="pill pill-hol">C: {con}</div>'
         elif t == "weekend":
             aptu = e.get("aptu"); con = e.get("consult")
-            html += f'<div class="pill {"pill-aptu pill-flag" if aptu and aptu in e.get("flags",[]) else ("pill-aptu" if aptu else "pill-uncov")}">'
-            html += f'{\'A: \'+rname(aptu) if aptu else \'UNCOV\'}</div>'
-            html += f'<div class="pill {"pill-consult pill-flag" if con and con in e.get("flags",[]) else ("pill-consult" if con else "pill-uncov")}">'
-            html += f'{\'C: \'+rname(con) if con else \'UNCOV\'}</div>'
+            html += ('<div class="pill pill-aptu pill-flag">' if aptu and aptu in e.get("flags",[]) else ('<div class="pill pill-aptu">' if aptu else '<div class="pill pill-uncov">')) + ("A: "+rname(aptu) if aptu else "UNCOV") + "</div>"
+            html += ('<div class="pill pill-consult pill-flag">' if con and con in e.get("flags",[]) else ('<div class="pill pill-consult">' if con else '<div class="pill pill-uncov">')) + ("C: "+rname(con) if con else "UNCOV") + "</div>"
             if e.get("intern"):
                 html += f'<div class="pill pill-intern">I: {rname(e["intern"])}</div>'
             if e.get("jeopardy"):
                 html += f'<div class="pill pill-jep">J: {rname(e["jeopardy"])}</div>'
         elif t == "weekday":
             aptu = e.get("aptu")
-            html += f'<div class="pill {"pill-ul pill-flag" if aptu and aptu in e.get("flags",[]) else ("pill-ul" if aptu else "pill-uncov")}">'
-            html += f'{\'UL: \'+rname(aptu) if aptu else \'UNCOV\'}</div>'
+            html += ('<div class="pill pill-ul pill-flag">' if aptu and aptu in e.get("flags",[]) else ('<div class="pill pill-ul">' if aptu else '<div class="pill pill-uncov">')) + ("UL: "+rname(aptu) if aptu else "UNCOV") + "</div>"
             if e.get("intern") and e["intern"] in e.get("flags",[]):
                 html += f'<div class="pill pill-intern pill-flag">I: {rname(e["intern"])}</div>'
             elif e.get("intern"):
@@ -947,8 +944,6 @@ def render_calendar(sched, cfg, year, month):
             if e.get("jeopardy"):
                 html += f'<div class="pill pill-jep">J: {rname(e["jeopardy"])}</div>'
         html += '</div>'
-    html += '</div>'
-    return html
 
 
 # ─── Tab 1: Schedule ─────────────────────────────────────────

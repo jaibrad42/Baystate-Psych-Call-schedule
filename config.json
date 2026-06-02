@@ -2355,8 +2355,11 @@
         "2026-08-15": {
           "type": "weekend",
           "consult": "smith",
-          "aptu": "gervais",
-          "jeopardy": "ali"
+          "aptu": "holsonback",
+          "jeopardy": "ali",
+          "flags": [
+            "holsonback"
+          ]
         },
         "2026-08-16": {
           "type": "weekend",
@@ -3174,7 +3177,9 @@
       "2026-7": [
         "2026-07-10: \u26a0 INTERN tsandilas at q4 \u2014 needs review"
       ],
-      "2026-8": [],
+      "2026-8": [
+        "2026-08-15: \u26a0 APTU holsonback at q3 \u2014 needs review"
+      ],
       "2026-9": [
         "2026-09-10: \u26a0 INTERN holsonback at q4 \u2014 needs review",
         "2026-09-18: \u26a0 INTERN gervais at q3 \u2014 needs review"

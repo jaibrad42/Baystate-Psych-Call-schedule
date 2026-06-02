@@ -944,6 +944,8 @@ def render_calendar(sched, cfg, year, month):
             if e.get("jeopardy"):
                 html += f'<div class="pill pill-jep">J: {rname(e["jeopardy"])}</div>'
         html += '</div>'
+    html += '</div>'
+    return html
 
 
 # ─── Tab 1: Schedule ─────────────────────────────────────────

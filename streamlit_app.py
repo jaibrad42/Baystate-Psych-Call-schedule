@@ -1103,7 +1103,6 @@ with tab_cal:
             "</script>",
             height=0
         )
-        )
         if _click and '|' in str(_click):
             _pts = str(_click).split('|', 1)
             _editable = sorted([dk for dk, ev in sched.items() if ev.get("type") not in ("no_call",)])

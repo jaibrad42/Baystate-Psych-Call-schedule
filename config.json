@@ -2551,14 +2551,17 @@
         "2026-09-19": {
           "type": "weekend",
           "consult": "ali",
-          "aptu": "ramirez",
+          "aptu": "auclair",
           "jeopardy": "siemiatkoski"
         },
         "2026-09-20": {
           "type": "weekend",
           "consult": "smith",
           "aptu": "auclair",
-          "jeopardy": "ali"
+          "jeopardy": "ali",
+          "flags": [
+            "auclair"
+          ]
         },
         "2026-09-21": {
           "type": "weekday",
@@ -3174,6 +3177,7 @@
       ],
       "2026-8": [],
       "2026-9": [
+        "2026-09-20: \u26a0 APTU auclair at q4 \u2014 needs review",
         "2026-09-24: \u26a0 APTU auclair at q4 \u2014 needs review"
       ],
       "2026-10": [

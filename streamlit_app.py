@@ -402,7 +402,6 @@ def schedule_month(year, month, state, cfg):
 def schedule_jeopardy(sched, cfg, warnings=None):
     if warnings is None: warnings = []
     rb = res_by_id(cfg)
-    sorted_days = sorted(sched.keys())
     for dk, entry in sched.items():
         if entry.get("type") == "no_call": continue
         d = date.fromisoformat(dk)
@@ -418,19 +417,6 @@ def schedule_jeopardy(sched, cfg, warnings=None):
             cands.sort(key=lambda r: (month_load(r), r))
             jep = cands[0]
             entry["jeopardy"] = jep
-            # Gap check: find last date this resident was on in any role
-            prev = None
-            for dk2 in sorted_days:
-                if dk2 >= dk: break
-                e2 = sched[dk2]
-                if jep in (e2.get("aptu"), e2.get("consult"), e2.get("intern"), e2.get("jeopardy")):
-                    prev = date.fromisoformat(dk2)
-            if prev:
-                gap = (d - prev).days
-                if gap < 5:
-                    lbl = "q2" if gap == 2 else ("q3" if gap == 3 else "q4")
-                    warnings.append(f"{dk}: ⚠ Jeopardy {jep} at {lbl} — needs review")
-                    entry.setdefault("flags", []).append(jep)
         else:
             entry["jeopardy"] = "UNCOVERED"
     return sched

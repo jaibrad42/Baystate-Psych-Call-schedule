@@ -1058,26 +1058,37 @@ with tab_cal:
         for col,(cls,lbl) in zip(cols,legend):
             col.markdown(f'<span class="pill {cls}">{lbl}</span>', unsafe_allow_html=True)
 
+        # Calendar display (static)
         st.markdown(render_calendar(sched, cfg, year, month), unsafe_allow_html=True)
-        # Pill-click bridge: use Streamlit.setComponentValue to send click back to Python
+        # Pill click bridge - stores component window ref in parent, click handlers use it
         import streamlit.components.v1 as _cv1
-        _js = (
+        _click = _cv1.html(
             "<script>"
-            "function _pillGo(){"
+            "window.parent._pillBridgeFrame=window;"
+            "window.addEventListener('message',function(ev){"
+            "if(ev.data&&ev.data._pillClick){"
+            "Streamlit.setComponentValue(ev.data._pillClick);"
+            "}"
+            "});"
+            "function _go(){"
+            "try{"
             "var p=window.parent.document;"
             "p.querySelectorAll('[data-edit-date]').forEach(function(el){"
             "if(el._ph)return;el._ph=1;el.style.cursor='pointer';"
             "el.addEventListener('click',function(){"
             "var d=this.getAttribute('data-edit-date');"
             "var r=this.getAttribute('data-edit-role');"
-            "Streamlit.setComponentValue(d+'|'+r);"
-            "});"
-            "});"
+            "if(window.parent._pillBridgeFrame){"
+            "window.parent._pillBridgeFrame.postMessage({_pillClick:d+'|'+r},'*');"
             "}"
-            "_pillGo();setTimeout(_pillGo,800);"
-            "</script>"
+            "});"
+            "});"
+            "}catch(e){}"
+            "}"
+            "setTimeout(_go,200);setTimeout(_go,1000);"
+            "</script>",
+            height=0
         )
-        _click = _cv1.html(_js, height=0)
         if _click and '|' in str(_click):
             _pts = str(_click).split('|', 1)
             _editable = sorted([dk for dk, ev in sched.items() if ev.get("type") not in ("no_call",)])
@@ -1086,9 +1097,6 @@ with tab_cal:
                 st.session_state["edit_role_sel"] = _pts[1]
                 st.session_state["edit_open"] = True
                 st.rerun()
-        # Warnings for this month
-        warns = st.session_state.all_warns.get((year,month),[])
-        if warns:
             st.markdown("---")
             st.markdown("**⚠ Warnings for this month**")
             for w in warns:

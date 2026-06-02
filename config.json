@@ -2336,12 +2336,9 @@
         },
         "2026-08-12": {
           "type": "weekday",
-          "aptu": "mann",
+          "aptu": "dame",
           "intern": "holsonback",
-          "jeopardy": "dame",
-          "flags": [
-            "mann"
-          ]
+          "jeopardy": "dame"
         },
         "2026-08-13": {
           "type": "weekday",
@@ -2353,7 +2350,10 @@
           "type": "weekday",
           "aptu": "dame",
           "intern": "tsandilas",
-          "jeopardy": "smith"
+          "jeopardy": "smith",
+          "flags": [
+            "dame"
+          ]
         },
         "2026-08-15": {
           "type": "weekend",
@@ -3189,7 +3189,7 @@
         "2026-07-10: \u26a0 INTERN tsandilas at q4 \u2014 needs review"
       ],
       "2026-8": [
-        "2026-08-12: \u26a0 APTU mann at q4 \u2014 needs review",
+        "2026-08-14: \u26a0 APTU dame at q2 \u2014 needs review",
         "2026-08-18: \u26a0 INTERN tsandilas at q4 \u2014 needs review"
       ],
       "2026-9": [

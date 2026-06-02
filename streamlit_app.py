@@ -1073,7 +1073,7 @@ with tab_cal:
             "var d=this.getAttribute('data-edit-date');"
             "var r=this.getAttribute('data-edit-role');"
             "var u=window.parent.location.origin+window.parent.location.pathname+'?edit_date='+d+'&edit_role='+r;"
-            "window.parent.location.assign(u);"
+            "window.parent._eu=u;window.parent.eval("'window.location.assign(window._eu)'");"
             "});"
             "});"
             "}catch(e){}"

@@ -2875,7 +2875,7 @@
         },
         "2026-11-18": {
           "type": "weekday",
-          "aptu": "siemiatkoski",
+          "aptu": "brych",
           "intern": "tsandilas",
           "jeopardy": "dame"
         },
@@ -2893,7 +2893,10 @@
           "type": "weekend",
           "consult": "brych",
           "aptu": "ramirez",
-          "jeopardy": "wilson_braun"
+          "jeopardy": "wilson_braun",
+          "flags": [
+            "brych"
+          ]
         },
         "2026-11-22": {
           "type": "weekend",
@@ -2916,21 +2919,21 @@
           "type": "weekday",
           "aptu": "ali",
           "intern": "holsonback",
+          "jeopardy": "smith",
           "flags": [
             "holsonback"
-          ],
-          "jeopardy": "smith"
+          ]
         },
         "2026-11-26": {
           "type": "holiday",
           "name": "Thanksgiving",
           "aptu": "kurtz",
           "consult": "mastalerz",
+          "jeopardy": "ali",
           "flags": [
             "kurtz",
             "mastalerz"
-          ],
-          "jeopardy": "ali"
+          ]
         },
         "2026-11-27": {
           "type": "holiday",
@@ -2950,10 +2953,10 @@
           "name": "Thanksgiving",
           "aptu": "holsonback",
           "consult": "siemiatkoski",
+          "jeopardy": "smith",
           "flags": [
             "holsonback"
-          ],
-          "jeopardy": "smith"
+          ]
         },
         "2026-11-30": {
           "type": "weekday",
@@ -3161,9 +3164,10 @@
       "2026-9": [],
       "2026-10": [],
       "2026-11": [
-        "2026-11-25: \u26a0 Intern holsonback at q2 \u2014 needs review",
+        "2026-11-21: \u26a0 CONSULT brych at q3 \u2014 needs review",
+        "2026-11-25: \u26a0 INTERN holsonback at q2 \u2014 needs review",
         "2026-11-26: \u26a0 APTU kurtz at q4 \u2014 needs review",
-        "2026-11-26: \u26a0 Consult mastalerz at q4 \u2014 needs review",
+        "2026-11-26: \u26a0 CONSULT mastalerz at q4 \u2014 needs review",
         "2026-11-29: \u26a0 APTU holsonback at q4 \u2014 needs review"
       ],
       "2026-12": [

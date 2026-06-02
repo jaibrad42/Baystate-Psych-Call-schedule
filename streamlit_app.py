@@ -1033,6 +1033,93 @@ with tab_cal:
                 st.markdown(f'<div class="{cls}">{w}</div>', unsafe_allow_html=True)
         else:
             st.markdown('<div class="warn-ok">✓ No warnings for this month</div>', unsafe_allow_html=True)
+        # ── Manual shift editor ─────────────────────────────
+        st.markdown("---")
+        with st.expander("✏️ Edit a shift manually"):
+            st.caption("Override an assigned shift — useful for real-world swaps that affect overall counts.")
+            edit_cfg = get_cfg()
+            edit_rb = res_by_id(edit_cfg)
+            editable_dates = sorted([dk for dk, ev in sched.items() if ev.get("type") not in ("no_call",)])
+            if not editable_dates:
+                st.info("No editable days in this month.")
+            else:
+                ed_col1, ed_col2, ed_col3 = st.columns([2, 2, 3])
+                with ed_col1:
+                    edit_date = st.selectbox(
+                        "Date",
+                        editable_dates,
+                        format_func=lambda dk: date.fromisoformat(dk).strftime("%a %b %-d"),
+                        key="edit_date_sel"
+                    )
+                edit_entry = sched.get(edit_date, {})
+                edit_type = edit_entry.get("type", "")
+                if edit_type == "weekday":
+                    role_opts = [("aptu", "APTU/UL"), ("intern", "Intern"), ("jeopardy", "Jeopardy")]
+                elif edit_type in ("weekend", "holiday"):
+                    role_opts = [("aptu", "APTU"), ("consult", "Consult"), ("intern", "Intern"), ("jeopardy", "Jeopardy")]
+                else:
+                    role_opts = []
+                if not role_opts:
+                    st.info("This day type cannot be edited.")
+                else:
+                    with ed_col2:
+                        edit_role_key = st.selectbox(
+                            "Role",
+                            [r[0] for r in role_opts],
+                            format_func=lambda k: dict(role_opts)[k],
+                            key="edit_role_sel"
+                        )
+                    current_rid = edit_entry.get(edit_role_key, "")
+                    current_name = edit_rb.get(current_rid, {}).get("full", current_rid) if current_rid else "unassigned"
+                    st.caption(f"Currently assigned: **{current_name}**")
+                    res_options = [""] + [r["id"] for r in active_residents(edit_cfg)]
+                    def res_fmt(rid):
+                        if rid == "": return "clear slot"
+                        r = edit_rb.get(rid, {})
+                        return r.get("full", rid) + " (PGY" + str(r.get("pgy","")) + ")"
+                    with ed_col3:
+                        new_rid = st.selectbox(
+                            "Assign to",
+                            res_options,
+                            format_func=res_fmt,
+                            key="edit_res_sel"
+                        )
+                    if st.button("Save change", key="edit_save_btn"):
+                        updated_scheds = st.session_state.all_scheds
+                        target_entry = updated_scheds[(year, month)][edit_date]
+                        if new_rid == "":
+                            target_entry.pop(edit_role_key, None)
+                        else:
+                            target_entry[edit_role_key] = new_rid
+                        target_entry.pop("flags", None)
+                        for rk in ("aptu", "consult", "intern"):
+                            rid2 = target_entry.get(rk)
+                            if rid2:
+                                prev_date = None
+                                for dk2 in sorted(updated_scheds[(year, month)].keys()):
+                                    if dk2 >= edit_date: break
+                                    ev2 = updated_scheds[(year, month)][dk2]
+                                    if any(ev2.get(rk2) == rid2 for rk2 in ("aptu","consult","intern")):
+                                        prev_date = date.fromisoformat(dk2)
+                                if prev_date:
+                                    gap2 = (date.fromisoformat(edit_date) - prev_date).days
+                                    if gap2 < 5:
+                                        target_entry.setdefault("flags", []).append(rid2)
+                        st.session_state.all_scheds = updated_scheds
+                        try:
+                            _cfg_upd = get_cfg()
+                            _cfg_upd["last_schedule"] = {
+                                "scheds": {str(y2) + "-" + str(m2): v for (y2,m2),v in updated_scheds.items()},
+                                "warns": {str(y2) + "-" + str(m2): v for (y2,m2),v in st.session_state.all_warns.items()},
+                            }
+                            save_cfg(_cfg_upd)
+                        except Exception:
+                            pass
+                        role_label = dict(role_opts)[edit_role_key]
+                        assigned_name = res_fmt(new_rid)
+                        day_label = date.fromisoformat(edit_date).strftime("%b %-d")
+                        st.success("Saved: " + assigned_name + " to " + role_label + " on " + day_label)
+                        st.rerun()
 
 
 # ─── Tab 2: Residents ─────────────────────────────────────────

@@ -2191,11 +2191,8 @@
         "2026-07-17": {
           "type": "weekday",
           "aptu": "brych",
-          "intern": "li",
-          "jeopardy": "wilson_braun",
-          "flags": [
-            "li"
-          ]
+          "intern": "gervais",
+          "jeopardy": "wilson_braun"
         },
         "2026-07-18": {
           "type": "weekend",
@@ -3186,8 +3183,7 @@
     },
     "warns": {
       "2026-7": [
-        "2026-07-10: \u26a0 INTERN tsandilas at q4 \u2014 needs review",
-        "2026-07-17: \u26a0 INTERN li at q4 \u2014 needs review"
+        "2026-07-10: \u26a0 INTERN tsandilas at q4 \u2014 needs review"
       ],
       "2026-8": [
         "2026-08-18: \u26a0 Intern tsandilas at q4 \u2014 needs review"

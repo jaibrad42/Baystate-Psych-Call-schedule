@@ -2717,11 +2717,7 @@
         "2026-10-20": {
           "type": "weekday",
           "aptu": "siemiatkoski",
-          "jeopardy": "dame",
-          "intern": "tsandilas",
-          "flags": [
-            "tsandilas"
-          ]
+          "jeopardy": "dame"
         },
         "2026-10-21": {
           "type": "weekday",
@@ -3168,7 +3164,6 @@
       "2026-8": [],
       "2026-9": [],
       "2026-10": [
-        "2026-10-20: \u26a0 INTERN tsandilas at q3 \u2014 needs review",
         "2026-10-28: \u26a0 INTERN li at q2 \u2014 needs review"
       ],
       "2026-11": [

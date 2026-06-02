@@ -999,6 +999,7 @@ def render_calendar(sched, cfg, year, month):
                 da = " data-edit-date=" + chr(39) + d_k + chr(39) + " data-edit-role=" + chr(39) + role + chr(39) + " style=" + chr(39) + "cursor:pointer" + chr(39)
                 return "<div class=" + chr(39) + "pill " + cls + flag + chr(39) + da + ">" + lbl + "</div>"
             return "<div class=" + chr(39) + "pill " + cls + flag + chr(39) + ">" + lbl + "</div>"
+        if is_nc:
             html += '<div style="font-size:10px;color:#8E8E93;font-style:italic">no call</div>'
         elif is_hol:
             aptu = rname(e.get("aptu","")) if e.get("aptu") else "—"

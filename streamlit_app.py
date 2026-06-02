@@ -1059,34 +1059,33 @@ with tab_cal:
             col.markdown(f'<span class="pill {cls}">{lbl}</span>', unsafe_allow_html=True)
 
         st.markdown(render_calendar(sched, cfg, year, month), unsafe_allow_html=True)
-        # Pill-click bridge
+        # Pill-click bridge: use Streamlit.setComponentValue to send click back to Python
         import streamlit.components.v1 as _cv1
         _js = (
             "<script>"
-            "(function(){"
-            "function go(){"
-            "try{"
+            "function _pillGo(){"
             "var p=window.parent.document;"
             "p.querySelectorAll('[data-edit-date]').forEach(function(el){"
-            "if(el._ph)return;el._ph=1;"
-            "el.style.cursor='pointer';"
+            "if(el._ph)return;el._ph=1;el.style.cursor='pointer';"
             "el.addEventListener('click',function(){"
             "var d=this.getAttribute('data-edit-date');"
             "var r=this.getAttribute('data-edit-role');"
-            "var u=new URL(window.parent.location.href);"
-            "u.searchParams.set('edit_date',d);"
-            "u.searchParams.set('edit_role',r);"
-            "window.open(u.toString(),'_top');"
+            "Streamlit.setComponentValue(d+'|'+r);"
             "});"
             "});"
-            "}catch(e){}"
             "}"
-            "go();setTimeout(go,800);"
-            "})();"
+            "_pillGo();setTimeout(_pillGo,800);"
             "</script>"
         )
-        _cv1.html(_js, height=0)
-        _cv1.html(_js, height=0)
+        _click = _cv1.html(_js, height=0)
+        if _click and '|' in str(_click):
+            _pts = str(_click).split('|', 1)
+            _editable = sorted([dk for dk, ev in sched.items() if ev.get("type") not in ("no_call",)])
+            if _pts[0] in _editable:
+                st.session_state["edit_date_sel"] = _editable.index(_pts[0])
+                st.session_state["edit_role_sel"] = _pts[1]
+                st.session_state["edit_open"] = True
+                st.rerun()
         # Warnings for this month
         warns = st.session_state.all_warns.get((year,month),[])
         if warns:

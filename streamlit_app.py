@@ -1064,15 +1064,29 @@ with tab_cal:
         import streamlit.components.v1 as _cv1
         _click = _cv1.html(
             "<script>"
-            "window.parent._pillBridgeFrame=window;"
+            "var _stVal=null,_stReady=false;"
+            "function _send(v){"
+            "if(typeof Streamlit!=='undefined'&&Streamlit.setComponentValue){"
+            "Streamlit.setComponentValue(v);"
+            "}else{"
+            "_stVal=v;"
+            "}"
+            "}"
             "window.addEventListener('message',function(ev){"
-            "if(ev.data&&ev.data._pillClick){"
-            "Streamlit.setComponentValue(ev.data._pillClick);"
+            "if(!ev.data)return;"
+            "if(ev.data.type==='streamlit:render'||ev.data.type==='streamlit:componentReady'){"
+            "_stReady=true;"
+            "if(_stVal!==null){_send(_stVal);_stVal=null;}"
+            "_go();"
+            "}"
+            "if(ev.data._pillClick){"
+            "_send(ev.data._pillClick);"
             "}"
             "});"
             "function _go(){"
             "try{"
             "var p=window.parent.document;"
+            "window.parent._pillBridgeFrame=window;"
             "p.querySelectorAll('[data-edit-date]').forEach(function(el){"
             "if(el._ph)return;el._ph=1;el.style.cursor='pointer';"
             "el.addEventListener('click',function(){"
@@ -1085,9 +1099,10 @@ with tab_cal:
             "});"
             "}catch(e){}"
             "}"
-            "setTimeout(_go,200);setTimeout(_go,1000);"
+            "setTimeout(_go,300);setTimeout(_go,1200);"
             "</script>",
             height=0
+        )
         )
         if _click and '|' in str(_click):
             _pts = str(_click).split('|', 1)

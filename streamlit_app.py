@@ -891,13 +891,17 @@ with st.sidebar:
             del st.session_state["all_scheds"]
             del st.session_state["all_warns"]
             st.rerun()
+
+    # Show reset button whenever scheduler history exists in config
+    if get_cfg().get("scheduler_state"):
         if st.button("🔄 Reset scheduler history", use_container_width=True,
-                     help="Clear saved counters so the next schedule starts fresh (ignores prior call history)"):
+                     help="Clear saved call history so the next schedule starts fresh"):
             _cfg3 = get_cfg()
             _cfg3.pop("scheduler_state", None)
             save_cfg(_cfg3)
             st.success("Scheduler history cleared.")
             st.rerun()
+
 
 
 # ─────────────────────────────────────────────────────────────

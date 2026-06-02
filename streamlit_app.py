@@ -996,10 +996,8 @@ def render_calendar(sched, cfg, year, month):
         def p(cls, lbl, d_k, role):
             flag = " pill-flag" if (d_k and role and e.get(role) and e.get(role) in e.get("flags",[])) else ""
             if d_k:
-                href = "?edit_date=" + d_k + "&edit_role=" + role
-                return '<a href="' + href + '" style="text-decoration:none;display:block"><div class="pill ' + cls + flag + '" style="cursor:pointer">' + lbl + '</div></a>'
+                return '<div class="pill ' + cls + flag + '" data-edit-date="' + d_k + '" data-edit-role="' + role + '" style="cursor:pointer">' + lbl + '</div>'
             return '<div class="pill ' + cls + flag + '">' + lbl + '</div>'
-        if is_nc:
             html += '<div style="font-size:10px;color:#8E8E93;font-style:italic">no call</div>'
         elif is_hol:
             aptu = rname(e.get("aptu","")) if e.get("aptu") else "—"
@@ -1059,6 +1057,30 @@ with tab_cal:
             col.markdown(f'<span class="pill {cls}">{lbl}</span>', unsafe_allow_html=True)
 
         st.markdown(render_calendar(sched, cfg, year, month), unsafe_allow_html=True)
+        # Pill-click bridge: runs in a component iframe, navigates parent URL
+        import streamlit.components.v1 as _cv1
+        _cv1.html("""<script>
+(function() {
+  function attachHandlers() {
+    var parentDoc = window.parent.document;
+    parentDoc.querySelectorAll('[data-edit-date]').forEach(function(pill) {
+      if (pill._pillHandlerAttached) return;
+      pill._pillHandlerAttached = true;
+      pill.addEventListener('click', function() {
+        var d = this.getAttribute('data-edit-date');
+        var r = this.getAttribute('data-edit-role');
+        var url = new URL(window.parent.location.href);
+        url.searchParams.set('edit_date', d);
+        url.searchParams.set('edit_role', r);
+        window.parent.location.href = url.toString();
+      });
+    });
+  }
+  // Try immediately and again after short delay for DOM readiness
+  attachHandlers();
+  setTimeout(attachHandlers, 800);
+})();
+</script>""", height=0)
 
         # Warnings for this month
         warns = st.session_state.all_warns.get((year,month),[])

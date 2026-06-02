@@ -2426,7 +2426,8 @@
         "2026-08-28": {
           "type": "weekday",
           "aptu": "smith",
-          "jeopardy": "mann"
+          "jeopardy": "mann",
+          "intern": "tsandilas"
         },
         "2026-08-29": {
           "type": "weekend",

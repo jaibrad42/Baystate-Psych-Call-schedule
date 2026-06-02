@@ -2455,10 +2455,6 @@
         "2026-09-02": {
           "type": "weekday",
           "aptu": "ali",
-          "intern": "holsonback",
-          "flags": [
-            "holsonback"
-          ],
           "jeopardy": "brych"
         },
         "2026-09-03": {
@@ -2483,9 +2479,6 @@
           "name": "Labor Day",
           "aptu": "holsonback",
           "consult": "wilson_braun",
-          "flags": [
-            "holsonback"
-          ],
           "jeopardy": "ali"
         },
         "2026-09-07": {
@@ -2509,10 +2502,10 @@
           "type": "weekday",
           "aptu": "siemiatkoski",
           "intern": "holsonback",
+          "jeopardy": "dame",
           "flags": [
             "holsonback"
-          ],
-          "jeopardy": "dame"
+          ]
         },
         "2026-09-11": {
           "type": "weekday",
@@ -2556,10 +2549,10 @@
           "type": "weekday",
           "aptu": "siemiatkoski",
           "intern": "gervais",
+          "jeopardy": "mastalerz",
           "flags": [
             "gervais"
-          ],
-          "jeopardy": "mastalerz"
+          ]
         },
         "2026-09-19": {
           "type": "weekend",
@@ -3183,10 +3176,8 @@
       ],
       "2026-8": [],
       "2026-9": [
-        "2026-09-02: \u26a0 Intern holsonback at q3 \u2014 needs review",
-        "2026-09-06: \u26a0 APTU holsonback at q4 \u2014 needs review",
-        "2026-09-10: \u26a0 Intern holsonback at q4 \u2014 needs review",
-        "2026-09-18: \u26a0 Intern gervais at q3 \u2014 needs review"
+        "2026-09-10: \u26a0 INTERN holsonback at q4 \u2014 needs review",
+        "2026-09-18: \u26a0 INTERN gervais at q3 \u2014 needs review"
       ],
       "2026-10": [
         "2026-10-05: \u26a0 Intern tsandilas at q3 \u2014 needs review",

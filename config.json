@@ -2724,11 +2724,8 @@
         },
         "2026-10-20": {
           "type": "weekday",
-          "aptu": "tsandilas",
-          "jeopardy": "dame",
-          "flags": [
-            "tsandilas"
-          ]
+          "aptu": "siemiatkoski",
+          "jeopardy": "dame"
         },
         "2026-10-21": {
           "type": "weekday",
@@ -2749,10 +2746,7 @@
           "type": "weekend",
           "consult": "smith",
           "aptu": "tsandilas",
-          "jeopardy": "wilson_braun",
-          "flags": [
-            "tsandilas"
-          ]
+          "jeopardy": "wilson_braun"
         },
         "2026-10-25": {
           "type": "weekend",
@@ -3180,8 +3174,6 @@
       "2026-10": [
         "2026-10-05: \u26a0 INTERN tsandilas at q3 \u2014 needs review",
         "2026-10-06: \u26a0 INTERN gervais at q2 \u2014 needs review",
-        "2026-10-20: \u26a0 APTU tsandilas at q3 \u2014 needs review",
-        "2026-10-24: \u26a0 APTU tsandilas at q4 \u2014 needs review",
         "2026-10-28: \u26a0 INTERN li at q2 \u2014 needs review"
       ],
       "2026-11": [

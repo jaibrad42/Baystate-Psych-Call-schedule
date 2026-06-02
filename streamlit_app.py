@@ -1094,11 +1094,27 @@ with tab_cal:
                     current_rid = edit_entry.get(edit_role_key, "")
                     current_name = edit_rb.get(current_rid, {}).get("full", current_rid) if current_rid else "unassigned"
                     st.caption(f"Currently assigned: **{current_name}**")
-                    res_options = [""] + [r["id"] for r in active_residents(edit_cfg)]
+                    # Build annotated resident list for the dropdown
+                    edit_d = date.fromisoformat(edit_date)
+                    def _res_flags(rid):
+                        flags = []
+                        if is_no_call(rid, edit_d, edit_cfg):
+                            flags.append("NO-CALL REQUEST")
+                        if is_off_service(rid, edit_d, edit_cfg):
+                            flags.append("OFF-SERVICE")
+                        return flags
+                    all_active = active_residents(edit_cfg)
+                    clean_ids = [r["id"] for r in all_active if not _res_flags(r["id"])]
+                    flagged_ids = [r["id"] for r in all_active if _res_flags(r["id"])]
+                    res_options = [""] + clean_ids + flagged_ids
                     def res_fmt(rid):
-                        if rid == "": return "clear slot"
+                        if rid == "": return "— clear slot —"
                         r = edit_rb.get(rid, {})
-                        return r.get("full", rid) + " (PGY" + str(r.get("pgy","")) + ")"
+                        base = r.get("full", rid) + " (PGY" + str(r.get("pgy","")) + ")"
+                        flags = _res_flags(rid)
+                        if flags:
+                            return "⚠ " + base + "  [" + ", ".join(flags) + "]"
+                        return base
                     with ed_col3:
                         new_rid = st.selectbox(
                             "Assign to",

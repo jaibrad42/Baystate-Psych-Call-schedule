@@ -2532,7 +2532,7 @@
         "2026-09-15": {
           "type": "weekday",
           "aptu": "smith",
-          "intern": "gervais",
+          "intern": "holsonback",
           "jeopardy": "ali"
         },
         "2026-09-16": {
@@ -2549,10 +2549,7 @@
           "type": "weekday",
           "aptu": "siemiatkoski",
           "intern": "gervais",
-          "jeopardy": "mastalerz",
-          "flags": [
-            "gervais"
-          ]
+          "jeopardy": "mastalerz"
         },
         "2026-09-19": {
           "type": "weekend",
@@ -3176,8 +3173,7 @@
       ],
       "2026-8": [],
       "2026-9": [
-        "2026-09-10: \u26a0 INTERN holsonback at q4 \u2014 needs review",
-        "2026-09-18: \u26a0 INTERN gervais at q3 \u2014 needs review"
+        "2026-09-10: \u26a0 INTERN holsonback at q4 \u2014 needs review"
       ],
       "2026-10": [
         "2026-10-05: \u26a0 Intern tsandilas at q3 \u2014 needs review",

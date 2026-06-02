@@ -2626,9 +2626,12 @@
         },
         "2026-10-03": {
           "type": "weekend",
-          "consult": "dame",
+          "consult": "smith",
           "aptu": "auclair",
-          "jeopardy": "brych"
+          "jeopardy": "brych",
+          "flags": [
+            "smith"
+          ]
         },
         "2026-10-04": {
           "type": "weekend",
@@ -3159,7 +3162,9 @@
       ],
       "2026-8": [],
       "2026-9": [],
-      "2026-10": [],
+      "2026-10": [
+        "2026-10-03: \u26a0 CONSULT smith at q4 \u2014 needs review"
+      ],
       "2026-11": [
         "2026-11-25: \u26a0 Intern holsonback at q2 \u2014 needs review",
         "2026-11-26: \u26a0 APTU kurtz at q4 \u2014 needs review",

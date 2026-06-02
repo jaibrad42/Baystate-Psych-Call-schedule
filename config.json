@@ -2266,7 +2266,8 @@
         "2026-07-30": {
           "type": "weekday",
           "aptu": "smith",
-          "jeopardy": "wilson_braun"
+          "jeopardy": "wilson_braun",
+          "intern": "tsandilas"
         },
         "2026-07-31": {
           "type": "weekday",

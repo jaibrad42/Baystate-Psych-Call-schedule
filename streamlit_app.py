@@ -1037,17 +1037,6 @@ with tab_cal:
         sel_idx = st.selectbox("Month", range(len(months)), format_func=lambda i: month_labels[i])
         year, month = months[sel_idx]
         sched = st.session_state.all_scheds[(year,month)]
-        # Read pill-click query params and pre-seed editor state
-        _qp_date = st.query_params.get("edit_date", "")
-        _qp_role = st.query_params.get("edit_role", "")
-        if _qp_date and _qp_role:
-            _editable = sorted([dk for dk, ev in sched.items() if ev.get("type") not in ("no_call",)])
-            if _qp_date in _editable:
-                st.session_state["edit_date_sel"] = _editable.index(_qp_date)
-                st.session_state["edit_role_sel"] = _qp_role
-                st.session_state["edit_open"] = True
-                st.query_params.clear()
-
         st.markdown(f"### {month_labels[sel_idx]}")
 
         # Legend

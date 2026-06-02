@@ -2139,10 +2139,6 @@
         "2026-07-08": {
           "type": "weekday",
           "aptu": "wilson_braun",
-          "intern": "holsonback",
-          "flags": [
-            "holsonback"
-          ],
           "jeopardy": "dame"
         },
         "2026-07-09": {

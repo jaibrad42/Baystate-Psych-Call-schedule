@@ -266,7 +266,7 @@ class State:
         last = self.last[res_id]
         gap  = (d - last).days if last else 99
         if gap < 2: return 1e9
-        q = 0 if gap >= 4 else (100 if gap == 3 else 500)
+        q = 0 if gap >= 4 else (800 if gap == 3 else 2000)
         rb = res_by_id(cfg)
         pgy = rb[res_id]["pgy"] if res_id in rb else 2
         cap = SOFT_CAPS.get(pgy, 5)
@@ -347,16 +347,24 @@ def schedule_month(year, month, state, cfg):
                   state.fallback(pools["pgy34"], d, "consult", cfg)
             if con is None:
                 warnings.append(f"{dk}: NO eligible Consult — UNCOVERED")
-            elif state.last.get(con) and (d - state.last[con]).days < 2:
-                warnings.append(f"{dk}: Consult {con} back-to-back — needs review")
+            elif state.last.get(con):
+                con_gap = (d - state.last[con]).days
+                if con_gap < 4:
+                    lbl = "q3" if con_gap == 2 else ("q4" if con_gap == 3 else "q5")
+                    warnings.append(f"{dk}: ⚠ Consult {con} at {lbl} — needs review")
+                    entry.setdefault("flags", []).append(con)
             aptu = state.best([r for r in aptu_pool if r != con], d, aptu_role, cfg) or \
                    state.fallback([r for r in aptu_pool if r != con], d, aptu_role, cfg)
             if aptu is None:
                 warnings.append(f"{dk}: NO eligible APTU — UNCOVERED")
-            elif state.last.get(aptu) and (d - state.last[aptu]).days < 2:
-                warnings.append(f"{dk}: APTU {aptu} back-to-back — needs review")
-            if con:  entry["consult"] = con;  state.record(con,  d, "consult")
-            if aptu: entry["aptu"]    = aptu; state.record(aptu, d, aptu_role)
+            elif state.last.get(aptu):
+                aptu_gap = (d - state.last[aptu]).days
+                if aptu_gap < 4:
+                    lbl = "q3" if aptu_gap == 2 else ("q4" if aptu_gap == 3 else "q5")
+                    warnings.append(f"{dk}: ⚠ APTU {aptu} at {lbl} — needs review")
+                    entry.setdefault("flags", []).append(aptu)
+            if con: entry["consult"] = con; state.record(con, d, "consult")
+            if aptu: entry["aptu"] = aptu; state.record(aptu, d, aptu_role)
             prev_intern = None
 
         else:
@@ -366,16 +374,25 @@ def schedule_month(year, month, state, cfg):
                 warnings.append(f"{dk}: NO eligible APTU — UNCOVERED")
             else:
                 gap = (d - state.last[aptu]).days if state.last.get(aptu) else 99
-                if gap == 2:
-                    warnings.append(f"{dk}: APTU {aptu} at q3 — needs review")
+                if gap < 4:
+                    label = "q3" if gap == 2 else ("q4" if gap == 3 else "q5")
+                    warnings.append(f"{dk}: ⚠ APTU {aptu} at {label} — needs review")
+                    entry.setdefault("flags", []).append(aptu)
             intern = None
             rb = res_by_id(cfg)
             if aptu and rb.get(aptu,{}).get("pgy",0) >= 3 and iwd_lim > 0:
                 for r in pools["interns"]:
-                    if state.iwd.get(r,0) < iwd_lim and state.eligible(r, d, "intern", cfg) and r != prev_intern and (state.last.get(r) is None or (d - state.last[r]).days >= 4):
+                    if state.iwd.get(r,0) < iwd_lim and state.eligible(r, d, "intern", cfg) and r != prev_intern:
                         intern = r; break
             if aptu:   entry["aptu"]   = aptu;   state.record(aptu, d, "aptu_wd")
-            if intern: entry["intern"] = intern; state.record(intern, d, "intern_wd")
+            if intern:
+                entry["intern"] = intern
+                intern_gap = (d - state.last.get(intern, None)).days if state.last.get(intern) else 99
+                state.record(intern, d, "intern_wd")
+                if intern_gap < 4:
+                    lbl = "q3" if intern_gap == 2 else ("q4" if intern_gap == 3 else "q5")
+                    warnings.append(f"{dk}: ⚠ Intern {intern} at {lbl} — needs review")
+                    entry.setdefault("flags", []).append(intern)
             prev_intern = intern
 
         sched[dk] = entry
@@ -741,6 +758,7 @@ st.markdown("""
 .pill-intern  { background: #7c2d1233; color: #FB923C; font-weight: 600; }
 .pill-hol     { background: #7f1d1d55; color: #FCA5A5; }
 .pill-jep     { background: #06474733; color: #2DD4BF; font-style: italic; }
+.pill-flag    { outline: 2px solid #F59E0B; outline-offset: -1px; }
 .pill-uncov   { background: #7f1d1d; color: white; font-weight: 700; }
 .role-lbl     { font-size: 9px; color: #555; margin-bottom: 1px; }
 .warn-hard    { background: #3B1515; border-left: 3px solid #EF4444; padding: 6px 10px; border-radius: 4px; font-family: monospace; font-size: 12px; margin-bottom: 4px; color: #FCA5A5; }
@@ -910,19 +928,21 @@ def render_calendar(sched, cfg, year, month):
             html += f'<div class="pill pill-hol">C: {con}</div>'
         elif t == "weekend":
             aptu = e.get("aptu"); con = e.get("consult")
-            html += f'<div class="pill {"pill-aptu" if aptu else "pill-uncov"}">'
-            html += f'{"A: "+rname(aptu) if aptu else "UNCOV"}</div>'
-            html += f'<div class="pill {"pill-consult" if con else "pill-uncov"}">'
-            html += f'{"C: "+rname(con) if con else "UNCOV"}</div>'
+            html += f'<div class="pill {"pill-aptu pill-flag" if aptu and aptu in e.get("flags",[]) else ("pill-aptu" if aptu else "pill-uncov")}">'
+            html += f'{\'A: \'+rname(aptu) if aptu else \'UNCOV\'}</div>'
+            html += f'<div class="pill {"pill-consult pill-flag" if con and con in e.get("flags",[]) else ("pill-consult" if con else "pill-uncov")}">'
+            html += f'{\'C: \'+rname(con) if con else \'UNCOV\'}</div>'
             if e.get("intern"):
                 html += f'<div class="pill pill-intern">I: {rname(e["intern"])}</div>'
             if e.get("jeopardy"):
                 html += f'<div class="pill pill-jep">J: {rname(e["jeopardy"])}</div>'
         elif t == "weekday":
             aptu = e.get("aptu")
-            html += f'<div class="pill {"pill-ul" if aptu else "pill-uncov"}">'
-            html += f'{"UL: "+rname(aptu) if aptu else "UNCOV"}</div>'
-            if e.get("intern"):
+            html += f'<div class="pill {"pill-ul pill-flag" if aptu and aptu in e.get("flags",[]) else ("pill-ul" if aptu else "pill-uncov")}">'
+            html += f'{\'UL: \'+rname(aptu) if aptu else \'UNCOV\'}</div>'
+            if e.get("intern") and e["intern"] in e.get("flags",[]):
+                html += f'<div class="pill pill-intern pill-flag">I: {rname(e["intern"])}</div>'
+            elif e.get("intern"):
                 html += f'<div class="pill pill-intern">I: {rname(e["intern"])}</div>'
             if e.get("jeopardy"):
                 html += f'<div class="pill pill-jep">J: {rname(e["jeopardy"])}</div>'
@@ -961,7 +981,7 @@ with tab_cal:
             st.markdown("---")
             st.markdown("**⚠ Warnings for this month**")
             for w in warns:
-                cls = "warn-hard" if ("UNCOVERED" in w or "back-to-back" in w) else "warn-soft"
+                cls = "warn-hard" if ("UNCOVERED" in w or "back-to-back" in w) else ("warn-soft" if "⚠" in w else "warn-soft")
                 st.markdown(f'<div class="{cls}">{w}</div>', unsafe_allow_html=True)
         else:
             st.markdown('<div class="warn-ok">✓ No warnings for this month</div>', unsafe_allow_html=True)

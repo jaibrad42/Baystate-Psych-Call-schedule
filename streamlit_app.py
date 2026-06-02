@@ -1058,7 +1058,7 @@ with tab_cal:
             "var p=window.parent.document;"
             "p.querySelectorAll('[data-edit-date]').forEach(function(el){"
             "if(el._ph)return;el._ph=1;el.style.cursor='pointer';"
-            "el.addEventListener('click',function(){"
+            "el.addEventListener('click',function(ev){ev.stopPropagation();ev.preventDefault();"
             "var d=this.getAttribute('data-edit-date');"
             "var r=this.getAttribute('data-edit-role');"
             "var u=window.parent.location.origin+window.parent.location.pathname+'?edit_date='+d+'&edit_role='+r;"
@@ -1067,7 +1067,7 @@ with tab_cal:
             "});"
             "}catch(e){}"
             "}"
-            "setTimeout(_go,500);setTimeout(_go,1500);setTimeout(_go,3000);"
+            "setInterval(_go,500);"
             "</script>",
             height=0
         )

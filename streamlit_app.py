@@ -811,7 +811,7 @@ st.markdown("""
 .cal-cell.wf       { border-left: 2px solid #3B82F6; }
 .cal-cell.empty    { background: transparent; min-height: 0; }
 .day-num { font-weight: 700; color: #8E8E93; margin-bottom: 3px; }
-.pill { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 500; margin: 1px 0; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pill { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 500; margin: 1px 0; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; transition: opacity 0.15s; }
 .pill-ul      { background: #1e3a8a33; color: #93C5FD; }
 .pill-aptu    { background: #3d247333; color: #C4B5FD; }
 .pill-consult { background: #06574633; color: #6EE7B7; }
@@ -820,6 +820,7 @@ st.markdown("""
 .pill-jep     { background: #06474733; color: #2DD4BF; font-style: italic; }
 .pill-flag    { outline: 2px solid #F59E0B; outline-offset: -1px; }
 .pill-uncov   { background: #7f1d1d; color: white; font-weight: 700; }
+.pill:hover   { opacity: 0.75; }
 .role-lbl     { font-size: 9px; color: #555; margin-bottom: 1px; }
 .warn-hard    { background: #3B1515; border-left: 3px solid #EF4444; padding: 6px 10px; border-radius: 4px; font-family: monospace; font-size: 12px; margin-bottom: 4px; color: #FCA5A5; }
 .warn-soft    { background: #2A1F0A; border-left: 3px solid #F59E0B; padding: 6px 10px; border-radius: 4px; font-family: monospace; font-size: 12px; margin-bottom: 4px; color: #FCD34D; }
@@ -992,33 +993,32 @@ def render_calendar(sched, cfg, year, month):
         if is_wf:  html += f' <span style="font-size:9px;color:#93C5FD">★</span>'
         html += '</div>'
 
+        def p(cls, lbl, d_k, role):
+            flag = " pill-flag" if (d_k and role and e.get(role) and e.get(role) in e.get("flags",[])) else ""
+            onclick = (" onclick=\"window._editPill('" + d_k + "','" + role + "')\" style=\"cursor:pointer\"") if d_k else ""
+            return '<div class="pill ' + cls + flag + '"' + onclick + '>' + lbl + '</div>'
         if is_nc:
             html += '<div style="font-size:10px;color:#8E8E93;font-style:italic">no call</div>'
         elif is_hol:
             aptu = rname(e.get("aptu","")) if e.get("aptu") else "—"
             con  = rname(e.get("consult","")) if e.get("consult") else "—"
-            html += f'<div class="pill pill-hol">A: {aptu}</div>'
-            html += f'<div class="pill pill-hol">C: {con}</div>'
+            html += p("pill-hol", "A: "+aptu, dk, "aptu")
+            html += p("pill-hol", "C: "+con,  dk, "consult")
         elif t == "weekend":
             aptu = e.get("aptu"); con = e.get("consult")
-            html += ('<div class="pill pill-aptu pill-flag">' if aptu and aptu in e.get("flags",[]) else ('<div class="pill pill-aptu">' if aptu else '<div class="pill pill-uncov">')) + ("A: "+rname(aptu) if aptu else "UNCOV") + "</div>"
-            html += ('<div class="pill pill-consult pill-flag">' if con and con in e.get("flags",[]) else ('<div class="pill pill-consult">' if con else '<div class="pill pill-uncov">')) + ("C: "+rname(con) if con else "UNCOV") + "</div>"
+            html += p("pill-aptu", ("A: "+rname(aptu) if aptu else "UNCOV"), dk, "aptu") if aptu else '<div class="pill pill-uncov">UNCOV</div>'
+            html += p("pill-consult", ("C: "+rname(con) if con else "UNCOV"), dk, "consult") if con else '<div class="pill pill-uncov">UNCOV</div>'
             if e.get("intern"):
-                html += f'<div class="pill pill-intern">I: {rname(e["intern"])}</div>'
+                html += p("pill-intern", "I: "+rname(e["intern"]), dk, "intern")
             if e.get("jeopardy"):
-                html += f'<div class="pill pill-jep">J: {rname(e["jeopardy"])}</div>'
+                html += p("pill-jep", "J: "+rname(e["jeopardy"]), dk, "jeopardy")
         elif t == "weekday":
             aptu = e.get("aptu")
-            html += ('<div class="pill pill-ul pill-flag">' if aptu and aptu in e.get("flags",[]) else ('<div class="pill pill-ul">' if aptu else '<div class="pill pill-uncov">')) + ("UL: "+rname(aptu) if aptu else "UNCOV") + "</div>"
-            if e.get("intern") and e["intern"] in e.get("flags",[]):
-                html += f'<div class="pill pill-intern pill-flag">I: {rname(e["intern"])}</div>'
-            elif e.get("intern"):
-                html += f'<div class="pill pill-intern">I: {rname(e["intern"])}</div>'
+            html += p("pill-ul", ("UL: "+rname(aptu) if aptu else "UNCOV"), dk, "aptu") if aptu else '<div class="pill pill-uncov">UNCOV</div>'
+            if e.get("intern"):
+                html += p("pill-intern", "I: "+rname(e["intern"]), dk, "intern")
             if e.get("jeopardy"):
-                html += f'<div class="pill pill-jep">J: {rname(e["jeopardy"])}</div>'
-        html += '</div>'
-    html += '</div>'
-    return html
+                html += p("pill-jep", "J: "+rname(e["jeopardy"]), dk, "jeopardy")
 
 
 # ─── Tab 1: Schedule ─────────────────────────────────────────
@@ -1032,6 +1032,16 @@ with tab_cal:
         sel_idx = st.selectbox("Month", range(len(months)), format_func=lambda i: month_labels[i])
         year, month = months[sel_idx]
         sched = st.session_state.all_scheds[(year,month)]
+        # Read pill-click query params and pre-seed editor state
+        _qp_date = st.query_params.get("edit_date", "")
+        _qp_role = st.query_params.get("edit_role", "")
+        if _qp_date and _qp_role:
+            _editable = sorted([dk for dk, ev in sched.items() if ev.get("type") not in ("no_call",)])
+            if _qp_date in _editable:
+                st.session_state["edit_date_sel"] = _editable.index(_qp_date)
+                st.session_state["edit_role_sel"] = _qp_role
+                st.session_state["edit_open"] = True
+                st.query_params.clear()
 
         st.markdown(f"### {month_labels[sel_idx]}")
 
@@ -1044,6 +1054,15 @@ with tab_cal:
             col.markdown(f'<span class="pill {cls}">{lbl}</span>', unsafe_allow_html=True)
 
         st.markdown(render_calendar(sched, cfg, year, month), unsafe_allow_html=True)
+        # Inject JS for pill-click → edit panel navigation
+        st.markdown("""<script>
+window._editPill = function(dk, role) {
+    var url = new URL(window.location.href);
+    url.searchParams.set('edit_date', dk);
+    url.searchParams.set('edit_role', role);
+    window.location.href = url.toString();
+};
+</script>""", unsafe_allow_html=True)
 
         # Warnings for this month
         warns = st.session_state.all_warns.get((year,month),[])
@@ -1057,7 +1076,7 @@ with tab_cal:
             st.markdown('<div class="warn-ok">✓ No warnings for this month</div>', unsafe_allow_html=True)
         # ── Manual shift editor ─────────────────────────────
         st.markdown("---")
-        with st.expander("✏️ Edit a shift manually"):
+        with st.expander("✏️ Edit a shift manually", expanded=st.session_state.pop("edit_open", False)):
             st.caption("Override an assigned shift — useful for real-world swaps that affect overall counts.")
             edit_cfg = get_cfg()
             edit_rb = res_by_id(edit_cfg)

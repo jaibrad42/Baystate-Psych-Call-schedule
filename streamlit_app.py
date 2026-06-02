@@ -223,6 +223,36 @@ def intern_limits(month, year):
 SOFT_CAPS = {1: 2, 2: 5, 3: 3, 4: 2}
 HARD_CAPS = {1: 3, 2: 6, 3: 5, 4: 4}
 
+# ─────────────────────────────────────────────────────────────
+# STATE PERSISTENCE HELPERS
+# ─────────────────────────────────────────────────────────────
+def _state_to_dict(state):
+    """Serialize State counters to a JSON-safe dict for cross-run continuity."""
+    return {
+        "last":    {k: v.isoformat() if v else None for k, v in state.last.items()},
+        "month":   dict(state.month),
+        "wf":      dict(state.wf),
+        "iwd":     dict(state.iwd),
+        "we_sats": {k: [d.isoformat() for d in v] for k, v in state.we_sats.items()},
+    }
+
+def _state_from_dict(d, state):
+    """Restore State counters from a previously serialized dict."""
+    if not d: return
+    for k, v in d.get("last", {}).items():
+        if k in state.last:
+            state.last[k] = date.fromisoformat(v) if v else None
+    for k, v in d.get("month", {}).items():
+        if k in state.month: state.month[k] = v
+    for k, v in d.get("wf", {}).items():
+        if k in state.wf: state.wf[k] = v
+    for k, v in d.get("iwd", {}).items():
+        if k in state.iwd: state.iwd[k] = v
+    for k, v in d.get("we_sats", {}).items():
+        if k in state.we_sats:
+            state.we_sats[k] = {date.fromisoformat(s) for s in v}
+
+
 class State:
     def __init__(self, cfg):
         rs = active_residents(cfg)
@@ -816,6 +846,7 @@ with st.sidebar:
         else:
             with st.spinner("Generating…"):
                 state = State(cfg)
+                _state_from_dict(cfg.get("scheduler_state"), state)
                 all_scheds = {}; all_warns = {}
                 y, m = sel_year, MONTH_MAP[sel_month]
                 for _ in range(sel_n):
@@ -826,13 +857,14 @@ with st.sidebar:
                     if m > 12: m = 1; y += 1
                 st.session_state.all_scheds = all_scheds
                 st.session_state.all_warns  = all_warns
-                # Save schedule to config for cross-session persistence
+                # Save schedule + scheduler state to config for cross-session persistence
                 try:
                     _cfg2 = get_cfg()
                     _cfg2["last_schedule"] = {
                         "scheds": {f"{y}-{m}": v for (y,m),v in all_scheds.items()},
                         "warns":  {f"{y}-{m}": v for (y,m),v in all_warns.items()},
                     }
+                    _cfg2["scheduler_state"] = _state_to_dict(state)
                     save_cfg(_cfg2)
                 except Exception:
                     pass
@@ -858,6 +890,13 @@ with st.sidebar:
         if st.button("🗑 Clear schedule", use_container_width=True):
             del st.session_state["all_scheds"]
             del st.session_state["all_warns"]
+            st.rerun()
+        if st.button("🔄 Reset scheduler history", use_container_width=True,
+                     help="Clear saved counters so the next schedule starts fresh (ignores prior call history)"):
+            _cfg3 = get_cfg()
+            _cfg3.pop("scheduler_state", None)
+            save_cfg(_cfg3)
+            st.success("Scheduler history cleared.")
             st.rerun()
 
 

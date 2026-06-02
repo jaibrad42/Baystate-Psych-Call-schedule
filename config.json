@@ -2557,11 +2557,8 @@
         "2026-09-20": {
           "type": "weekend",
           "consult": "smith",
-          "aptu": "ramirez",
-          "jeopardy": "ali",
-          "flags": [
-            "ramirez"
-          ]
+          "aptu": "auclair",
+          "jeopardy": "ali"
         },
         "2026-09-21": {
           "type": "weekday",
@@ -2582,7 +2579,10 @@
         "2026-09-24": {
           "type": "weekday",
           "aptu": "auclair",
-          "jeopardy": "dame"
+          "jeopardy": "dame",
+          "flags": [
+            "auclair"
+          ]
         },
         "2026-09-25": {
           "type": "weekday",
@@ -3174,7 +3174,7 @@
       ],
       "2026-8": [],
       "2026-9": [
-        "2026-09-20: \u26a0 APTU ramirez at q4 \u2014 needs review"
+        "2026-09-24: \u26a0 APTU auclair at q4 \u2014 needs review"
       ],
       "2026-10": [
         "2026-10-05: \u26a0 Intern tsandilas at q3 \u2014 needs review",

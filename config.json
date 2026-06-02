@@ -2371,11 +2371,10 @@
         },
         "2026-08-18": {
           "type": "weekday",
-          "aptu": "tsandilas",
+          "aptu": "wilson_braun",
           "intern": "tsandilas",
           "jeopardy": "brych",
           "flags": [
-            "tsandilas",
             "tsandilas"
           ]
         },
@@ -3187,7 +3186,6 @@
         "2026-07-10: \u26a0 INTERN tsandilas at q4 \u2014 needs review"
       ],
       "2026-8": [
-        "2026-08-18: \u26a0 APTU tsandilas at q4 \u2014 needs review",
         "2026-08-18: \u26a0 INTERN tsandilas at q4 \u2014 needs review"
       ],
       "2026-9": [

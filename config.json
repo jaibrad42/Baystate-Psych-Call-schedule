@@ -2149,11 +2149,11 @@
         "2026-07-10": {
           "type": "weekday",
           "aptu": "ali",
-          "intern": "tsandilas",
+          "intern": "holsonback",
+          "jeopardy": "siemiatkoski",
           "flags": [
-            "tsandilas"
-          ],
-          "jeopardy": "siemiatkoski"
+            "holsonback"
+          ]
         },
         "2026-07-11": {
           "type": "weekend",

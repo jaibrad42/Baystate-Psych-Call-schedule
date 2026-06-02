@@ -1085,9 +1085,9 @@ with tab_cal:
         _eq = st.query_params.get("edit_date", "")
         _er = st.query_params.get("edit_role", "")
         if _eq and _er:
-            _editable = sorted([dk for dk, de in sched.items() if de.get("type") != "jeopardy"])
+            _editable = sorted([dk for dk, de in sched.items() if de.get("type") not in ("no_call",)])
             if _eq in _editable:
-                st.session_state["edit_date_sel"] = _editable.index(_eq)
+                st.session_state["edit_date_sel"] = _eq
                 st.session_state["edit_role_sel"] = _er
                 st.session_state["edit_open"] = True
                 st.query_params.clear()

@@ -1049,42 +1049,45 @@ with tab_cal:
 
         # Calendar display (static)
         st.markdown(render_calendar(sched, cfg, year, month), unsafe_allow_html=True)
-        # Pill click bridge - stores component window ref in parent, click handlers use it
+        # Pill click bridge – uses Streamlit component protocol (no page reload)
         import streamlit.components.v1 as _cv1
-        _cv1.html(
+        _pill_click = _cv1.html(
             "<script>"
+            "var _ready=false;"
+            "function _send(v){window.parent.postMessage({type:'streamlit:setComponentValue',value:v,dataType:'json'},'*');}"
+            "window.addEventListener('message',function(e){"
+            "  if(e.data&&e.data.type==='streamlit:render'){_ready=true;}"
+            "});"
+            "window.parent.postMessage({type:'streamlit:componentReady',apiVersion:1},'*');"
             "function _go(){"
-            "try{"
-            "var p=window.parent.document;"
-            "p.querySelectorAll('[data-edit-date]').forEach(function(el){"
-            "if(el._ph)return;el._ph=1;el.style.cursor='pointer';"
-            "el.addEventListener('click',function(ev){ev.stopPropagation();ev.preventDefault();"
-            "var d=this.getAttribute('data-edit-date');"
-            "var r=this.getAttribute('data-edit-role');"
-            "var u=window.parent.location.origin+window.parent.location.pathname+'?edit_date='+d+'&edit_role='+r;"
-            "window.parent.history.pushState({},'',u);window.parent.location.reload();"
-            "});"
-            "});"
-            "}catch(e){}"
+            "  try{"
+            "    var p=window.parent;"
+            "    p.document.querySelectorAll('[data-edit-date]:not([data-ph])').forEach(function(el){"
+            "      el.dataset.ph='1';"
+            "      el.addEventListener('click',function(ev){"
+            "        ev.stopPropagation();ev.preventDefault();"
+            "        if(_ready)_send({date:el.dataset.editDate,role:el.dataset.editRole});"
+            "      });"
+            "    });"
+            "  }catch(e){}"
             "}"
             "setInterval(_go,500);"
             "</script>",
             height=0
         )
-        _eq = st.query_params.get("edit_date", "")
-        _er = st.query_params.get("edit_role", "")
-        if _eq and _er:
-            _editable = sorted([dk for dk, de in sched.items() if de.get("type") not in ("no_call",)])
+        if isinstance(_pill_click, dict) and _pill_click.get('date'):
+            _eq = str(_pill_click['date'])
+            _er = str(_pill_click.get('role', ''))
+            _editable = sorted([dk for dk, de in sched.items() if de.get('type') not in ('no_call',)])
             if _eq in _editable:
-                st.session_state["edit_date_sel"] = _eq
-                st.session_state["edit_role_sel"] = _er
-                st.session_state["edit_open"] = True
-                st.query_params.clear()
-                st.rerun()
+                st.session_state['edit_date_sel'] = _eq
+                st.session_state['edit_role_sel'] = _er
+                st.session_state['edit_open'] = True
+        if warns:
             st.markdown("---")
             st.markdown("**⚠ Warnings for this month**")
             for w in warns:
-                cls = "warn-hard" if ("UNCOVERED" in w or "back-to-back" in w) else ("warn-soft" if "⚠" in w else "warn-soft")
+                cls = "warn-hard" if ("UNCOVERED" in w or "back-to-back" in w) else "warn-soft"
                 st.markdown(f'<div class="{cls}">{w}</div>', unsafe_allow_html=True)
         else:
             st.markdown('<div class="warn-ok">✓ No warnings for this month</div>', unsafe_allow_html=True)

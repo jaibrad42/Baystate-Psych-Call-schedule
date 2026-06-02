@@ -2914,7 +2914,8 @@
         },
         "2026-11-25": {
           "type": "weekday",
-          "jeopardy": "smith"
+          "jeopardy": "smith",
+          "aptu": "ali"
         },
         "2026-11-26": {
           "type": "holiday",

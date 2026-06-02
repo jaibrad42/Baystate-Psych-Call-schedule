@@ -266,7 +266,7 @@ class State:
         last = self.last[res_id]
         gap  = (d - last).days if last else 99
         if gap < 2: return 1e9
-        q = 0 if gap >= 4 else (800 if gap == 3 else 2000)
+        q = 0 if gap >= 5 else (800 if gap == 4 else 2000)
         rb = res_by_id(cfg)
         pgy = rb[res_id]["pgy"] if res_id in rb else 2
         cap = SOFT_CAPS.get(pgy, 5)
@@ -349,8 +349,8 @@ def schedule_month(year, month, state, cfg):
                 warnings.append(f"{dk}: NO eligible Consult — UNCOVERED")
             elif state.last.get(con):
                 con_gap = (d - state.last[con]).days
-                if con_gap < 4:
-                    lbl = "q3" if con_gap == 2 else ("q4" if con_gap == 3 else "q5")
+                if con_gap < 5:
+                    lbl = "q2" if con_gap == 2 else ("q3" if con_gap == 3 else "q4")
                     warnings.append(f"{dk}: ⚠ Consult {con} at {lbl} — needs review")
                     entry.setdefault("flags", []).append(con)
             aptu = state.best([r for r in aptu_pool if r != con], d, aptu_role, cfg) or \
@@ -359,8 +359,8 @@ def schedule_month(year, month, state, cfg):
                 warnings.append(f"{dk}: NO eligible APTU — UNCOVERED")
             elif state.last.get(aptu):
                 aptu_gap = (d - state.last[aptu]).days
-                if aptu_gap < 4:
-                    lbl = "q3" if aptu_gap == 2 else ("q4" if aptu_gap == 3 else "q5")
+                if aptu_gap < 5:
+                    lbl = "q2" if aptu_gap == 2 else ("q3" if aptu_gap == 3 else "q4")
                     warnings.append(f"{dk}: ⚠ APTU {aptu} at {lbl} — needs review")
                     entry.setdefault("flags", []).append(aptu)
             if con: entry["consult"] = con; state.record(con, d, "consult")
@@ -374,8 +374,8 @@ def schedule_month(year, month, state, cfg):
                 warnings.append(f"{dk}: NO eligible APTU — UNCOVERED")
             else:
                 gap = (d - state.last[aptu]).days if state.last.get(aptu) else 99
-                if gap < 4:
-                    label = "q3" if gap == 2 else ("q4" if gap == 3 else "q5")
+                if gap < 5:
+                    label = "q2" if gap == 2 else ("q3" if gap == 3 else "q4")
                     warnings.append(f"{dk}: ⚠ APTU {aptu} at {label} — needs review")
                     entry.setdefault("flags", []).append(aptu)
             intern = None
@@ -389,8 +389,8 @@ def schedule_month(year, month, state, cfg):
                 entry["intern"] = intern
                 intern_gap = (d - state.last.get(intern, None)).days if state.last.get(intern) else 99
                 state.record(intern, d, "intern_wd")
-                if intern_gap < 4:
-                    lbl = "q3" if intern_gap == 2 else ("q4" if intern_gap == 3 else "q5")
+                if intern_gap < 5:
+                    lbl = "q2" if intern_gap == 2 else ("q3" if intern_gap == 3 else "q4")
                     warnings.append(f"{dk}: ⚠ Intern {intern} at {lbl} — needs review")
                     entry.setdefault("flags", []).append(intern)
             prev_intern = intern

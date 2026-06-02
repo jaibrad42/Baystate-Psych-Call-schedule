@@ -2573,7 +2573,8 @@
         "2026-09-23": {
           "type": "weekday",
           "aptu": "dame",
-          "jeopardy": "smith"
+          "jeopardy": "smith",
+          "intern": "holsonback"
         },
         "2026-09-24": {
           "type": "weekday",

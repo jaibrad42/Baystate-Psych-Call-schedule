@@ -2380,11 +2380,8 @@
         },
         "2026-08-19": {
           "type": "weekday",
-          "aptu": "wilson_braun",
-          "jeopardy": "wilson_braun",
-          "flags": [
-            "wilson_braun"
-          ]
+          "aptu": "mizrach",
+          "jeopardy": "wilson_braun"
         },
         "2026-08-20": {
           "type": "weekday",
@@ -2407,10 +2404,7 @@
           "type": "weekend",
           "consult": "siemiatkoski",
           "aptu": "wilson_braun",
-          "jeopardy": "smith",
-          "flags": [
-            "wilson_braun"
-          ]
+          "jeopardy": "smith"
         },
         "2026-08-24": {
           "type": "weekday",
@@ -3192,9 +3186,7 @@
         "2026-07-10: \u26a0 INTERN tsandilas at q4 \u2014 needs review"
       ],
       "2026-8": [
-        "2026-08-18: \u26a0 INTERN tsandilas at q4 \u2014 needs review",
-        "2026-08-19: \u26a0 APTU wilson_braun at q4 \u2014 needs review",
-        "2026-08-23: \u26a0 APTU wilson_braun at q4 \u2014 needs review"
+        "2026-08-18: \u26a0 INTERN tsandilas at q4 \u2014 needs review"
       ],
       "2026-9": [
         "2026-09-02: \u26a0 Intern holsonback at q3 \u2014 needs review",

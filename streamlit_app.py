@@ -306,6 +306,17 @@ class State:
             self.iwd[res_id] += 1
 
 
+def _flag_gap(res_id, d, role_lbl, prev_last, entry, warnings, dk):
+    """Check gap for any assigned resident regardless of role, flag if < q5 (gap < 5)."""
+    if prev_last is None:
+        return
+    gap = (d - prev_last).days
+    if gap < 5:
+        lbl = "q2" if gap == 2 else ("q3" if gap == 3 else "q4")
+        warnings.append(f"{dk}: ⚠ {role_lbl} at {lbl} — needs review")
+        entry.setdefault("flags", []).append(res_id)
+
+
 def schedule_month(year, month, state, cfg):
     pools = pgy_pools(cfg)
     first = date(year, month, 1)
@@ -333,9 +344,14 @@ def schedule_month(year, month, state, cfg):
             entry_h = {"type":"holiday","name":h["name"]}
             if h["aptu"]:    entry_h["aptu"]    = h["aptu"]
             if h["consult"]: entry_h["consult"] = h["consult"]
+            # Gap check for holiday assignments
+            if h["aptu"]:
+                _flag_gap(h["aptu"], d, f"APTU {h['aptu']}", state.last.get(h["aptu"]), entry_h, warnings, dk)
+                state.record(h["aptu"], d, "aptu_wd" if is_wk else "aptu_we_jul")
+            if h["consult"]:
+                _flag_gap(h["consult"], d, f"Consult {h['consult']}", state.last.get(h["consult"]), entry_h, warnings, dk)
+                state.record(h["consult"], d, "consult")
             sched[dk] = entry_h
-            if h["aptu"]:    state.record(h["aptu"],    d, "aptu_wd" if is_wk else "aptu_we_jul")
-            if h["consult"]: state.record(h["consult"], d, "consult")
             prev_intern = None; continue
 
         entry = {"type": "weekday" if is_wk else "weekend"}
@@ -347,22 +363,14 @@ def schedule_month(year, month, state, cfg):
                   state.fallback(pools["pgy34"], d, "consult", cfg)
             if con is None:
                 warnings.append(f"{dk}: NO eligible Consult — UNCOVERED")
-            elif state.last.get(con):
-                con_gap = (d - state.last[con]).days
-                if con_gap < 5:
-                    lbl = "q2" if con_gap == 2 else ("q3" if con_gap == 3 else "q4")
-                    warnings.append(f"{dk}: ⚠ Consult {con} at {lbl} — needs review")
-                    entry.setdefault("flags", []).append(con)
+            else:
+                _flag_gap(con, d, f"Consult {con}", state.last.get(con), entry, warnings, dk)
             aptu = state.best([r for r in aptu_pool if r != con], d, aptu_role, cfg) or \
                    state.fallback([r for r in aptu_pool if r != con], d, aptu_role, cfg)
             if aptu is None:
                 warnings.append(f"{dk}: NO eligible APTU — UNCOVERED")
-            elif state.last.get(aptu):
-                aptu_gap = (d - state.last[aptu]).days
-                if aptu_gap < 5:
-                    lbl = "q2" if aptu_gap == 2 else ("q3" if aptu_gap == 3 else "q4")
-                    warnings.append(f"{dk}: ⚠ APTU {aptu} at {lbl} — needs review")
-                    entry.setdefault("flags", []).append(aptu)
+            else:
+                _flag_gap(aptu, d, f"APTU {aptu}", state.last.get(aptu), entry, warnings, dk)
             if con: entry["consult"] = con; state.record(con, d, "consult")
             if aptu: entry["aptu"] = aptu; state.record(aptu, d, aptu_role)
             prev_intern = None
@@ -373,34 +381,28 @@ def schedule_month(year, month, state, cfg):
             if aptu is None:
                 warnings.append(f"{dk}: NO eligible APTU — UNCOVERED")
             else:
-                gap = (d - state.last[aptu]).days if state.last.get(aptu) else 99
-                if gap < 5:
-                    label = "q2" if gap == 2 else ("q3" if gap == 3 else "q4")
-                    warnings.append(f"{dk}: ⚠ APTU {aptu} at {label} — needs review")
-                    entry.setdefault("flags", []).append(aptu)
+                _flag_gap(aptu, d, f"APTU {aptu}", state.last.get(aptu), entry, warnings, dk)
+                entry["aptu"] = aptu; state.record(aptu, d, "aptu_wd")
             intern = None
             rb = res_by_id(cfg)
             if aptu and rb.get(aptu,{}).get("pgy",0) >= 3 and iwd_lim > 0:
                 for r in pools["interns"]:
                     if state.iwd.get(r,0) < iwd_lim and state.eligible(r, d, "intern", cfg) and r != prev_intern:
                         intern = r; break
-            if aptu:   entry["aptu"]   = aptu;   state.record(aptu, d, "aptu_wd")
             if intern:
                 entry["intern"] = intern
-                intern_gap = (d - state.last.get(intern, None)).days if state.last.get(intern) else 99
+                _flag_gap(intern, d, f"Intern {intern}", state.last.get(intern), entry, warnings, dk)
                 state.record(intern, d, "intern_wd")
-                if intern_gap < 5:
-                    lbl = "q2" if intern_gap == 2 else ("q3" if intern_gap == 3 else "q4")
-                    warnings.append(f"{dk}: ⚠ Intern {intern} at {lbl} — needs review")
-                    entry.setdefault("flags", []).append(intern)
             prev_intern = intern
 
         sched[dk] = entry
     return sched, warnings
 
 
-def schedule_jeopardy(sched, cfg):
+def schedule_jeopardy(sched, cfg, warnings=None):
+    if warnings is None: warnings = []
     rb = res_by_id(cfg)
+    sorted_days = sorted(sched.keys())
     for dk, entry in sched.items():
         if entry.get("type") == "no_call": continue
         d = date.fromisoformat(dk)
@@ -414,7 +416,21 @@ def schedule_jeopardy(sched, cfg):
                            if date.fromisoformat(dk2).month == d.month
                            and e2.get("jeopardy") == rid)
             cands.sort(key=lambda r: (month_load(r), r))
-            entry["jeopardy"] = cands[0]
+            jep = cands[0]
+            entry["jeopardy"] = jep
+            # Gap check: find last date this resident was on in any role
+            prev = None
+            for dk2 in sorted_days:
+                if dk2 >= dk: break
+                e2 = sched[dk2]
+                if jep in (e2.get("aptu"), e2.get("consult"), e2.get("intern"), e2.get("jeopardy")):
+                    prev = date.fromisoformat(dk2)
+            if prev:
+                gap = (d - prev).days
+                if gap < 5:
+                    lbl = "q2" if gap == 2 else ("q3" if gap == 3 else "q4")
+                    warnings.append(f"{dk}: ⚠ Jeopardy {jep} at {lbl} — needs review")
+                    entry.setdefault("flags", []).append(jep)
         else:
             entry["jeopardy"] = "UNCOVERED"
     return sched
@@ -812,7 +828,7 @@ with st.sidebar:
                 y, m = sel_year, MONTH_MAP[sel_month]
                 for _ in range(sel_n):
                     sched, warns = schedule_month(y, m, state, cfg)
-                    schedule_jeopardy(sched, cfg)
+                    schedule_jeopardy(sched, cfg, warns)
                     all_scheds[(y,m)] = sched; all_warns[(y,m)] = warns
                     m += 1
                     if m > 12: m = 1; y += 1

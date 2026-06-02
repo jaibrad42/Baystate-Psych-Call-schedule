@@ -2868,13 +2868,16 @@
         },
         "2026-11-16": {
           "type": "weekday",
-          "aptu": "ramirez",
+          "aptu": "kurtz",
           "jeopardy": "wilson_braun"
         },
         "2026-11-17": {
           "type": "weekday",
           "aptu": "kurtz",
-          "jeopardy": "brych"
+          "jeopardy": "brych",
+          "flags": [
+            "kurtz"
+          ]
         },
         "2026-11-18": {
           "type": "weekday",
@@ -3157,6 +3160,7 @@
       "2026-10": [],
       "2026-11": [
         "2026-11-14: \u26a0 CONSULT mastalerz at q4 \u2014 needs review",
+        "2026-11-17: \u26a0 APTU kurtz at q4 \u2014 needs review",
         "2026-11-21: \u26a0 APTU kurtz at q4 \u2014 needs review"
       ],
       "2026-12": [

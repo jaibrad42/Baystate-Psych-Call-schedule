@@ -1062,41 +1062,35 @@ with tab_cal:
         st.markdown(render_calendar(sched, cfg, year, month), unsafe_allow_html=True)
         # Pill click bridge - stores component window ref in parent, click handlers use it
         import streamlit.components.v1 as _cv1
-        _click = _cv1.html(
-            "<script src=\"https://unpkg.com/streamlit-component-lib@2.0.0/dist/index.js\"></script>"
+        _cv1.html(
             "<script>"
             "function _go(){"
             "try{"
             "var p=window.parent.document;"
-            "window.parent._pillBridgeFrame=window;"
             "p.querySelectorAll('[data-edit-date]').forEach(function(el){"
             "if(el._ph)return;el._ph=1;el.style.cursor='pointer';"
             "el.addEventListener('click',function(){"
             "var d=this.getAttribute('data-edit-date');"
             "var r=this.getAttribute('data-edit-role');"
-            "Streamlit.setComponentValue(d+'|'+r);"
+            "var u=window.parent.location.origin+window.parent.location.pathname+'?edit_date='+d+'&edit_role='+r;"
+            "window.parent.location.assign(u);"
             "});"
             "});"
-            "}catch(e){console.error(e);}"
+            "}catch(e){}"
             "}"
-            "window.addEventListener('message',function(ev){"
-            "if(!ev.data)return;"
-            "if(ev.data.type==='streamlit:render'){"
-            "_go();"
-            "}"
-            "});"
-            "setTimeout(function(){if(typeof Streamlit!=='undefined'){Streamlit.setComponentReady();_go();}},500);"
-            "setTimeout(function(){if(typeof Streamlit!=='undefined'){Streamlit.setComponentReady();_go();}},1500);"
+            "setTimeout(_go,500);setTimeout(_go,1500);setTimeout(_go,3000);"
             "</script>",
             height=0
         )
-        if _click and '|' in str(_click):
-            _pts = str(_click).split('|', 1)
-            _editable = sorted([dk for dk, ev in sched.items() if ev.get("type") not in ("no_call",)])
-            if _pts[0] in _editable:
-                st.session_state["edit_date_sel"] = _editable.index(_pts[0])
-                st.session_state["edit_role_sel"] = _pts[1]
+        _eq = st.query_params.get("edit_date", "")
+        _er = st.query_params.get("edit_role", "")
+        if _eq and _er:
+            _editable = sorted([dk for dk, de in sched.items() if de.get("type") != "jeopardy"])
+            if _eq in _editable:
+                st.session_state["edit_date_sel"] = _editable.index(_eq)
+                st.session_state["edit_role_sel"] = _er
                 st.session_state["edit_open"] = True
+                st.query_params.clear()
                 st.rerun()
             st.markdown("---")
             st.markdown("**⚠ Warnings for this month**")

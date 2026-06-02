@@ -1059,6 +1059,28 @@ with tab_cal:
             col.markdown(f'<span class="pill {cls}">{lbl}</span>', unsafe_allow_html=True)
 
         st.markdown(render_calendar(sched, cfg, year, month), unsafe_allow_html=True)
+        # Pill-click bridge: attach click handlers from component iframe to parent DOM
+        import streamlit.components.v1 as _cv1
+        _js = (
+            "<script>"
+            "(function(){"
+            "function go(){"
+            "var p=window.parent.document;"
+            "p.querySelectorAll('[data-edit-date]').forEach(function(el){"
+            "if(el._ph)return;el._ph=1;"
+            "el.addEventListener('click',function(){"
+            "var u=new URL(window.parent.location.href);"
+            "u.searchParams.set('edit_date',this.getAttribute('data-edit-date'));"
+            "u.searchParams.set('edit_role',this.getAttribute('data-edit-role'));"
+            "window.parent.location.href=u.toString();"
+            "});"
+            "});"
+            "}"
+            "go();setTimeout(go,800);"
+            "})();"
+            "</script>"
+        )
+        _cv1.html(_js, height=0)
         # Warnings for this month
         warns = st.session_state.all_warns.get((year,month),[])
         if warns:

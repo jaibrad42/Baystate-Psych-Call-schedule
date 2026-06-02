@@ -995,8 +995,10 @@ def render_calendar(sched, cfg, year, month):
 
         def p(cls, lbl, d_k, role):
             flag = " pill-flag" if (d_k and role and e.get(role) and e.get(role) in e.get("flags",[])) else ""
-            onclick = (" onclick=\"window._editPill('" + d_k + "','" + role + "')\" style=\"cursor:pointer\"") if d_k else ""
-            return '<div class="pill ' + cls + flag + '"' + onclick + '>' + lbl + '</div>'
+            if d_k:
+                href = "?edit_date=" + d_k + "&edit_role=" + role
+                return '<a href="' + href + '" style="text-decoration:none;display:block"><div class="pill ' + cls + flag + '" style="cursor:pointer">' + lbl + '</div></a>'
+            return '<div class="pill ' + cls + flag + '">' + lbl + '</div>'
         if is_nc:
             html += '<div style="font-size:10px;color:#8E8E93;font-style:italic">no call</div>'
         elif is_hol:
@@ -1057,15 +1059,6 @@ with tab_cal:
             col.markdown(f'<span class="pill {cls}">{lbl}</span>', unsafe_allow_html=True)
 
         st.markdown(render_calendar(sched, cfg, year, month), unsafe_allow_html=True)
-        # Inject JS for pill-click → edit panel navigation
-        st.markdown("""<script>
-window._editPill = function(dk, role) {
-    var url = new URL(window.location.href);
-    url.searchParams.set('edit_date', dk);
-    url.searchParams.set('edit_role', role);
-    window.location.href = url.toString();
-};
-</script>""", unsafe_allow_html=True)
 
         # Warnings for this month
         warns = st.session_state.all_warns.get((year,month),[])

@@ -2904,11 +2904,8 @@
         "2026-11-22": {
           "type": "weekend",
           "consult": "mann",
-          "aptu": "kurtz",
-          "jeopardy": "brych",
-          "flags": [
-            "kurtz"
-          ]
+          "aptu": "ramirez",
+          "jeopardy": "brych"
         },
         "2026-11-23": {
           "type": "weekday",
@@ -2931,10 +2928,7 @@
           "name": "Thanksgiving",
           "aptu": "kurtz",
           "consult": "mastalerz",
-          "jeopardy": "ali",
-          "flags": [
-            "kurtz"
-          ]
+          "jeopardy": "ali"
         },
         "2026-11-27": {
           "type": "holiday",
@@ -3163,9 +3157,7 @@
       "2026-10": [],
       "2026-11": [
         "2026-11-14: \u26a0 CONSULT mastalerz at q4 \u2014 needs review",
-        "2026-11-21: \u26a0 APTU kurtz at q4 \u2014 needs review",
-        "2026-11-22: \u26a0 APTU kurtz at q4 \u2014 needs review",
-        "2026-11-26: \u26a0 APTU kurtz at q4 \u2014 needs review"
+        "2026-11-21: \u26a0 APTU kurtz at q4 \u2014 needs review"
       ],
       "2026-12": [
         "2026-12-02: \u26a0 Intern holsonback at q3 \u2014 needs review",

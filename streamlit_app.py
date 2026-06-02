@@ -996,8 +996,9 @@ def render_calendar(sched, cfg, year, month):
         def p(cls, lbl, d_k, role):
             flag = " pill-flag" if (d_k and role and e.get(role) and e.get(role) in e.get("flags",[])) else ""
             if d_k:
-                return '<div class="pill ' + cls + flag + '" data-edit-date="' + d_k + '" data-edit-role="' + role + '" style="cursor:pointer">' + lbl + '</div>'
-            return '<div class="pill ' + cls + flag + '">' + lbl + '</div>'
+                da = " data-edit-date=" + chr(39) + d_k + chr(39) + " data-edit-role=" + chr(39) + role + chr(39) + " style=" + chr(39) + "cursor:pointer" + chr(39)
+                return "<div class=" + chr(39) + "pill " + cls + flag + chr(39) + da + ">" + lbl + "</div>"
+            return "<div class=" + chr(39) + "pill " + cls + flag + chr(39) + ">" + lbl + "</div>"
             html += '<div style="font-size:10px;color:#8E8E93;font-style:italic">no call</div>'
         elif is_hol:
             aptu = rname(e.get("aptu","")) if e.get("aptu") else "—"

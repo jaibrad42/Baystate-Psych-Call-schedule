@@ -353,6 +353,28 @@ def _flag_gap(res_id, d, role_lbl, prev_last, entry, warnings, dk):
         entry.setdefault("flags", []).append(res_id)
 
 
+
+def recompute_warnings(sched, cfg):
+    """Re-derive gap flags and warnings for a manually edited schedule."""
+    # Clear all existing flags
+    for entry in sched.values():
+        entry.pop("flags", None)
+    last_seen = {}   # res_id -> last date they were assigned
+    warnings = []
+    for dk in sorted(sched.keys()):
+        entry = sched[dk]
+        if entry.get("type") == "no_call":
+            continue
+        d = date.fromisoformat(dk)
+        for role_key in ("aptu", "consult", "intern"):
+            rid = entry.get(role_key)
+            if not rid:
+                continue
+            prev = last_seen.get(rid)
+            _flag_gap(rid, d, role_key.upper() + " " + rid, prev, entry, warnings, dk)
+            last_seen[rid] = d
+    return warnings
+
 def schedule_month(year, month, state, cfg):
     pools = pgy_pools(cfg)
     first = date(year, month, 1)
@@ -1091,21 +1113,10 @@ with tab_cal:
                             target_entry.pop(edit_role_key, None)
                         else:
                             target_entry[edit_role_key] = new_rid
-                        target_entry.pop("flags", None)
-                        for rk in ("aptu", "consult", "intern"):
-                            rid2 = target_entry.get(rk)
-                            if rid2:
-                                prev_date = None
-                                for dk2 in sorted(updated_scheds[(year, month)].keys()):
-                                    if dk2 >= edit_date: break
-                                    ev2 = updated_scheds[(year, month)][dk2]
-                                    if any(ev2.get(rk2) == rid2 for rk2 in ("aptu","consult","intern")):
-                                        prev_date = date.fromisoformat(dk2)
-                                if prev_date:
-                                    gap2 = (date.fromisoformat(edit_date) - prev_date).days
-                                    if gap2 < 5:
-                                        target_entry.setdefault("flags", []).append(rid2)
+                        # Recompute all warnings + flags for the whole month
+                        new_warns = recompute_warnings(updated_scheds[(year, month)], get_cfg())
                         st.session_state.all_scheds = updated_scheds
+                        st.session_state.all_warns[(year, month)] = new_warns
                         try:
                             _cfg_upd = get_cfg()
                             _cfg_upd["last_schedule"] = {

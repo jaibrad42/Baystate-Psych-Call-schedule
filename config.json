@@ -3000,7 +3000,7 @@
         },
         "2026-12-11": {
           "type": "weekday",
-          "aptu": "wilson_braun",
+          "aptu": "mastalerz",
           "jeopardy": "dame"
         },
         "2026-12-12": {
@@ -3018,7 +3018,10 @@
         "2026-12-14": {
           "type": "weekday",
           "aptu": "mastalerz",
-          "jeopardy": "siemiatkoski"
+          "jeopardy": "siemiatkoski",
+          "flags": [
+            "mastalerz"
+          ]
         },
         "2026-12-15": {
           "type": "weekday",
@@ -3127,6 +3130,7 @@
       "2026-10": [],
       "2026-11": [],
       "2026-12": [
+        "2026-12-14: \u26a0 APTU mastalerz at q3 \u2014 needs review",
         "2026-12-18: \u26a0 APTU mastalerz at q4 \u2014 needs review"
       ]
     }

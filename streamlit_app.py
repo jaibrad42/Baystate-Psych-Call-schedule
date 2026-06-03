@@ -1139,12 +1139,10 @@ with tab_cal:
             "        };" +
             "        var r2=el.getBoundingClientRect();" +
             "        var pw=p.innerWidth;var ph=p.innerHeight;" +
-            "        var lx=Math.min(r2.left,pw-240);" +
-            "        var ty=r2.bottom+6;" +
-            "        if(ty+200>ph)ty=r2.top-210;" +
+            "        var lx=Math.min(Math.max(r2.left,8),pw-248);" +
+            "        var ty=r2.bottom+6;if(ty+220>ph)ty=r2.top-225;if(ty<8)ty=8;" +
             "        pop.style.left=lx+'px';pop.style.top=ty+'px';" +
-            "        pop.style.display='block';" +
-            "      });" +
+            "        pop.style.display='block';" 
             "    });" +
             "  }catch(e){}" +
             "}" +

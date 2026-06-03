@@ -1049,24 +1049,32 @@ with tab_cal:
 
         # Calendar display (static)
         st.markdown(render_calendar(sched, cfg, year, month), unsafe_allow_html=True)
-        # Pill click bridge – uses Streamlit component protocol (no page reload)
+        # Pill click bridge — smooth click with overlay mask before reload
         import streamlit.components.v1 as _cv1
-        _pill_click = _cv1.html(
+        _cv1.html(
             "<script>"
-            "var _ready=false;"
-            "function _send(v){window.parent.postMessage({type:'streamlit:setComponentValue',value:v,dataType:'json'},'*');}"
-            "window.addEventListener('message',function(e){"
-            "  if(e.data&&e.data.type==='streamlit:render'){_ready=true;}"
-            "});"
-            "window.parent.postMessage({type:'streamlit:componentReady',apiVersion:1},'*');"
+            "function _injectOverlay(p){"
+            "  if(p.document.getElementById('_pov'))return;"
+            "  var s=p.document.createElement('style');"
+            "  s.textContent='#_pov{display:none;position:fixed;inset:0;z-index:9999;background:rgba(14,17,23,.88);align-items:center;justify-content:center;}"
+            "  #_pov.show{display:flex;}@keyframes sp{to{transform:rotate(360deg)}}#_psp{width:36px;height:36px;border:4px solid #444;border-top:4px solid #ff4b4b;border-radius:50%;animation:sp .7s linear infinite;}';"
+            "  p.document.head.appendChild(s);"
+            "  var d=p.document.createElement('div');d.id='_pov';"
+            "  d.innerHTML='<div id=\"_psp\"></div>';"
+            "  p.document.body.appendChild(d);}"
             "function _go(){"
             "  try{"
             "    var p=window.parent;"
+            "    _injectOverlay(p);"
             "    p.document.querySelectorAll('[data-edit-date]:not([data-ph])').forEach(function(el){"
             "      el.dataset.ph='1';"
             "      el.addEventListener('click',function(ev){"
             "        ev.stopPropagation();ev.preventDefault();"
-            "        if(_ready)_send({date:el.dataset.editDate,role:el.dataset.editRole});"
+            "        var ov=p.document.getElementById('_pov');"
+            "        if(ov)ov.className='show';"
+            "        var u=p.location.pathname+'?edit_date='+el.dataset.editDate+'&edit_role='+el.dataset.editRole;"
+            "        p.history.pushState({},'',u);"
+            "        setTimeout(function(){p.location.reload();},50);"
             "      });"
             "    });"
             "  }catch(e){}"
@@ -1075,14 +1083,16 @@ with tab_cal:
             "</script>",
             height=0
         )
-        if isinstance(_pill_click, dict) and _pill_click.get('date'):
-            _eq = str(_pill_click['date'])
-            _er = str(_pill_click.get('role', ''))
+        _eq = st.query_params.get('edit_date', '')
+        _er = st.query_params.get('edit_role', '')
+        if _eq and _er:
             _editable = sorted([dk for dk, de in sched.items() if de.get('type') not in ('no_call',)])
             if _eq in _editable:
                 st.session_state['edit_date_sel'] = _eq
                 st.session_state['edit_role_sel'] = _er
                 st.session_state['edit_open'] = True
+                st.query_params.clear()
+                st.rerun()
         if warns:
             st.markdown("---")
             st.markdown("**⚠ Warnings for this month**")

@@ -1146,7 +1146,7 @@ with tab_cal:
             "p.document.head.appendChild(s);" +
             "}}"
         )
-        _cv1.html("<scr" + "ipt>" + _bridge_js + "</" + "script>", height=0)
+        _cv1.html("<scr" + "ipt>" + _bridge_js + "</" + "script>", height=1)
         _xd = st.query_params.get('X_date', '')
         _xr = st.query_params.get('X_role', '')
         _xres = st.query_params.get('X_res', '')

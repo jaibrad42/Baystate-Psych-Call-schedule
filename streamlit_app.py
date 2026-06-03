@@ -1102,51 +1102,47 @@ with tab_cal:
         _fjson = json.dumps(_flag_map)
         st.markdown(render_calendar(sched, cfg, year, month, _rjson, _fjson), unsafe_allow_html=True)
         import streamlit.components.v1 as _cv1
-        _bridge_js = (
-            "var p=window.parent;" +
-            "if(p&&p.document){" +
-            "var old=p.document.getElementById('_speh_s');" +
-            "if(old)old.remove();" +
-            "var d=p.document.getElementById('_spe_data');" +
-            "if(d){" +
-            "var rj=d.getAttribute('data-r');" +
-            "var fj=d.getAttribute('data-f');" +
-            "var s=p.document.createElement('script');" +
-            "s.id='_speh_s';" +
-            "s.textContent='(function(){" +
-            "var _R='+rj+';var _F='+fj+';" +
+        import base64 as _b64
+        _handler_src = (
+            "(function(){" +
+            "var d=document.getElementById('_spe_data');" +
+            "if(!d)return;" +
+            "var _R=JSON.parse(d.getAttribute('data-r'));" +
+            "var _F=JSON.parse(d.getAttribute('data-f'));" +
             "function _show(el){" +
-            "var pop=document.getElementById(\'_spe\');if(!pop)return;" +
-            "var dt=el.getAttribute(\'data-edit-date\');" +
-            "var role=el.getAttribute(\'data-edit-role\');" +
+            "var pop=document.getElementById('_spe');if(!pop)return;" +
+            "var dt=el.getAttribute('data-edit-date');" +
+            "var role=el.getAttribute('data-edit-role');" +
             "var lbl=el.textContent.trim();" +
-            "document.getElementById(\'_sph4\').textContent=dt+\'  -  \'+role;" +
-            "document.getElementById(\'_spcur\').textContent=\'Currently: \'+(lbl.charAt(0)==\'+\'?\'(none)\'  :lbl);" +
-            "var sel=document.getElementById(\'_spsel\');sel.innerHTML=\'\';var dF=(_F[dt]||{});" +
-            "[{id:\'\',name:\'- clear -\'}].concat(_R).forEach(function(r){" +
-            "var o=document.createElement(\'option\');o.value=r.id;" +
-            "var rf=dF[r.id];o.textContent=rf?\'! \'+r.name+\'[\'+rf.join(\',\')+\']\'  :r.name;" +
-            "if(rf)o.style.color=\'#f6ad55\';sel.appendChild(o);});" +
-            "pop._savDate=dt;pop._savRole=role;" +
-            "document.getElementById(\'_spsav\').onclick=function(){" +
-            "var rid=sel.value;pop.style.display=\'none\';" +
-            "location.href=location.pathname+\'?X_date=\'+encodeURIComponent(pop._savDate)+\'&X_role=\'+encodeURIComponent(pop._savRole)+\'&X_res=\'+encodeURIComponent(rid);};" +
+            "document.getElementById('_sph4').textContent=dt+'  -  '+({aptu:'APTU/UL',intern:'Intern',consult:'Consult',jeopardy:'Jeopardy'}[role]||role);" +
+            "document.getElementById('_spcur').textContent='Currently: '+(lbl.charAt(0)=='+'?'(none)':lbl);" +
+            "var sel=document.getElementById('_spsel');sel.innerHTML='';" +
+            "var dF=(_F[dt]||{});" +
+            "[{id:'',name:'- clear -'}].concat(_R).forEach(function(r){var o=document.createElement('option');o.value=r.id;var rf=dF[r.id];o.textContent=rf?'! '+r.name+'['+rf.join(',')+']':r.name;if(rf)o.style.color='#f6ad55';sel.appendChild(o);});" +
+            "pop._sd=dt;pop._sr=role;" +
+            "document.getElementById('_spsav').onclick=function(){var rid=sel.value;pop.style.display='none';location.href=location.pathname+'?X_date='+encodeURIComponent(pop._sd)+'&X_role='+encodeURIComponent(pop._sr)+'&X_res='+encodeURIComponent(rid);};" +
             "var r2=el.getBoundingClientRect();" +
             "var lx=Math.min(Math.max(r2.left,8),window.innerWidth-248);" +
             "var ty=r2.bottom+6;if(ty+220>window.innerHeight)ty=r2.top-225;if(ty<8)ty=8;" +
-            "pop.style.left=lx+\'px\';pop.style.top=ty+\'px\';pop.style.display=\'block\'            nt;" +
-            "document.getElementById(\'_spcan\').onclick=function(){document.getElementById(\'_spe\').style.display=\'none\';};" +
-            "document.addEventListener(\'keydown\',function(e){if(e.key===\'Escape\')document.getElementById(\'_spe\').style.display=\'none\';});" +
-            "document.addEventListener(\'mousedown\',function(ev){" +
-            "var el=ev.target;" +
-            "if(el.classList.contains(\'pill\')&&el.getAttribute(\'data-edit-date\')){_show(el);}" +
-            "else{var pop=document.getElementById(\'_spe\');if(pop&&pop.style.display!==\'none\'&&!pop.contains(el))pop.style.display=\'none\';}" +
-            "},true);" +
-            "})()';" +
-            "p.document.head.appendChild(s);" +
-            "}}"
+            "pop.style.left=lx+'px';pop.style.top=ty+'px';pop.style.display='block';}" +
+            "document.getElementById('_spcan').onclick=function(){document.getElementById('_spe').style.display='none';};" +
+            "document.addEventListener('keydown',function(e){if(e.key==='Escape')document.getElementById('_spe').style.display='none';});" +
+            "document.addEventListener('mousedown',function(ev){var el=ev.target;if(el.classList.contains('pill')&&el.getAttribute('data-edit-date')){_show(el);}else{var pop=document.getElementById('_spe');if(pop&&pop.style.display!=='none'&&!pop.contains(el))pop.style.display='none';}},true);" +
+            "})()"
         )
-        _cv1.html("<scr" + "ipt>" + _bridge_js + "</" + "script>", height=1)
+        _handler_b64 = _b64.b64encode(_handler_src.encode()).decode()
+        _cv1.html(
+            f"<scri" + f"pt>" +
+            "var p=window.parent;if(p&&p.document){" +
+            "var old=p.document.getElementById('_speh_s');if(old)old.remove();" +
+            "var d=p.document.getElementById('_spe_data');if(d){" +
+            "var s=p.document.createElement('script');s.id='_speh_s';" +
+            f"var b64='{_handler_b64}';" +
+            "s.textContent=atob(b64);" +
+            "p.document.head.appendChild(s);}}" +
+            "</" + "script>",
+            height=1
+        )
         _xd = st.query_params.get('X_date', '')
         _xr = st.query_params.get('X_role', '')
         _xres = st.query_params.get('X_res', '')

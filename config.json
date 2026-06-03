@@ -2970,11 +2970,7 @@
         "2026-12-04": {
           "type": "weekday",
           "aptu": "ali",
-          "intern": "holsonback",
-          "jeopardy": "mann",
-          "flags": [
-            "holsonback"
-          ]
+          "jeopardy": "mann"
         },
         "2026-12-05": {
           "type": "weekend",
@@ -3151,7 +3147,6 @@
       "2026-10": [],
       "2026-11": [],
       "2026-12": [
-        "2026-12-04: \u26a0 INTERN holsonback at q2 \u2014 needs review",
         "2026-12-06: \u26a0 CONSULT ali at q2 \u2014 needs review",
         "2026-12-08: \u26a0 INTERN li at q2 \u2014 needs review",
         "2026-12-11: \u26a0 INTERN li at q3 \u2014 needs review",

@@ -3086,11 +3086,9 @@
         "2026-12-23": {
           "type": "weekday",
           "aptu": "auclair",
-          "intern": "tsandilas",
           "jeopardy": "ali",
           "flags": [
-            "auclair",
-            "tsandilas"
+            "auclair"
           ]
         },
         "2026-12-24": {
@@ -3159,7 +3157,6 @@
         "2026-12-11: \u26a0 INTERN li at q3 \u2014 needs review",
         "2026-12-13: \u26a0 CONSULT mann at q2 \u2014 needs review",
         "2026-12-23: \u26a0 APTU auclair at q4 \u2014 needs review",
-        "2026-12-23: \u26a0 INTERN tsandilas at q2 \u2014 needs review",
         "2026-12-24: \u26a0 APTU auclair at q4 \u2014 needs review"
       ]
     }

@@ -3019,11 +3019,8 @@
         },
         "2026-12-14": {
           "type": "weekday",
-          "aptu": "wilson_braun",
-          "jeopardy": "siemiatkoski",
-          "flags": [
-            "wilson_braun"
-          ]
+          "aptu": "mann",
+          "jeopardy": "siemiatkoski"
         },
         "2026-12-15": {
           "type": "weekday",
@@ -3128,9 +3125,7 @@
       "2026-9": [],
       "2026-10": [],
       "2026-11": [],
-      "2026-12": [
-        "2026-12-14: \u26a0 APTU wilson_braun at q3 \u2014 needs review"
-      ]
+      "2026-12": []
     }
   }
 }

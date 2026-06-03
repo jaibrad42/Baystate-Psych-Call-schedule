@@ -2100,7 +2100,8 @@
         },
         "2026-07-02": {
           "type": "weekday",
-          "jeopardy": "mann"
+          "jeopardy": "mann",
+          "aptu": "ali"
         },
         "2026-07-03": {
           "type": "holiday",

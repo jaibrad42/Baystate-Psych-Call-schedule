@@ -2875,7 +2875,7 @@
         },
         "2026-11-18": {
           "type": "weekday",
-          "aptu": "dame",
+          "aptu": "mann",
           "intern": "tsandilas",
           "jeopardy": "dame"
         },
@@ -2893,16 +2893,16 @@
           "type": "weekend",
           "consult": "dame",
           "aptu": "kurtz",
-          "jeopardy": "wilson_braun",
-          "flags": [
-            "dame"
-          ]
+          "jeopardy": "wilson_braun"
         },
         "2026-11-22": {
           "type": "weekend",
           "consult": "mann",
           "aptu": "ramirez",
-          "jeopardy": "brych"
+          "jeopardy": "brych",
+          "flags": [
+            "mann"
+          ]
         },
         "2026-11-23": {
           "type": "weekday",
@@ -3153,7 +3153,7 @@
       "2026-9": [],
       "2026-10": [],
       "2026-11": [
-        "2026-11-21: \u26a0 CONSULT dame at q3 \u2014 needs review"
+        "2026-11-22: \u26a0 CONSULT mann at q4 \u2014 needs review"
       ],
       "2026-12": [
         "2026-12-02: \u26a0 Intern holsonback at q3 \u2014 needs review",

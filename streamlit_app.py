@@ -1115,16 +1115,16 @@ with tab_cal:
             "        var h4=p.document.getElementById('_sph4');" +
             "        var cur=p.document.getElementById('_spcur');" +
             "        var rmap={aptu:'APTU/UL',intern:'Intern',jeopardy:'Jeopardy',consult:'Consult',holiday:'Holiday'};" +
-            "        h4.textContent=dt+' \u2014 '+(rmap[role]||role);" +
+            "        h4.textContent=dt+'  -  '+(rmap[role]||role);" +
             "        cur.textContent='Currently: '+lbl;" +
             "        sel.innerHTML='';" +
             "        var dayFlags=(_flags[dt]||{});" +
-            "        var opts=[{id:'',name:'\u2014 clear slot \u2014'}].concat(_residents);" +
+            "        var opts=[{id:'',name:'- clear slot -'}].concat(_residents);" +
             "        opts.forEach(function(r){" +
             "          var o=p.document.createElement('option');" +
             "          o.value=r.id;" +
             "          var rf=dayFlags[r.id];" +
-            "          o.textContent=rf?'\u26a0 '+r.name+' ['+rf.join(', ')+']':r.name;" +
+            "          o.textContent=rf?'! '+r.name+' ['+rf.join(', ')+']':r.name;" +
             "          if(rf)o.style.color='#f6ad55';" +
             "          sel.appendChild(o);" +
             "        });" +

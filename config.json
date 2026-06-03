@@ -2984,9 +2984,12 @@
         },
         "2026-12-08": {
           "type": "weekday",
-          "aptu": "dame",
+          "aptu": "ali",
           "intern": "li",
-          "jeopardy": "ali"
+          "jeopardy": "ali",
+          "flags": [
+            "ali"
+          ]
         },
         "2026-12-09": {
           "type": "weekday",
@@ -3007,10 +3010,7 @@
           "type": "weekend",
           "consult": "dame",
           "aptu": "ramirez",
-          "jeopardy": "mann",
-          "flags": [
-            "dame"
-          ]
+          "jeopardy": "mann"
         },
         "2026-12-13": {
           "type": "weekend",
@@ -3127,7 +3127,7 @@
       "2026-10": [],
       "2026-11": [],
       "2026-12": [
-        "2026-12-12: \u26a0 CONSULT dame at q4 \u2014 needs review"
+        "2026-12-08: \u26a0 APTU ali at q4 \u2014 needs review"
       ]
     }
   }

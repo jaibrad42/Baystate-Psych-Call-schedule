@@ -1019,6 +1019,8 @@ def render_calendar(sched, cfg, year, month):
             html += p("pill-ul", ("UL: "+rname(aptu) if aptu else "UNCOV"), dk, "aptu") if aptu else '<div class="pill pill-uncov">UNCOV</div>'
             if e.get("intern"):
                 html += p("pill-intern", "I: "+rname(e["intern"]), dk, "intern")
+            else:
+                html += p("pill-intern", "+ Intern", dk, "intern")
             if e.get("jeopardy"):
                 html += p("pill-jep", "J: "+rname(e["jeopardy"]), dk, "jeopardy")
         html += '</div>'
@@ -1034,7 +1036,15 @@ with tab_cal:
         cfg = get_cfg()
         months = sorted(st.session_state.all_scheds.keys())
         month_labels = [date(y,m,1).strftime("%B %Y") for y,m in months]
-        sel_idx = st.selectbox("Month", range(len(months)), format_func=lambda i: month_labels[i])
+        _xd_pre = st.query_params.get("X_date", "")
+        _def_idx = 0
+        if _xd_pre:
+            try:
+                _xd_ym = (date.fromisoformat(_xd_pre).year, date.fromisoformat(_xd_pre).month)
+                _def_idx = months.index(_xd_ym) if _xd_ym in months else 0
+            except Exception:
+                pass
+        sel_idx = st.selectbox("Month", range(len(months)), index=_def_idx, format_func=lambda i: month_labels[i])
         year, month = months[sel_idx]
         sched = st.session_state.all_scheds[(year,month)]
         warns = st.session_state.get('all_warns', {}).get((year, month), [])
@@ -1116,7 +1126,7 @@ with tab_cal:
             "        var cur=p.document.getElementById('_spcur');" +
             "        var rmap={aptu:'APTU/UL',intern:'Intern',jeopardy:'Jeopardy',consult:'Consult',holiday:'Holiday'};" +
             "        h4.textContent=dt+'  -  '+(rmap[role]||role);" +
-            "        cur.textContent='Currently: '+lbl;" +
+            "          cur.textContent='Currently: '+(lbl.startsWith('+')?'(none)':lbl);" +
             "        sel.innerHTML='';" +
             "        var dayFlags=(_flags[dt]||{});" +
             "        var opts=[{id:'',name:'- clear slot -'}].concat(_residents);" +

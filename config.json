@@ -2959,7 +2959,10 @@
           "type": "weekday",
           "aptu": "dame",
           "intern": "holsonback",
-          "jeopardy": "brych"
+          "jeopardy": "brych",
+          "flags": [
+            "holsonback"
+          ]
         },
         "2026-12-03": {
           "type": "weekday",
@@ -3132,7 +3135,9 @@
         "2026-10-03: \u26a0 APTU auclair at q4 \u2014 needs review"
       ],
       "2026-11": [],
-      "2026-12": []
+      "2026-12": [
+        "2026-12-02: \u26a0 INTERN holsonback at q3 \u2014 needs review"
+      ]
     }
   }
 }

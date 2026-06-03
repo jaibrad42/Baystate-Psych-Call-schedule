@@ -3032,8 +3032,11 @@
         },
         "2026-12-17": {
           "type": "weekday",
-          "aptu": "ramirez",
-          "jeopardy": "ali"
+          "aptu": "dame",
+          "jeopardy": "ali",
+          "flags": [
+            "dame"
+          ]
         },
         "2026-12-18": {
           "type": "weekday",
@@ -3123,7 +3126,9 @@
       "2026-9": [],
       "2026-10": [],
       "2026-11": [],
-      "2026-12": []
+      "2026-12": [
+        "2026-12-17: \u26a0 APTU dame at q4 \u2014 needs review"
+      ]
     }
   }
 }

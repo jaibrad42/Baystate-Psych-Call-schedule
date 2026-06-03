@@ -1108,8 +1108,7 @@ def render_calendar(sched, cfg, year, month, _rjson=None, _fjson=None):
             "}"
             "},true);"
             "})();"
-            "<\/script>"
-        )
+        ) + "</script>"
     return html
 
 

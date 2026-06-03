@@ -2293,11 +2293,7 @@
         "2026-08-05": {
           "type": "weekday",
           "aptu": "kurtz",
-          "jeopardy": "smith",
-          "intern": "gervais",
-          "flags": [
-            "gervais"
-          ]
+          "jeopardy": "smith"
         },
         "2026-08-06": {
           "type": "weekday",
@@ -3138,7 +3134,6 @@
     "warns": {
       "2026-7": [],
       "2026-8": [
-        "2026-08-05: \u26a0 INTERN gervais at q3 \u2014 needs review",
         "2026-08-06: \u26a0 APTU smith at q3 \u2014 needs review"
       ],
       "2026-9": [],

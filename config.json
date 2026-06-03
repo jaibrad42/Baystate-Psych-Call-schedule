@@ -2891,9 +2891,12 @@
         },
         "2026-11-21": {
           "type": "weekend",
-          "consult": "siemiatkoski",
+          "consult": "dame",
           "aptu": "kurtz",
-          "jeopardy": "wilson_braun"
+          "jeopardy": "wilson_braun",
+          "flags": [
+            "dame"
+          ]
         },
         "2026-11-22": {
           "type": "weekend",
@@ -3149,7 +3152,9 @@
       "2026-8": [],
       "2026-9": [],
       "2026-10": [],
-      "2026-11": [],
+      "2026-11": [
+        "2026-11-21: \u26a0 CONSULT dame at q3 \u2014 needs review"
+      ],
       "2026-12": [
         "2026-12-02: \u26a0 Intern holsonback at q3 \u2014 needs review",
         "2026-12-04: \u26a0 Intern holsonback at q2 \u2014 needs review",

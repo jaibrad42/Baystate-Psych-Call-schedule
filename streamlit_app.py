@@ -1070,7 +1070,10 @@ with tab_cal:
             except Exception:
                 pass
         _def_idx = _def_idx if 0 <= _def_idx < len(months) else 0
-        sel_idx = st.selectbox("Month", range(len(months)), index=_def_idx, format_func=lambda i: month_labels[i])
+        if "month_sel_key" not in st.session_state or _xd_pre:
+            st.session_state["month_sel_key"] = _def_idx
+        sel_idx = st.selectbox("Month", range(len(months)), key="month_sel_key", format_func=lambda i: month_labels[i])
+        sel_idx = sel_idx if 0 <= sel_idx < len(months) else 0
         year, month = months[sel_idx]
         sched = st.session_state.all_scheds[(year,month)]
         warns = st.session_state.get('all_warns', {}).get((year, month), [])

@@ -1144,6 +1144,7 @@ with tab_cal:
             "        pop.style.left=lx+'px';pop.style.top=ty+'px';" +
             "        pop.style.display='block';" 
             "    });" +
+            "    });" +
             "  }catch(e){}" +
             "}" +
             "setInterval(_go,500);" +

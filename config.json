@@ -2287,11 +2287,8 @@
         },
         "2026-08-04": {
           "type": "weekday",
-          "aptu": "smith",
-          "jeopardy": "siemiatkoski",
-          "flags": [
-            "smith"
-          ]
+          "aptu": "mizrach",
+          "jeopardy": "siemiatkoski"
         },
         "2026-08-05": {
           "type": "weekday",
@@ -3144,9 +3141,8 @@
     "warns": {
       "2026-7": [],
       "2026-8": [
-        "2026-08-04: \u26a0 APTU smith at q4 \u2014 needs review",
         "2026-08-05: \u26a0 INTERN gervais at q3 \u2014 needs review",
-        "2026-08-06: \u26a0 APTU smith at q2 \u2014 needs review",
+        "2026-08-06: \u26a0 APTU smith at q3 \u2014 needs review",
         "2026-08-08: \u26a0 APTU mann at q3 \u2014 needs review"
       ],
       "2026-9": [],

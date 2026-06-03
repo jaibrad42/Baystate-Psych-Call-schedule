@@ -1062,13 +1062,14 @@ with tab_cal:
         months = sorted(st.session_state.all_scheds.keys())
         month_labels = [date(y,m,1).strftime("%B %Y") for y,m in months]
         _xd_pre = st.query_params.get("X_date", "")
-        _def_idx = 0
+        _def_idx = st.session_state.get("_last_month_idx", 0)
         if _xd_pre:
             try:
                 _xd_ym = (date.fromisoformat(_xd_pre).year, date.fromisoformat(_xd_pre).month)
                 _def_idx = months.index(_xd_ym) if _xd_ym in months else 0
             except Exception:
                 pass
+        _def_idx = _def_idx if 0 <= _def_idx < len(months) else 0
         sel_idx = st.selectbox("Month", range(len(months)), index=_def_idx, format_func=lambda i: month_labels[i])
         year, month = months[sel_idx]
         sched = st.session_state.all_scheds[(year,month)]
@@ -1150,6 +1151,7 @@ with tab_cal:
             _editable = sorted([dk for dk, de in sched.items() if de.get('type') not in ('none',)])
             if _xd in _editable:
                 st.query_params.clear()
+                st.session_state["_last_month_idx"] = sel_idx
                 target = sched[_xd]
                 if _xres == "":
                     target.pop(_xr, None)

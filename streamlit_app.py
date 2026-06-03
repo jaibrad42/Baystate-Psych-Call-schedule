@@ -1050,14 +1050,28 @@ with tab_cal:
 
         # Calendar display (static)
         st.markdown(render_calendar(sched, cfg, year, month), unsafe_allow_html=True)
-        # Pill click → inline floating popover (no reload on click; reload only on Save)
+        # Pill click → inline floating popover
         import streamlit.components.v1 as _cv1
         _rb2 = res_by_id(get_cfg())
         _all2 = active_residents(get_cfg())
+        _edit_cfg = get_cfg()
+        _flag_map = {}
+        for _dk2, _de2 in sched.items():
+            if _de2.get("type") in ("none",): continue
+            _d2 = date.fromisoformat(_dk2)
+            _flags2 = {}
+            for _r2 in _all2:
+                _f2 = []
+                if is_no_call(_r2["id"], _d2, _edit_cfg): _f2.append("NO-CALL")
+                if is_off_service(_r2["id"], _d2, _edit_cfg): _f2.append("OFF-SERVICE")
+                if _f2: _flags2[_r2["id"]] = _f2
+            _flag_map[_dk2] = _flags2
         _rjson = json.dumps([{"id": r["id"], "name": _rb2[r["id"]]["full"]} for r in _all2])
+        _fjson = json.dumps(_flag_map)
         _cv1.html(
             "<script>" +
             "var _residents=" + _rjson + ";" +
+            "var _flags=" + _fjson + ";" +
             "function _mkPopover(){" +
             "  var p=window.parent;if(!p)return;" +
             "  if(p.document.getElementById('_spe'))return;" +
@@ -1104,10 +1118,14 @@ with tab_cal:
             "        h4.textContent=dt+' — '+(rmap[role]||role);" +
             "        cur.textContent='Currently: '+lbl;" +
             "        sel.innerHTML='';" +
+            "        var dayFlags=(_flags[dt]||{});" +
             "        var opts=[{id:'',name:'— clear slot —'}].concat(_residents);" +
             "        opts.forEach(function(r){" +
             "          var o=p.document.createElement('option');" +
-            "          o.value=r.id;o.textContent=r.name;" +
+            "          o.value=r.id;" +
+            "          var rf=dayFlags[r.id];" +
+            "          o.textContent=rf?'⚠ '+r.name+' ['+rf.join(', ')+']':r.name;" +
+            "          if(rf)o.style.color='#f6ad55';" +
             "          sel.appendChild(o);" +
             "        });" +
             "        pop._savDate=dt;pop._savRole=role;" +
@@ -1140,12 +1158,23 @@ with tab_cal:
         if _xd and _xr:
             _editable = sorted([dk for dk, de in sched.items() if de.get('type') not in ('none',)])
             if _xd in _editable:
-                st.session_state['edit_date_sel'] = _xd
-                st.session_state['edit_role_sel'] = _xr
-                if _xres:
-                    st.session_state['edit_res_sel'] = _xres
-                st.session_state['edit_open'] = True
                 st.query_params.clear()
+                target = sched[_xd]
+                if _xres == "":
+                    target.pop(_xr, None)
+                else:
+                    target[_xr] = _xres
+                new_warns = recompute_warnings(sched, get_cfg())
+                st.session_state.all_warns[(year, month)] = new_warns
+                try:
+                    _cfg_sv = get_cfg()
+                    _cfg_sv["last_schedule"] = {
+                        "scheds": {str(y2) + "-" + str(m2): v for (y2,m2),v in st.session_state.all_scheds.items()},
+                        "warns": {str(y2) + "-" + str(m2): v for (y2,m2),v in st.session_state.all_warns.items()}
+                    }
+                    save_cfg(_cfg_sv)
+                except Exception:
+                    pass
                 st.rerun()
         if warns:
             st.markdown("---")
@@ -1155,98 +1184,6 @@ with tab_cal:
                 st.markdown(f'<div class="{cls}">{w}</div>', unsafe_allow_html=True)
         else:
             st.markdown('<div class="warn-ok">✓ No warnings for this month</div>', unsafe_allow_html=True)
-        # ── Manual shift editor ─────────────────────────────
-        st.markdown("---")
-        with st.expander("✏️ Edit a shift manually", expanded=st.session_state.pop("edit_open", False)):
-            st.caption("Override an assigned shift — useful for real-world swaps that affect overall counts.")
-            edit_cfg = get_cfg()
-            edit_rb = res_by_id(edit_cfg)
-            editable_dates = sorted([dk for dk, ev in sched.items() if ev.get("type") not in ("no_call",)])
-            if not editable_dates:
-                st.info("No editable days in this month.")
-            else:
-                ed_col1, ed_col2, ed_col3 = st.columns([2, 2, 3])
-                with ed_col1:
-                    edit_date = st.selectbox(
-                        "Date",
-                        editable_dates,
-                        format_func=lambda dk: date.fromisoformat(dk).strftime("%a %b %-d"),
-                        key="edit_date_sel"
-                    )
-                edit_entry = sched.get(edit_date, {})
-                edit_type = edit_entry.get("type", "")
-                if edit_type == "weekday":
-                    role_opts = [("aptu", "APTU/UL"), ("intern", "Intern"), ("jeopardy", "Jeopardy")]
-                elif edit_type in ("weekend", "holiday"):
-                    role_opts = [("aptu", "APTU"), ("consult", "Consult"), ("intern", "Intern"), ("jeopardy", "Jeopardy")]
-                else:
-                    role_opts = []
-                if not role_opts:
-                    st.info("This day type cannot be edited.")
-                else:
-                    with ed_col2:
-                        edit_role_key = st.selectbox(
-                            "Role",
-                            [r[0] for r in role_opts],
-                            format_func=lambda k: dict(role_opts)[k],
-                            key="edit_role_sel"
-                        )
-                    current_rid = edit_entry.get(edit_role_key, "")
-                    current_name = edit_rb.get(current_rid, {}).get("full", current_rid) if current_rid else "unassigned"
-                    st.caption(f"Currently assigned: **{current_name}**")
-                    # Build annotated resident list for the dropdown
-                    edit_d = date.fromisoformat(edit_date)
-                    def _res_flags(rid):
-                        flags = []
-                        if is_no_call(rid, edit_d, edit_cfg):
-                            flags.append("NO-CALL REQUEST")
-                        if is_off_service(rid, edit_d, edit_cfg):
-                            flags.append("OFF-SERVICE")
-                        return flags
-                    all_active = active_residents(edit_cfg)
-                    clean_ids = [r["id"] for r in all_active if not _res_flags(r["id"])]
-                    flagged_ids = [r["id"] for r in all_active if _res_flags(r["id"])]
-                    res_options = [""] + clean_ids + flagged_ids
-                    def res_fmt(rid):
-                        if rid == "": return "— clear slot —"
-                        r = edit_rb.get(rid, {})
-                        base = r.get("full", rid) + " (PGY" + str(r.get("pgy","")) + ")"
-                        flags = _res_flags(rid)
-                        if flags:
-                            return "⚠ " + base + "  [" + ", ".join(flags) + "]"
-                        return base
-                    with ed_col3:
-                        new_rid = st.selectbox(
-                            "Assign to",
-                            res_options,
-                            format_func=res_fmt,
-                            key="edit_res_sel"
-                        )
-                    if st.button("Save change", key="edit_save_btn"):
-                        updated_scheds = st.session_state.all_scheds
-                        target_entry = updated_scheds[(year, month)][edit_date]
-                        if new_rid == "":
-                            target_entry.pop(edit_role_key, None)
-                        else:
-                            target_entry[edit_role_key] = new_rid
-                        # Recompute all warnings + flags for the whole month
-                        new_warns = recompute_warnings(updated_scheds[(year, month)], get_cfg())
-                        st.session_state.all_scheds = updated_scheds
-                        st.session_state.all_warns[(year, month)] = new_warns
-                        try:
-                            _cfg_upd = get_cfg()
-                            _cfg_upd["last_schedule"] = {
-                                "scheds": {str(y2) + "-" + str(m2): v for (y2,m2),v in updated_scheds.items()},
-                                "warns": {str(y2) + "-" + str(m2): v for (y2,m2),v in st.session_state.all_warns.items()},
-                            }
-                            save_cfg(_cfg_upd)
-                        except Exception:
-                            pass
-                        role_label = dict(role_opts)[edit_role_key]
-                        assigned_name = res_fmt(new_rid)
-                        day_label = date.fromisoformat(edit_date).strftime("%b %-d")
-                        st.success("Saved: " + assigned_name + " to " + role_label + " on " + day_label)
-                        st.rerun()
 
 
 # ─── Tab 2: Residents ─────────────────────────────────────────

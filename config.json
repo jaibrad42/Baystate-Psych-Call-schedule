@@ -3017,9 +3017,10 @@
         "2026-12-13": {
           "type": "weekend",
           "consult": "mann",
-          "aptu": "holsonback",
+          "aptu": "ramirez",
           "jeopardy": "mastalerz",
           "flags": [
+            "ramirez",
             "mann"
           ]
         },
@@ -3041,7 +3042,10 @@
         "2026-12-17": {
           "type": "weekday",
           "aptu": "ramirez",
-          "jeopardy": "ali"
+          "jeopardy": "ali",
+          "flags": [
+            "ramirez"
+          ]
         },
         "2026-12-18": {
           "type": "weekday",
@@ -3136,7 +3140,9 @@
       "2026-11": [],
       "2026-12": [
         "2026-12-12: \u26a0 APTU ramirez at q4 \u2014 needs review",
+        "2026-12-13: \u26a0 APTU ramirez at q4 \u2014 needs review",
         "2026-12-13: \u26a0 CONSULT mann at q4 \u2014 needs review",
+        "2026-12-17: \u26a0 APTU ramirez at q4 \u2014 needs review",
         "2026-12-23: \u26a0 APTU auclair at q4 \u2014 needs review"
       ]
     }

@@ -2993,11 +2993,8 @@
         },
         "2026-12-09": {
           "type": "weekday",
-          "aptu": "mastalerz",
-          "jeopardy": "mastalerz",
-          "flags": [
-            "mastalerz"
-          ]
+          "aptu": "mann",
+          "jeopardy": "mastalerz"
         },
         "2026-12-10": {
           "type": "weekday",
@@ -3130,8 +3127,7 @@
       "2026-10": [],
       "2026-11": [],
       "2026-12": [
-        "2026-12-06: \u26a0 CONSULT mastalerz at q4 \u2014 needs review",
-        "2026-12-09: \u26a0 APTU mastalerz at q3 \u2014 needs review"
+        "2026-12-06: \u26a0 CONSULT mastalerz at q4 \u2014 needs review"
       ]
     }
   }

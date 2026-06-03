@@ -1037,6 +1037,7 @@ with tab_cal:
         sel_idx = st.selectbox("Month", range(len(months)), format_func=lambda i: month_labels[i])
         year, month = months[sel_idx]
         sched = st.session_state.all_scheds[(year,month)]
+        warns = st.session_state.get('all_warns', {}).get((year, month), [])
         st.markdown(f"### {month_labels[sel_idx]}")
 
         # Legend

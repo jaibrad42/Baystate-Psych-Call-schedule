@@ -3062,7 +3062,7 @@
         },
         "2026-12-19": {
           "type": "weekend",
-          "consult": "siemiatkoski",
+          "consult": "wilson_braun",
           "aptu": "auclair",
           "jeopardy": "mastalerz"
         },
@@ -3070,10 +3070,7 @@
           "type": "weekend",
           "consult": "siemiatkoski",
           "aptu": "li",
-          "jeopardy": "mann",
-          "flags": [
-            "siemiatkoski"
-          ]
+          "jeopardy": "mann"
         },
         "2026-12-21": {
           "type": "weekday",
@@ -3092,6 +3089,7 @@
           "intern": "tsandilas",
           "jeopardy": "ali",
           "flags": [
+            "wilson_braun",
             "tsandilas"
           ]
         },
@@ -3157,7 +3155,7 @@
         "2026-12-08: \u26a0 APTU wilson_braun at q2 \u2014 needs review",
         "2026-12-11: \u26a0 INTERN li at q3 \u2014 needs review",
         "2026-12-13: \u26a0 CONSULT mann at q2 \u2014 needs review",
-        "2026-12-20: \u26a0 CONSULT siemiatkoski at q4 \u2014 needs review",
+        "2026-12-23: \u26a0 APTU wilson_braun at q4 \u2014 needs review",
         "2026-12-23: \u26a0 INTERN tsandilas at q2 \u2014 needs review"
       ]
     }

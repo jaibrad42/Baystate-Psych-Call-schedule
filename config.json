@@ -2127,14 +2127,17 @@
         "2026-07-06": {
           "type": "weekday",
           "aptu": "siemiatkoski",
-          "intern": "tsandilas",
+          "intern": "holsonback",
           "jeopardy": "wilson_braun"
         },
         "2026-07-07": {
           "type": "weekday",
           "aptu": "dame",
           "intern": "holsonback",
-          "jeopardy": "ali"
+          "jeopardy": "ali",
+          "flags": [
+            "holsonback"
+          ]
         },
         "2026-07-08": {
           "type": "weekday",
@@ -2150,10 +2153,7 @@
           "type": "weekday",
           "aptu": "ali",
           "jeopardy": "siemiatkoski",
-          "intern": "tsandilas",
-          "flags": [
-            "tsandilas"
-          ]
+          "intern": "tsandilas"
         },
         "2026-07-11": {
           "type": "weekend",
@@ -3139,7 +3139,7 @@
     },
     "warns": {
       "2026-7": [
-        "2026-07-10: \u26a0 INTERN tsandilas at q4 \u2014 needs review"
+        "2026-07-07: \u26a0 INTERN holsonback at q4 \u2014 needs review"
       ],
       "2026-8": [],
       "2026-9": [],

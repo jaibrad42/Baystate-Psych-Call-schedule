@@ -2962,7 +2962,7 @@
         },
         "2026-12-04": {
           "type": "weekday",
-          "aptu": "ali",
+          "aptu": "dame",
           "jeopardy": "mann"
         },
         "2026-12-05": {
@@ -2986,10 +2986,7 @@
           "type": "weekday",
           "aptu": "ali",
           "intern": "li",
-          "jeopardy": "ali",
-          "flags": [
-            "ali"
-          ]
+          "jeopardy": "ali"
         },
         "2026-12-09": {
           "type": "weekday",
@@ -3126,9 +3123,7 @@
       "2026-9": [],
       "2026-10": [],
       "2026-11": [],
-      "2026-12": [
-        "2026-12-08: \u26a0 APTU ali at q4 \u2014 needs review"
-      ]
+      "2026-12": []
     }
   }
 }

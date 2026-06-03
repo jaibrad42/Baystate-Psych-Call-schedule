@@ -2632,11 +2632,8 @@
         },
         "2026-10-05": {
           "type": "weekday",
-          "aptu": "mizrach",
-          "jeopardy": "mann",
-          "flags": [
-            "mizrach"
-          ]
+          "aptu": "wilson_braun",
+          "jeopardy": "mann"
         },
         "2026-10-06": {
           "type": "weekday",
@@ -2646,7 +2643,10 @@
         "2026-10-07": {
           "type": "weekday",
           "aptu": "wilson_braun",
-          "jeopardy": "siemiatkoski"
+          "jeopardy": "siemiatkoski",
+          "flags": [
+            "wilson_braun"
+          ]
         },
         "2026-10-08": {
           "type": "weekday",
@@ -3125,7 +3125,7 @@
       "2026-8": [],
       "2026-9": [],
       "2026-10": [
-        "2026-10-05: \u26a0 APTU mizrach at q4 \u2014 needs review"
+        "2026-10-07: \u26a0 APTU wilson_braun at q2 \u2014 needs review"
       ],
       "2026-11": [],
       "2026-12": []

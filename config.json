@@ -2637,7 +2637,7 @@
         },
         "2026-10-06": {
           "type": "weekday",
-          "aptu": "mastalerz",
+          "aptu": "siemiatkoski",
           "jeopardy": "smith"
         },
         "2026-10-07": {
@@ -2657,10 +2657,7 @@
           "type": "weekend",
           "consult": "dame",
           "aptu": "mastalerz",
-          "jeopardy": "mastalerz",
-          "flags": [
-            "mastalerz"
-          ]
+          "jeopardy": "mastalerz"
         },
         "2026-10-11": {
           "type": "weekend",
@@ -3134,9 +3131,7 @@
       "2026-7": [],
       "2026-8": [],
       "2026-9": [],
-      "2026-10": [
-        "2026-10-10: \u26a0 APTU mastalerz at q4 \u2014 needs review"
-      ],
+      "2026-10": [],
       "2026-11": [],
       "2026-12": [
         "2026-12-08: \u26a0 APTU mizrach at q2 \u2014 needs review",

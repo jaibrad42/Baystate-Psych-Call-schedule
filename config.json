@@ -2980,12 +2980,9 @@
         },
         "2026-12-06": {
           "type": "weekend",
-          "consult": "ali",
+          "consult": "dame",
           "aptu": "li",
-          "jeopardy": "siemiatkoski",
-          "flags": [
-            "ali"
-          ]
+          "jeopardy": "siemiatkoski"
         },
         "2026-12-07": {
           "type": "weekday",
@@ -3147,7 +3144,6 @@
       "2026-10": [],
       "2026-11": [],
       "2026-12": [
-        "2026-12-06: \u26a0 CONSULT ali at q2 \u2014 needs review",
         "2026-12-08: \u26a0 INTERN li at q2 \u2014 needs review",
         "2026-12-11: \u26a0 INTERN li at q3 \u2014 needs review",
         "2026-12-23: \u26a0 INTERN tsandilas at q2 \u2014 needs review"

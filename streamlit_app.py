@@ -1008,15 +1008,15 @@ def render_calendar(sched, cfg, year, month, _rjson=None, _fjson=None):
             html += p("pill-hol", "C: "+con,  dk, "consult")
         elif t == "weekend":
             aptu = e.get("aptu"); con = e.get("consult")
-            html += p("pill-aptu", ("A: "+rname(aptu) if aptu else "UNCOV"), dk, "aptu") if aptu else '<div class="pill pill-uncov">UNCOV</div>'
-            html += p("pill-consult", ("C: "+rname(con) if con else "UNCOV"), dk, "consult") if con else '<div class="pill pill-uncov">UNCOV</div>'
+            html += p("pill-aptu", ("A: "+rname(aptu) if aptu else "UNCOV"), dk, "aptu") if aptu else p("pill-uncov", "UNCOV", dk, "aptu")
+            html += p("pill-consult", ("C: "+rname(con) if con else "UNCOV"), dk, "consult") if con else p("pill-uncov", "UNCOV", dk, "consult")
             if e.get("intern"):
                 html += p("pill-intern", "I: "+rname(e["intern"]), dk, "intern")
             if e.get("jeopardy"):
                 html += p("pill-jep", "J: "+rname(e["jeopardy"]), dk, "jeopardy")
         elif t == "weekday":
             aptu = e.get("aptu")
-            html += p("pill-ul", ("UL: "+rname(aptu) if aptu else "UNCOV"), dk, "aptu") if aptu else '<div class="pill pill-uncov">UNCOV</div>'
+            html += p("pill-ul", ("A: "+rname(aptu) if aptu else "UNCOV"), dk, "aptu") if aptu else p("pill-uncov", "UNCOV", dk, "aptu")
             if e.get("intern"):
                 html += p("pill-intern", "I: "+rname(e["intern"]), dk, "intern")
             else:
@@ -1089,7 +1089,7 @@ with tab_cal:
 
         # Legend
         cols = st.columns(6)
-        legend = [("pill-ul","Weekday UL"),("pill-aptu","Wknd APTU"),
+        legend = [("pill-ul","Weekday A"),("pill-aptu","Wknd APTU"),
                   ("pill-consult","Consult"),("pill-intern","Intern"),
                   ("pill-hol","Holiday"),("pill-jep","Jeopardy")]
         for col,(cls,lbl) in zip(cols,legend):
@@ -1127,8 +1127,8 @@ with tab_cal:
             "var dt=el.getAttribute('data-edit-date');" +
             "var role=el.getAttribute('data-edit-role');" +
             "var lbl=el.textContent.trim();" +
-            "document.getElementById('_sph4').textContent=dt+'  -  '+({aptu:'APTU/UL',intern:'Intern',consult:'Consult',jeopardy:'Jeopardy'}[role]||role);" +
-            "document.getElementById('_spcur').textContent='Currently: '+(lbl.charAt(0)=='+'?'(none)':lbl);" +
+            "document.getElementById('_sph4').textContent=dt+'  -  '+({aptu:'A',intern:'Intern',consult:'Consult',jeopardy:'Jeopardy'}[role]||role);" +
+            "document.getElementById('_spcur').textContent='Currently: '+((lbl.charAt(0)=='+'||lbl=='UNCOV')?'(none)':lbl);" +
             "var sel=document.getElementById('_spsel');sel.innerHTML='';" +
             "var dF=(_F[dt]||{});" +
             "[{id:'',name:'- clear -'}].concat(_R).forEach(function(r){var o=document.createElement('option');o.value=r.id;var rf=dF[r.id];o.textContent=rf?'! '+r.name+'['+rf.join(',')+']':r.name;if(rf)o.style.color='#f6ad55';sel.appendChild(o);});" +

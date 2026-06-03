@@ -2300,10 +2300,7 @@
           "type": "weekday",
           "intern": "holsonback",
           "jeopardy": "brych",
-          "aptu": "smith",
-          "flags": [
-            "smith"
-          ]
+          "aptu": "mastalerz"
         },
         "2026-08-07": {
           "type": "weekday",
@@ -2321,7 +2318,10 @@
           "type": "weekend",
           "consult": "mastalerz",
           "aptu": "mizrach",
-          "jeopardy": "ali"
+          "jeopardy": "ali",
+          "flags": [
+            "mastalerz"
+          ]
         },
         "2026-08-10": {
           "type": "weekday",
@@ -3126,7 +3126,7 @@
     "warns": {
       "2026-7": [],
       "2026-8": [
-        "2026-08-06: \u26a0 APTU smith at q3 \u2014 needs review"
+        "2026-08-09: \u26a0 CONSULT mastalerz at q3 \u2014 needs review"
       ],
       "2026-9": [],
       "2026-10": [],

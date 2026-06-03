@@ -1062,6 +1062,7 @@ with tab_cal:
         months = sorted(st.session_state.all_scheds.keys())
         month_labels = [date(y,m,1).strftime("%B %Y") for y,m in months]
         _xd_pre = st.query_params.get("X_date", "")
+        _xd_mi = st.query_params.get("X_mi", "")
         _def_idx = st.session_state.get("_last_month_idx", 0)
         if _xd_pre:
             try:
@@ -1069,8 +1070,15 @@ with tab_cal:
                 _def_idx = months.index(_xd_ym) if _xd_ym in months else 0
             except Exception:
                 pass
+        if _xd_mi != "":
+            try:
+                _mi_int = int(_xd_mi)
+                if 0 <= _mi_int < len(months):
+                    _def_idx = _mi_int
+            except Exception:
+                pass
         _def_idx = _def_idx if 0 <= _def_idx < len(months) else 0
-        if "month_sel_key" not in st.session_state or _xd_pre:
+        if "month_sel_key" not in st.session_state or _xd_pre or _xd_mi != "":
             st.session_state["month_sel_key"] = _def_idx
         sel_idx = st.selectbox("Month", range(len(months)), key="month_sel_key", format_func=lambda i: month_labels[i])
         sel_idx = sel_idx if 0 <= sel_idx < len(months) else 0
@@ -1109,6 +1117,7 @@ with tab_cal:
         import base64 as _b64
         _handler_src = (
             "(function(){" +
+            f"var _MI='{sel_idx}';" +
             "var d=document.getElementById('_spe_data');" +
             "if(!d)return;" +
             "var _R=JSON.parse(d.getAttribute('data-r'));" +
@@ -1124,7 +1133,7 @@ with tab_cal:
             "var dF=(_F[dt]||{});" +
             "[{id:'',name:'- clear -'}].concat(_R).forEach(function(r){var o=document.createElement('option');o.value=r.id;var rf=dF[r.id];o.textContent=rf?'! '+r.name+'['+rf.join(',')+']':r.name;if(rf)o.style.color='#f6ad55';sel.appendChild(o);});" +
             "pop._sd=dt;pop._sr=role;" +
-            "document.getElementById('_spsav').onclick=function(){var rid=sel.value;pop.style.display='none';location.href=location.pathname+'?X_date='+encodeURIComponent(pop._sd)+'&X_role='+encodeURIComponent(pop._sr)+'&X_res='+encodeURIComponent(rid);};" +
+            "document.getElementById('_spsav').onclick=function(){var rid=sel.value;pop.style.display='none';location.href=location.pathname+'?X_date='+encodeURIComponent(pop._sd)+'&X_role='+encodeURIComponent(pop._sr)+'&X_res='+encodeURIComponent(rid)+'&X_mi='+encodeURIComponent(_MI);};" +
             "var r2=el.getBoundingClientRect();" +
             "var lx=Math.min(Math.max(r2.left,8),window.innerWidth-248);" +
             "var ty=r2.bottom+6;if(ty+220>window.innerHeight)ty=r2.top-225;if(ty<8)ty=8;" +
@@ -1155,6 +1164,10 @@ with tab_cal:
             if _xd in _editable:
                 st.query_params.clear()
                 st.session_state["_last_month_idx"] = sel_idx
+                try:
+                    st.session_state["month_sel_key"] = sel_idx
+                except Exception:
+                    pass
                 target = sched[_xd]
                 if _xres == "":
                     target.pop(_xr, None)

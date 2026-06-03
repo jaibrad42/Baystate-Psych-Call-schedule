@@ -360,6 +360,20 @@ def recompute_warnings(sched, cfg):
     for entry in sched.values():
         entry.pop("flags", None)
     last_seen = {}   # res_id -> last date they were assigned
+    try:
+        _all = st.session_state.get("all_scheds", {})
+        _earliest = min((date.fromisoformat(k) for k in sched.keys()), default=None)
+        for _ms in _all.values():
+            for _dk2, _e2 in _ms.items():
+                _d2 = date.fromisoformat(_dk2)
+                if _e2.get("type") == "no_call" or _dk2 in sched or _earliest is None or _d2 >= _earliest:
+                    continue
+                for _rk2 in ("aptu", "consult", "intern"):
+                    _rid2 = _e2.get(_rk2)
+                    if _rid2 and (_rid2 not in last_seen or _d2 > last_seen[_rid2]):
+                        last_seen[_rid2] = _d2
+    except Exception:
+        pass
     warnings = []
     for dk in sorted(sched.keys()):
         entry = sched[dk]

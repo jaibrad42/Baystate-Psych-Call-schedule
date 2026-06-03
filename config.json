@@ -2288,11 +2288,8 @@
         },
         "2026-08-04": {
           "type": "weekday",
-          "aptu": "mizrach",
-          "jeopardy": "siemiatkoski",
-          "flags": [
-            "mizrach"
-          ]
+          "aptu": "smith",
+          "jeopardy": "siemiatkoski"
         },
         "2026-08-05": {
           "type": "weekday",
@@ -2315,10 +2312,7 @@
           "type": "weekend",
           "consult": "ali",
           "aptu": "mizrach",
-          "jeopardy": "mastalerz",
-          "flags": [
-            "mizrach"
-          ]
+          "jeopardy": "mastalerz"
         },
         "2026-08-09": {
           "type": "weekend",
@@ -3126,10 +3120,7 @@
     },
     "warns": {
       "2026-7": [],
-      "2026-8": [
-        "2026-08-04: \u26a0 APTU mizrach at q4 \u2014 needs review",
-        "2026-08-08: \u26a0 APTU mizrach at q4 \u2014 needs review"
-      ],
+      "2026-8": [],
       "2026-9": [],
       "2026-10": [],
       "2026-11": [],

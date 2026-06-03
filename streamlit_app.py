@@ -958,7 +958,7 @@ def res_display_name(res_id, cfg):
     rb = res_by_id(cfg)
     return rb[res_id]["full"] if res_id in rb else res_id
 
-def render_calendar(sched, cfg, year, month):
+def render_calendar(sched, cfg, year, month, _rjson=None, _fjson=None):
     rb = res_by_id(cfg)
     def rname(rid): return rb[rid]["full"].split()[-1] if rid in rb else rid
 
@@ -1025,6 +1025,91 @@ def render_calendar(sched, cfg, year, month):
                 html += p("pill-jep", "J: "+rname(e["jeopardy"]), dk, "jeopardy")
         html += '</div>'
     html += '</div>'
+    if _rjson and _fjson:
+        html += (
+            "<style>"
+            "#_spe{position:fixed;background:#1e2130;border:1px solid #4a5568;border-radius:8px;"
+            "padding:12px 14px;z-index:99999;box-shadow:0 8px 24px rgba(0,0,0,.5);"
+            "min-width:220px;display:none;font-family:sans-serif;color:#e2e8f0;}"
+            "#_spe h4{margin:0 0 4px;font-size:.83rem;color:#90cdf4;font-weight:600;}"
+            "#_spe .sub{margin:0 0 8px;font-size:.78rem;color:#a0aec0;}"
+            "#_spe select{width:100%;padding:6px 8px;border-radius:5px;border:1px solid #4a5568;"
+            "background:#2d3748;color:#e2e8f0;font-size:.84rem;margin-bottom:10px;}"
+            "#_spe .btns{display:flex;gap:8px;}"
+            "#_spe .sav{flex:1;background:#3b82f6;color:#fff;border:none;border-radius:5px;"
+            "padding:7px;cursor:pointer;font-size:.84rem;}"
+            "#_spe .can{flex:1;background:#374151;color:#e2e8f0;border:none;border-radius:5px;"
+            "padding:7px;cursor:pointer;font-size:.84rem;}"
+            "</style>"
+            "<div id=\"_spe\">"
+            "<h4 id=\"_sph4\"></h4>"
+            "<div class=\"sub\" id=\"_spcur\"></div>"
+            "<select id=\"_spsel\"></select>"
+            "<div class=\"btns\"><button class=\"sav\" id=\"_spsav\">Save</button>"
+            "<button class=\"can\" id=\"_spcan\">Cancel</button></div>"
+            "</div>"
+        )
+        html += (
+            "<script>"
+            "(function(){"
+            "var _R=" + _rjson + ";"
+            "var _F=" + _fjson + ";"
+            "function _show(el){"
+            "var pop=document.getElementById('_spe');"
+            "if(!pop)return;"
+            "var dt=el.getAttribute('data-edit-date');"
+            "var role=el.getAttribute('data-edit-role');"
+            "var lbl=el.textContent.trim();"
+            "var h4=document.getElementById('_sph4');"
+            "var cur=document.getElementById('_spcur');"
+            "var sel=document.getElementById('_spsel');"
+            "var rmap={aptu:'APTU/UL',intern:'Intern',jeopardy:'Jeopardy',consult:'Consult',holiday:'Holiday'};"
+            "h4.textContent=dt+'  -  '+(rmap[role]||role);"
+            "cur.textContent='Currently: '+(lbl.startsWith('+')?'(none)':lbl);"
+            "sel.innerHTML='';"
+            "var dF=(_F[dt]||{});"
+            "var opts=[{id:'',name:'- clear slot -'}].concat(_R);"
+            "opts.forEach(function(r){"
+            "var o=document.createElement('option');"
+            "o.value=r.id;"
+            "var rf=dF[r.id];"
+            "o.textContent=rf?'! '+r.name+' ['+rf.join(', ')+']':r.name;"
+            "if(rf)o.style.color='#f6ad55';"
+            "sel.appendChild(o);"
+            "});"
+            "pop._savDate=dt;pop._savRole=role;"
+            "document.getElementById('_spsav').onclick=function(){"
+            "var rid=sel.value;"
+            "pop.style.display='none';"
+            "var url=location.pathname+'?X_date='+encodeURIComponent(pop._savDate)+'&X_role='+encodeURIComponent(pop._savRole)+'&X_res='+encodeURIComponent(rid);"
+            "history.pushState({},'',url);"
+            "location.reload();"
+            "};"
+            "var r2=el.getBoundingClientRect();"
+            "var pw=window.innerWidth;var ph=window.innerHeight;"
+            "var lx=Math.min(Math.max(r2.left,8),pw-248);"
+            "var ty=r2.bottom+6;if(ty+220>ph)ty=r2.top-225;if(ty<8)ty=8;"
+            "pop.style.left=lx+'px';pop.style.top=ty+'px';"
+            "pop.style.display='block';"
+            "}"
+            "document.getElementById('_spcan').onclick=function(){"
+            "document.getElementById('_spe').style.display='none';"
+            "};"
+            "document.addEventListener('keydown',function(e){"
+            "if(e.key==='Escape')document.getElementById('_spe').style.display='none';"
+            "});"
+            "document.addEventListener('mousedown',function(e){"
+            "var el=e.target;"
+            "if(el.classList.contains('pill')&&el.getAttribute('data-edit-date')){"
+            "_show(el);"
+            "}else{"
+            "var pop=document.getElementById('_spe');"
+            "if(pop&&pop.style.display!=='none'&&!pop.contains(el))pop.style.display='none';"
+            "}"
+            "},true);"
+            "})();"
+            "<\/script>"
+        )
     return html
 
 
@@ -1058,10 +1143,7 @@ with tab_cal:
         for col,(cls,lbl) in zip(cols,legend):
             col.markdown(f'<span class="pill {cls}">{lbl}</span>', unsafe_allow_html=True)
 
-        # Calendar display (static)
-        st.markdown(render_calendar(sched, cfg, year, month), unsafe_allow_html=True)
-        # Pill click → inline floating popover (v2)
-        import streamlit.components.v1 as _cv1
+        # Calendar display with pill popover
         _rb2 = res_by_id(get_cfg())
         _all2 = active_residents(get_cfg())
         _edit_cfg = get_cfg()
@@ -1078,89 +1160,7 @@ with tab_cal:
             _flag_map[_dk2] = _flags2
         _rjson = json.dumps([{"id": r["id"], "name": _rb2[r["id"]]["full"]} for r in _all2])
         _fjson = json.dumps(_flag_map)
-        _cv1.html(
-            "<script>" +
-            "var _residents=" + _rjson + ";" +
-            "var _flags=" + _fjson + ";" +
-            "function _mkPopover(){" +
-            "  var p=window.parent;if(!p)return;" +
-            "  if(p.document.getElementById('_spe'))return;" +
-            "  var st=p.document.createElement('style');" +
-            "  st.textContent=" +
-            "    '#_spe{position:fixed;background:#1e2130;border:1px solid #4a5568;border-radius:8px;padding:12px 14px;z-index:99999;box-shadow:0 8px 24px rgba(0,0,0,.5);min-width:220px;display:none;font-family:sans-serif;color:#e2e8f0;}'" +
-            "    +'#_spe h4{margin:0 0 4px;font-size:.83rem;color:#90cdf4;font-weight:600;}'" +
-            "    +'#_spe .sub{margin:0 0 8px;font-size:.78rem;color:#a0aec0;}'" +
-            "    +'#_spe select{width:100%;padding:6px 8px;border-radius:5px;border:1px solid #4a5568;background:#2d3748;color:#e2e8f0;font-size:.84rem;margin-bottom:10px;}'" +
-            "    +'#_spe .btns{display:flex;gap:8px;}'" +
-            "    +'#_spe button{flex:1;padding:6px 0;border:none;border-radius:5px;font-size:.82rem;cursor:pointer;}'" +
-            "    +'#_spe .sav{background:#3182ce;color:#fff;}'" +
-            "    +'#_spe .can{background:#4a5568;color:#e2e8f0;}';" +
-            "  p.document.head.appendChild(st);" +
-            "  var d=p.document.createElement('div');d.id='_spe';" +
-            "  d.innerHTML=" +
-            "    '<h4 id=\"_sph4\"></h4>'" +
-            "    +'<div class=\"sub\" id=\"_spcur\"></div>'" +
-            "    +'<select id=\"_spsel\"></select>'" +
-            "    +'<div class=\"btns\"><button class=\"sav\" id=\"_spsav\">Save</button><button class=\"can\" id=\"_spcan\">Cancel</button></div>';" +
-            "  p.document.body.appendChild(d);" +
-            "  p.document.getElementById('_spcan').onclick=function(){d.style.display='none';};" +
-            "  p.document.addEventListener('keydown',function(e){if(e.key==='Escape')d.style.display='none';});" +
-            "  p.document.addEventListener('mousedown',function(e){if(d.style.display!=='none'&&!d.contains(e.target))d.style.display='none';});" +
-            "}" +
-            "function _go(){" +
-            "  try{" +
-            "    var p=window.parent;" +
-            "    if(!p||!p.document)return;" +
-            "    _mkPopover();" +
-            "    if(p.document.body.dataset.speh)return;" +
-            "    p.document.body.dataset.speh=1;" +
-            "    p.document.body.addEventListener('mousedown',function(ev){" +
-            "      var el=ev.target;" +
-            "      if(!el.classList.contains('pill')||!el.getAttribute('data-edit-date'))return;" +
-            "      ev.stopPropagation();ev.preventDefault();" +
-            "      var dt=el.getAttribute('data-edit-date');" +
-            "      var role=el.getAttribute('data-edit-role');" +
-            "      var lbl=el.textContent.trim();" +
-            "      var pop=p.document.getElementById('_spe');" +
-            "      var sel=p.document.getElementById('_spsel');" +
-            "      var h4=p.document.getElementById('_sph4');" +
-            "      var cur=p.document.getElementById('_spcur');" +
-            "      var rmap={aptu:'APTU/UL',intern:'Intern',jeopardy:'Jeopardy',consult:'Consult',holiday:'Holiday'};" +
-            "      h4.textContent=dt+'  -  '+(rmap[role]||role);" +
-            "      cur.textContent='Currently: '+(lbl.startsWith('+')?'(none)':lbl);" +
-            "      sel.innerHTML='';" +
-            "      var dayFlags=(_flags[dt]||{});" +
-            "      var opts=[{id:'',name:'- clear slot -'}].concat(_residents);" +
-            "      opts.forEach(function(r){" +
-            "        var o=p.document.createElement('option');" +
-            "        o.value=r.id;" +
-            "        var rf=dayFlags[r.id];" +
-            "        o.textContent=rf?'! '+r.name+' ['+rf.join(', ')+']':r.name;" +
-            "        if(rf)o.style.color='#f6ad55';" +
-            "        sel.appendChild(o);" +
-            "      });" +
-            "      pop._savDate=dt;pop._savRole=role;" +
-            "      var sav=p.document.getElementById('_spsav');" +
-            "      sav.onclick=function(){" +
-            "        var rid=sel.value;" +
-            "        pop.style.display='none';" +
-            "        var url=p.location.pathname+'?X_date='+encodeURIComponent(pop._savDate)+'&X_role='+encodeURIComponent(pop._savRole)+'&X_res='+encodeURIComponent(rid);" +
-            "        p.history.pushState({},'',url);" +
-            "        p.location.reload();" +
-            "      };" +
-            "      var r2=el.getBoundingClientRect();" +
-            "      var pw=p.innerWidth;var ph=p.innerHeight;" +
-            "      var lx=Math.min(Math.max(r2.left,8),pw-248);" +
-            "      var ty=r2.bottom+6;if(ty+220>ph)ty=r2.top-225;if(ty<8)ty=8;" +
-            "      pop.style.left=lx+'px';pop.style.top=ty+'px';" +
-            "      pop.style.display='block';" +
-            "    },true);" +
-            "  }catch(e){}" +
-            "}"
-            "setInterval(_go,500);" +
-            "</script>",
-            height=0
-        )
+        st.markdown(render_calendar(sched, cfg, year, month, _rjson, _fjson), unsafe_allow_html=True)
         _xd = st.query_params.get('X_date', '')
         _xr = st.query_params.get('X_role', '')
         _xres = st.query_params.get('X_res', '')

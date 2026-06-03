@@ -2299,7 +2299,7 @@
         },
         "2026-08-05": {
           "type": "weekday",
-          "aptu": "kurtz",
+          "aptu": "mann",
           "jeopardy": "smith",
           "intern": "gervais",
           "flags": [
@@ -2325,7 +2325,10 @@
           "type": "weekend",
           "consult": "ali",
           "aptu": "mann",
-          "jeopardy": "mastalerz"
+          "jeopardy": "mastalerz",
+          "flags": [
+            "mann"
+          ]
         },
         "2026-08-09": {
           "type": "weekend",
@@ -3148,7 +3151,8 @@
         "2026-08-03: \u26a0 INTERN tsandilas at q2 \u2014 needs review",
         "2026-08-04: \u26a0 APTU smith at q4 \u2014 needs review",
         "2026-08-05: \u26a0 INTERN gervais at q3 \u2014 needs review",
-        "2026-08-06: \u26a0 APTU smith at q2 \u2014 needs review"
+        "2026-08-06: \u26a0 APTU smith at q2 \u2014 needs review",
+        "2026-08-08: \u26a0 APTU mann at q3 \u2014 needs review"
       ],
       "2026-9": [],
       "2026-10": [],

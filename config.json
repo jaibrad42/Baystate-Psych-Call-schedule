@@ -2297,12 +2297,8 @@
         },
         "2026-08-06": {
           "type": "weekday",
-          "aptu": "smith",
           "intern": "holsonback",
-          "jeopardy": "brych",
-          "flags": [
-            "smith"
-          ]
+          "jeopardy": "brych"
         },
         "2026-08-07": {
           "type": "weekday",
@@ -3133,9 +3129,7 @@
     },
     "warns": {
       "2026-7": [],
-      "2026-8": [
-        "2026-08-06: \u26a0 APTU smith at q3 \u2014 needs review"
-      ],
+      "2026-8": [],
       "2026-9": [],
       "2026-10": [],
       "2026-11": [],

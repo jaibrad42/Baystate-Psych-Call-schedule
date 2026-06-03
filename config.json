@@ -2960,9 +2960,6 @@
           "type": "weekday",
           "aptu": "wilson_braun",
           "intern": "holsonback",
-          "flags": [
-            "holsonback"
-          ],
           "jeopardy": "brych"
         },
         "2026-12-03": {
@@ -2972,12 +2969,12 @@
         },
         "2026-12-04": {
           "type": "weekday",
-          "aptu": "dame",
+          "aptu": "ali",
           "intern": "holsonback",
+          "jeopardy": "mann",
           "flags": [
             "holsonback"
-          ],
-          "jeopardy": "mann"
+          ]
         },
         "2026-12-05": {
           "type": "weekend",
@@ -2989,7 +2986,10 @@
           "type": "weekend",
           "consult": "ali",
           "aptu": "li",
-          "jeopardy": "siemiatkoski"
+          "jeopardy": "siemiatkoski",
+          "flags": [
+            "ali"
+          ]
         },
         "2026-12-07": {
           "type": "weekday",
@@ -3000,10 +3000,10 @@
           "type": "weekday",
           "aptu": "wilson_braun",
           "intern": "li",
+          "jeopardy": "ali",
           "flags": [
             "li"
-          ],
-          "jeopardy": "ali"
+          ]
         },
         "2026-12-09": {
           "type": "weekday",
@@ -3019,10 +3019,10 @@
           "type": "weekday",
           "aptu": "mann",
           "intern": "li",
+          "jeopardy": "dame",
           "flags": [
             "li"
-          ],
-          "jeopardy": "dame"
+          ]
         },
         "2026-12-12": {
           "type": "weekend",
@@ -3088,10 +3088,10 @@
           "type": "weekday",
           "aptu": "wilson_braun",
           "intern": "tsandilas",
+          "jeopardy": "ali",
           "flags": [
             "tsandilas"
-          ],
-          "jeopardy": "ali"
+          ]
         },
         "2026-12-24": {
           "type": "weekday",
@@ -3151,11 +3151,11 @@
       "2026-10": [],
       "2026-11": [],
       "2026-12": [
-        "2026-12-02: \u26a0 Intern holsonback at q3 \u2014 needs review",
-        "2026-12-04: \u26a0 Intern holsonback at q2 \u2014 needs review",
-        "2026-12-08: \u26a0 Intern li at q2 \u2014 needs review",
-        "2026-12-11: \u26a0 Intern li at q3 \u2014 needs review",
-        "2026-12-23: \u26a0 Intern tsandilas at q2 \u2014 needs review"
+        "2026-12-04: \u26a0 INTERN holsonback at q2 \u2014 needs review",
+        "2026-12-06: \u26a0 CONSULT ali at q2 \u2014 needs review",
+        "2026-12-08: \u26a0 INTERN li at q2 \u2014 needs review",
+        "2026-12-11: \u26a0 INTERN li at q3 \u2014 needs review",
+        "2026-12-23: \u26a0 INTERN tsandilas at q2 \u2014 needs review"
       ]
     }
   }

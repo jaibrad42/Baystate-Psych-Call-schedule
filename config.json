@@ -2892,11 +2892,8 @@
         },
         "2026-11-20": {
           "type": "weekday",
-          "aptu": "mizrach",
-          "jeopardy": "siemiatkoski",
-          "flags": [
-            "mizrach"
-          ]
+          "aptu": "auclair",
+          "jeopardy": "siemiatkoski"
         },
         "2026-11-21": {
           "type": "weekend",
@@ -2919,10 +2916,7 @@
         "2026-11-24": {
           "type": "weekday",
           "aptu": "mizrach",
-          "jeopardy": "mastalerz",
-          "flags": [
-            "mizrach"
-          ]
+          "jeopardy": "mastalerz"
         },
         "2026-11-25": {
           "type": "weekday",
@@ -3154,10 +3148,7 @@
       ],
       "2026-9": [],
       "2026-10": [],
-      "2026-11": [
-        "2026-11-20: \u26a0 APTU mizrach at q4 \u2014 needs review",
-        "2026-11-24: \u26a0 APTU mizrach at q4 \u2014 needs review"
-      ],
+      "2026-11": [],
       "2026-12": [
         "2026-12-08: \u26a0 APTU mizrach at q2 \u2014 needs review",
         "2026-12-13: \u26a0 CONSULT mann at q4 \u2014 needs review",

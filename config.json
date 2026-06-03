@@ -2610,7 +2610,10 @@
         "2026-10-01": {
           "type": "weekday",
           "aptu": "mizrach",
-          "jeopardy": "dame"
+          "jeopardy": "dame",
+          "flags": [
+            "mizrach"
+          ]
         },
         "2026-10-02": {
           "type": "weekday",
@@ -2622,7 +2625,10 @@
           "type": "weekend",
           "consult": "smith",
           "aptu": "auclair",
-          "jeopardy": "brych"
+          "jeopardy": "brych",
+          "flags": [
+            "auclair"
+          ]
         },
         "2026-10-04": {
           "type": "weekend",
@@ -3121,7 +3127,10 @@
       "2026-7": [],
       "2026-8": [],
       "2026-9": [],
-      "2026-10": [],
+      "2026-10": [
+        "2026-10-01: \u26a0 APTU mizrach at q4 \u2014 needs review",
+        "2026-10-03: \u26a0 APTU auclair at q4 \u2014 needs review"
+      ],
       "2026-11": [],
       "2026-12": []
     }

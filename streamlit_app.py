@@ -1112,51 +1112,51 @@ with tab_cal:
             "    var p=window.parent;" +
             "    if(!p||!p.document)return;" +
             "    _mkPopover();" +
-            "    p.document.querySelectorAll('.pill[data-edit-date]').forEach(function(el){" +
-            "      if(el.dataset.ph)return;" +
-            "      el.dataset.ph=1;" +
-            "      el.addEventListener('click',function(ev){" +
-            "        ev.stopPropagation();ev.preventDefault();" +
-            "        var dt=el.getAttribute('data-edit-date');" +
-            "        var role=el.getAttribute('data-edit-role');" +
-            "        var lbl=el.textContent.trim();" +
-            "        var pop=p.document.getElementById('_spe');" +
-            "        var sel=p.document.getElementById('_spsel');" +
-            "        var h4=p.document.getElementById('_sph4');" +
-            "        var cur=p.document.getElementById('_spcur');" +
-            "        var rmap={aptu:'APTU/UL',intern:'Intern',jeopardy:'Jeopardy',consult:'Consult',holiday:'Holiday'};" +
-            "        h4.textContent=dt+'  -  '+(rmap[role]||role);" +
-            "          cur.textContent='Currently: '+(lbl.startsWith('+')?'(none)':lbl);" +
-            "        sel.innerHTML='';" +
-            "        var dayFlags=(_flags[dt]||{});" +
-            "        var opts=[{id:'',name:'- clear slot -'}].concat(_residents);" +
-            "        opts.forEach(function(r){" +
-            "          var o=p.document.createElement('option');" +
-            "          o.value=r.id;" +
-            "          var rf=dayFlags[r.id];" +
-            "          o.textContent=rf?'! '+r.name+' ['+rf.join(', ')+']':r.name;" +
-            "          if(rf)o.style.color='#f6ad55';" +
-            "          sel.appendChild(o);" +
-            "        });" +
-            "        pop._savDate=dt;pop._savRole=role;" +
-            "        var sav=p.document.getElementById('_spsav');" +
-            "        sav.onclick=function(){" +
-            "          var rid=sel.value;" +
-            "          pop.style.display='none';" +
-            "          var url=p.location.pathname+'?X_date='+encodeURIComponent(pop._savDate)+'&X_role='+encodeURIComponent(pop._savRole)+'&X_res='+encodeURIComponent(rid);" +
-            "          p.history.pushState({},'',url);" +
-            "          p.location.reload();" +
-            "        };" +
-            "        var r2=el.getBoundingClientRect();" +
-            "        var pw=p.innerWidth;var ph=p.innerHeight;" +
-            "        var lx=Math.min(Math.max(r2.left,8),pw-248);" +
-            "        var ty=r2.bottom+6;if(ty+220>ph)ty=r2.top-225;if(ty<8)ty=8;" +
-            "        pop.style.left=lx+'px';pop.style.top=ty+'px';" +
-            "        pop.style.display='block';" 
-            "    });" +
-            "    });" +
+            "    if(p.document.body.dataset.speh)return;" +
+            "    p.document.body.dataset.speh=1;" +
+            "    p.document.body.addEventListener('mousedown',function(ev){" +
+            "      var el=ev.target;" +
+            "      if(!el.classList.contains('pill')||!el.getAttribute('data-edit-date'))return;" +
+            "      ev.stopPropagation();ev.preventDefault();" +
+            "      var dt=el.getAttribute('data-edit-date');" +
+            "      var role=el.getAttribute('data-edit-role');" +
+            "      var lbl=el.textContent.trim();" +
+            "      var pop=p.document.getElementById('_spe');" +
+            "      var sel=p.document.getElementById('_spsel');" +
+            "      var h4=p.document.getElementById('_sph4');" +
+            "      var cur=p.document.getElementById('_spcur');" +
+            "      var rmap={aptu:'APTU/UL',intern:'Intern',jeopardy:'Jeopardy',consult:'Consult',holiday:'Holiday'};" +
+            "      h4.textContent=dt+'  -  '+(rmap[role]||role);" +
+            "      cur.textContent='Currently: '+(lbl.startsWith('+')?'(none)':lbl);" +
+            "      sel.innerHTML='';" +
+            "      var dayFlags=(_flags[dt]||{});" +
+            "      var opts=[{id:'',name:'- clear slot -'}].concat(_residents);" +
+            "      opts.forEach(function(r){" +
+            "        var o=p.document.createElement('option');" +
+            "        o.value=r.id;" +
+            "        var rf=dayFlags[r.id];" +
+            "        o.textContent=rf?'! '+r.name+' ['+rf.join(', ')+']':r.name;" +
+            "        if(rf)o.style.color='#f6ad55';" +
+            "        sel.appendChild(o);" +
+            "      });" +
+            "      pop._savDate=dt;pop._savRole=role;" +
+            "      var sav=p.document.getElementById('_spsav');" +
+            "      sav.onclick=function(){" +
+            "        var rid=sel.value;" +
+            "        pop.style.display='none';" +
+            "        var url=p.location.pathname+'?X_date='+encodeURIComponent(pop._savDate)+'&X_role='+encodeURIComponent(pop._savRole)+'&X_res='+encodeURIComponent(rid);" +
+            "        p.history.pushState({},'',url);" +
+            "        p.location.reload();" +
+            "      };" +
+            "      var r2=el.getBoundingClientRect();" +
+            "      var pw=p.innerWidth;var ph=p.innerHeight;" +
+            "      var lx=Math.min(Math.max(r2.left,8),pw-248);" +
+            "      var ty=r2.bottom+6;if(ty+220>ph)ty=r2.top-225;if(ty<8)ty=8;" +
+            "      pop.style.left=lx+'px';pop.style.top=ty+'px';" +
+            "      pop.style.display='block';" +
+            "    },true);" +
             "  }catch(e){}" +
-            "}" +
+            "}"
             "setInterval(_go,500);" +
             "</script>",
             height=0

@@ -3019,8 +3019,11 @@
         },
         "2026-12-14": {
           "type": "weekday",
-          "aptu": "auclair",
-          "jeopardy": "siemiatkoski"
+          "aptu": "wilson_braun",
+          "jeopardy": "siemiatkoski",
+          "flags": [
+            "wilson_braun"
+          ]
         },
         "2026-12-15": {
           "type": "weekday",
@@ -3040,10 +3043,7 @@
         "2026-12-18": {
           "type": "weekday",
           "aptu": "auclair",
-          "jeopardy": "mann",
-          "flags": [
-            "auclair"
-          ]
+          "jeopardy": "mann"
         },
         "2026-12-19": {
           "type": "weekend",
@@ -3129,7 +3129,7 @@
       "2026-10": [],
       "2026-11": [],
       "2026-12": [
-        "2026-12-18: \u26a0 APTU auclair at q4 \u2014 needs review"
+        "2026-12-14: \u26a0 APTU wilson_braun at q3 \u2014 needs review"
       ]
     }
   }

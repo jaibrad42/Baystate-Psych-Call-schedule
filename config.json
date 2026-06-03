@@ -3045,8 +3045,11 @@
         "2026-12-19": {
           "type": "weekend",
           "consult": "wilson_braun",
-          "aptu": "auclair",
-          "jeopardy": "mastalerz"
+          "aptu": "kurtz",
+          "jeopardy": "mastalerz",
+          "flags": [
+            "kurtz"
+          ]
         },
         "2026-12-20": {
           "type": "weekend",
@@ -3068,10 +3071,7 @@
         "2026-12-23": {
           "type": "weekday",
           "aptu": "auclair",
-          "jeopardy": "ali",
-          "flags": [
-            "auclair"
-          ]
+          "jeopardy": "ali"
         },
         "2026-12-24": {
           "type": "weekday",
@@ -3129,7 +3129,7 @@
       "2026-10": [],
       "2026-11": [],
       "2026-12": [
-        "2026-12-23: \u26a0 APTU auclair at q4 \u2014 needs review"
+        "2026-12-19: \u26a0 APTU kurtz at q4 \u2014 needs review"
       ]
     }
   }

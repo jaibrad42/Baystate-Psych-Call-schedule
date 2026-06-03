@@ -2149,11 +2149,7 @@
         "2026-07-10": {
           "type": "weekday",
           "aptu": "ali",
-          "jeopardy": "siemiatkoski",
-          "intern": "tsandilas",
-          "flags": [
-            "tsandilas"
-          ]
+          "jeopardy": "siemiatkoski"
         },
         "2026-07-11": {
           "type": "weekend",
@@ -3133,9 +3129,7 @@
       }
     },
     "warns": {
-      "2026-7": [
-        "2026-07-10: \u26a0 INTERN tsandilas at q3 \u2014 needs review"
-      ],
+      "2026-7": [],
       "2026-8": [],
       "2026-9": [],
       "2026-10": [],

@@ -1050,7 +1050,7 @@ with tab_cal:
 
         # Calendar display (static)
         st.markdown(render_calendar(sched, cfg, year, month), unsafe_allow_html=True)
-        # Pill click → inline floating popover
+        # Pill click → inline floating popover (v2)
         import streamlit.components.v1 as _cv1
         _rb2 = res_by_id(get_cfg())
         _all2 = active_residents(get_cfg())

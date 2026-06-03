@@ -3093,11 +3093,8 @@
         },
         "2026-12-24": {
           "type": "weekday",
-          "aptu": "auclair",
-          "jeopardy": "mann",
-          "flags": [
-            "auclair"
-          ]
+          "aptu": "wilson_braun",
+          "jeopardy": "mann"
         },
         "2026-12-25": {
           "type": "holiday",
@@ -3156,8 +3153,7 @@
         "2026-12-08: \u26a0 APTU wilson_braun at q2 \u2014 needs review",
         "2026-12-11: \u26a0 INTERN li at q3 \u2014 needs review",
         "2026-12-13: \u26a0 CONSULT mann at q2 \u2014 needs review",
-        "2026-12-23: \u26a0 APTU auclair at q4 \u2014 needs review",
-        "2026-12-24: \u26a0 APTU auclair at q4 \u2014 needs review"
+        "2026-12-23: \u26a0 APTU auclair at q4 \u2014 needs review"
       ]
     }
   }

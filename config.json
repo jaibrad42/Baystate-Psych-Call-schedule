@@ -2984,11 +2984,8 @@
         "2026-12-06": {
           "type": "weekend",
           "consult": "dame",
-          "aptu": "wilson_braun",
-          "jeopardy": "siemiatkoski",
-          "flags": [
-            "wilson_braun"
-          ]
+          "aptu": "mizrach",
+          "jeopardy": "siemiatkoski"
         },
         "2026-12-07": {
           "type": "weekday",
@@ -3012,7 +3009,10 @@
         "2026-12-10": {
           "type": "weekday",
           "aptu": "mizrach",
-          "jeopardy": "brych"
+          "jeopardy": "brych",
+          "flags": [
+            "mizrach"
+          ]
         },
         "2026-12-11": {
           "type": "weekday",
@@ -3153,8 +3153,8 @@
       "2026-11": [],
       "2026-12": [
         "2026-12-05: \u26a0 APTU wilson_braun at q3 \u2014 needs review",
-        "2026-12-06: \u26a0 APTU wilson_braun at q4 \u2014 needs review",
-        "2026-12-09: \u26a0 APTU wilson_braun at q3 \u2014 needs review",
+        "2026-12-09: \u26a0 APTU wilson_braun at q4 \u2014 needs review",
+        "2026-12-10: \u26a0 APTU mizrach at q4 \u2014 needs review",
         "2026-12-11: \u26a0 INTERN li at q3 \u2014 needs review",
         "2026-12-13: \u26a0 CONSULT mann at q2 \u2014 needs review",
         "2026-12-23: \u26a0 APTU auclair at q4 \u2014 needs review"

@@ -2846,9 +2846,12 @@
         },
         "2026-11-14": {
           "type": "weekend",
-          "consult": "dame",
+          "consult": "brych",
           "aptu": "auclair",
-          "jeopardy": "wilson_braun"
+          "jeopardy": "wilson_braun",
+          "flags": [
+            "brych"
+          ]
         },
         "2026-11-15": {
           "type": "weekend",
@@ -3122,7 +3125,9 @@
       "2026-8": [],
       "2026-9": [],
       "2026-10": [],
-      "2026-11": [],
+      "2026-11": [
+        "2026-11-14: \u26a0 CONSULT brych at q4 \u2014 needs review"
+      ],
       "2026-12": []
     }
   }

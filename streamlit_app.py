@@ -1049,66 +1049,7 @@ def render_calendar(sched, cfg, year, month, _rjson=None, _fjson=None):
             "<button class=\"can\" id=\"_spcan\">Cancel</button></div>"
             "</div>"
         )
-        html += (
-            "<script>"
-            "(function(){"
-            "var _R=" + _rjson + ";"
-            "var _F=" + _fjson + ";"
-            "function _show(el){"
-            "var pop=document.getElementById('_spe');"
-            "if(!pop)return;"
-            "var dt=el.getAttribute('data-edit-date');"
-            "var role=el.getAttribute('data-edit-role');"
-            "var lbl=el.textContent.trim();"
-            "var h4=document.getElementById('_sph4');"
-            "var cur=document.getElementById('_spcur');"
-            "var sel=document.getElementById('_spsel');"
-            "var rmap={aptu:'APTU/UL',intern:'Intern',jeopardy:'Jeopardy',consult:'Consult',holiday:'Holiday'};"
-            "h4.textContent=dt+'  -  '+(rmap[role]||role);"
-            "cur.textContent='Currently: '+(lbl.startsWith('+')?'(none)':lbl);"
-            "sel.innerHTML='';"
-            "var dF=(_F[dt]||{});"
-            "var opts=[{id:'',name:'- clear slot -'}].concat(_R);"
-            "opts.forEach(function(r){"
-            "var o=document.createElement('option');"
-            "o.value=r.id;"
-            "var rf=dF[r.id];"
-            "o.textContent=rf?'! '+r.name+' ['+rf.join(', ')+']':r.name;"
-            "if(rf)o.style.color='#f6ad55';"
-            "sel.appendChild(o);"
-            "});"
-            "pop._savDate=dt;pop._savRole=role;"
-            "document.getElementById('_spsav').onclick=function(){"
-            "var rid=sel.value;"
-            "pop.style.display='none';"
-            "var url=location.pathname+'?X_date='+encodeURIComponent(pop._savDate)+'&X_role='+encodeURIComponent(pop._savRole)+'&X_res='+encodeURIComponent(rid);"
-            "history.pushState({},'',url);"
-            "location.reload();"
-            "};"
-            "var r2=el.getBoundingClientRect();"
-            "var pw=window.innerWidth;var ph=window.innerHeight;"
-            "var lx=Math.min(Math.max(r2.left,8),pw-248);"
-            "var ty=r2.bottom+6;if(ty+220>ph)ty=r2.top-225;if(ty<8)ty=8;"
-            "pop.style.left=lx+'px';pop.style.top=ty+'px';"
-            "pop.style.display='block';"
-            "}"
-            "document.getElementById('_spcan').onclick=function(){"
-            "document.getElementById('_spe').style.display='none';"
-            "};"
-            "document.addEventListener('keydown',function(e){"
-            "if(e.key==='Escape')document.getElementById('_spe').style.display='none';"
-            "});"
-            "document.addEventListener('mousedown',function(e){"
-            "var el=e.target;"
-            "if(el.classList.contains('pill')&&el.getAttribute('data-edit-date')){"
-            "_show(el);"
-            "}else{"
-            "var pop=document.getElementById('_spe');"
-            "if(pop&&pop.style.display!=='none'&&!pop.contains(el))pop.style.display='none';"
-            "}"
-            "},true);"
-            "})();"
-        ) + "</script>"
+        html += '<span id="_spe_data" style="display:none" data-r=\'' + _rjson + '\' data-f=\'' + _fjson + '\' ></span>'
     return html
 
 
@@ -1160,6 +1101,52 @@ with tab_cal:
         _rjson = json.dumps([{"id": r["id"], "name": _rb2[r["id"]]["full"]} for r in _all2])
         _fjson = json.dumps(_flag_map)
         st.markdown(render_calendar(sched, cfg, year, month, _rjson, _fjson), unsafe_allow_html=True)
+        import streamlit.components.v1 as _cv1
+        _bridge_js = (
+            "var p=window.parent;" +
+            "if(p&&p.document){" +
+            "var old=p.document.getElementById('_speh_s');" +
+            "if(old)old.remove();" +
+            "var d=p.document.getElementById('_spe_data');" +
+            "if(d){" +
+            "var rj=d.getAttribute('data-r');" +
+            "var fj=d.getAttribute('data-f');" +
+            "var s=p.document.createElement('script');" +
+            "s.id='_speh_s';" +
+            "s.textContent='(function(){" +
+            "var _R='+rj+';var _F='+fj+';" +
+            "function _show(el){" +
+            "var pop=document.getElementById(\'_spe\');if(!pop)return;" +
+            "var dt=el.getAttribute(\'data-edit-date\');" +
+            "var role=el.getAttribute(\'data-edit-role\');" +
+            "var lbl=el.textContent.trim();" +
+            "document.getElementById(\'_sph4\').textContent=dt+\'  -  \'+role;" +
+            "document.getElementById(\'_spcur\').textContent=\'Currently: \'+(lbl.charAt(0)==\'+\'?\'(none)\'  :lbl);" +
+            "var sel=document.getElementById(\'_spsel\');sel.innerHTML=\'\';var dF=(_F[dt]||{});" +
+            "[{id:\'\',name:\'- clear -\'}].concat(_R).forEach(function(r){" +
+            "var o=document.createElement(\'option\');o.value=r.id;" +
+            "var rf=dF[r.id];o.textContent=rf?\'! \'+r.name+\'[\'+rf.join(\',\')+\']\'  :r.name;" +
+            "if(rf)o.style.color=\'#f6ad55\';sel.appendChild(o);});" +
+            "pop._savDate=dt;pop._savRole=role;" +
+            "document.getElementById(\'_spsav\').onclick=function(){" +
+            "var rid=sel.value;pop.style.display=\'none\';" +
+            "location.href=location.pathname+\'?X_date=\'+encodeURIComponent(pop._savDate)+\'&X_role=\'+encodeURIComponent(pop._savRole)+\'&X_res=\'+encodeURIComponent(rid);};" +
+            "var r2=el.getBoundingClientRect();" +
+            "var lx=Math.min(Math.max(r2.left,8),window.innerWidth-248);" +
+            "var ty=r2.bottom+6;if(ty+220>window.innerHeight)ty=r2.top-225;if(ty<8)ty=8;" +
+            "pop.style.left=lx+\'px\';pop.style.top=ty+\'px\';pop.style.display=\'block\'            nt;" +
+            "document.getElementById(\'_spcan\').onclick=function(){document.getElementById(\'_spe\').style.display=\'none\';};" +
+            "document.addEventListener(\'keydown\',function(e){if(e.key===\'Escape\')document.getElementById(\'_spe\').style.display=\'none\';});" +
+            "document.addEventListener(\'mousedown\',function(ev){" +
+            "var el=ev.target;" +
+            "if(el.classList.contains(\'pill\')&&el.getAttribute(\'data-edit-date\')){_show(el);}" +
+            "else{var pop=document.getElementById(\'_spe\');if(pop&&pop.style.display!==\'none\'&&!pop.contains(el))pop.style.display=\'none\';}" +
+            "},true);" +
+            "})()';" +
+            "p.document.head.appendChild(s);" +
+            "}}"
+        )
+        _cv1.html("<scr" + "ipt>" + _bridge_js + "</" + "script>", height=0)
         _xd = st.query_params.get('X_date', '')
         _xr = st.query_params.get('X_role', '')
         _xres = st.query_params.get('X_res', '')

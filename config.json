@@ -3014,12 +3014,9 @@
         },
         "2026-12-13": {
           "type": "weekend",
-          "consult": "dame",
+          "consult": "brych",
           "aptu": "holsonback",
-          "jeopardy": "mastalerz",
-          "flags": [
-            "dame"
-          ]
+          "jeopardy": "mastalerz"
         },
         "2026-12-14": {
           "type": "weekday",
@@ -3039,10 +3036,7 @@
         "2026-12-17": {
           "type": "weekday",
           "aptu": "dame",
-          "jeopardy": "ali",
-          "flags": [
-            "dame"
-          ]
+          "jeopardy": "ali"
         },
         "2026-12-18": {
           "type": "weekday",
@@ -3133,9 +3127,7 @@
       "2026-10": [],
       "2026-11": [],
       "2026-12": [
-        "2026-12-12: \u26a0 CONSULT dame at q4 \u2014 needs review",
-        "2026-12-13: \u26a0 CONSULT dame at q4 \u2014 needs review",
-        "2026-12-17: \u26a0 APTU dame at q4 \u2014 needs review"
+        "2026-12-12: \u26a0 CONSULT dame at q4 \u2014 needs review"
       ]
     }
   }

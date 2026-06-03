@@ -2981,8 +2981,11 @@
         "2026-12-06": {
           "type": "weekend",
           "consult": "dame",
-          "aptu": "li",
-          "jeopardy": "siemiatkoski"
+          "aptu": "wilson_braun",
+          "jeopardy": "siemiatkoski",
+          "flags": [
+            "wilson_braun"
+          ]
         },
         "2026-12-07": {
           "type": "weekday",
@@ -2995,7 +2998,7 @@
           "intern": "li",
           "jeopardy": "ali",
           "flags": [
-            "li"
+            "wilson_braun"
           ]
         },
         "2026-12-09": {
@@ -3144,7 +3147,8 @@
       "2026-10": [],
       "2026-11": [],
       "2026-12": [
-        "2026-12-08: \u26a0 INTERN li at q2 \u2014 needs review",
+        "2026-12-06: \u26a0 APTU wilson_braun at q4 \u2014 needs review",
+        "2026-12-08: \u26a0 APTU wilson_braun at q2 \u2014 needs review",
         "2026-12-11: \u26a0 INTERN li at q3 \u2014 needs review",
         "2026-12-23: \u26a0 INTERN tsandilas at q2 \u2014 needs review"
       ]

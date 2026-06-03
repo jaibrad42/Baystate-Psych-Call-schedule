@@ -1050,47 +1050,109 @@ with tab_cal:
 
         # Calendar display (static)
         st.markdown(render_calendar(sched, cfg, year, month), unsafe_allow_html=True)
-        # Pill click bridge — smooth click with overlay mask before reload
+        # Pill click → inline floating popover (no reload on click; reload only on Save)
         import streamlit.components.v1 as _cv1
+        _rb2 = res_by_id(get_cfg())
+        _all2 = active_residents(get_cfg())
+        _rjson = json.dumps([{"id": r["id"], "name": _rb2[r["id"]]["full"]} for r in _all2])
         _cv1.html(
-            "<script>"
-            "function _injectOverlay(p){"
-            "  if(p.document.getElementById('_pov'))return;"
-            "  var s=p.document.createElement('style');"
-            "  s.textContent='#_pov{display:none;position:fixed;inset:0;z-index:9999;background:rgba(14,17,23,.88);align-items:center;justify-content:center;}"
-            "  #_pov.show{display:flex;}@keyframes sp{to{transform:rotate(360deg)}}#_psp{width:36px;height:36px;border:4px solid #444;border-top:4px solid #ff4b4b;border-radius:50%;animation:sp .7s linear infinite;}';"
-            "  p.document.head.appendChild(s);"
-            "  var d=p.document.createElement('div');d.id='_pov';"
-            "  d.innerHTML='<div id=\"_psp\"></div>';"
-            "  p.document.body.appendChild(d);}"
-            "function _go(){"
-            "  try{"
-            "    var p=window.parent;"
-            "    _injectOverlay(p);"
-            "    p.document.querySelectorAll('[data-edit-date]:not([data-ph])').forEach(function(el){"
-            "      el.dataset.ph='1';"
-            "      el.addEventListener('click',function(ev){"
-            "        ev.stopPropagation();ev.preventDefault();"
-            "        var ov=p.document.getElementById('_pov');"
-            "        if(ov)ov.className='show';"
-            "        var u=p.location.pathname+'?edit_date='+el.dataset.editDate+'&edit_role='+el.dataset.editRole;"
-            "        p.history.pushState({},'',u);"
-            "        setTimeout(function(){p.location.reload();},50);"
-            "      });"
-            "    });"
-            "  }catch(e){}"
-            "}"
-            "setInterval(_go,500);"
+            "<script>" +
+            "var _residents=" + _rjson + ";" +
+            "function _mkPopover(){" +
+            "  var p=window.parent;if(!p)return;" +
+            "  if(p.document.getElementById('_spe'))return;" +
+            "  var style=p.document.createElement('style');" +
+            "  style.textContent=" +
+            "    '#_spe{position:fixed;background:#1e2130;border:1px solid #4a5568;" +
+            "border-radius:8px;padding:12px 14px;z-index:99999;box-shadow:0 8px 24px rgba(0,0,0,.5);" +
+            "min-width:220px;display:none;font-family:sans-serif;color:#e2e8f0;}'" +
+            "    +'#_spe h4{margin:0 0 4px;font-size:.83rem;color:#90cdf4;font-weight:600;}'" +
+            "    +'#_spe p{margin:0 0 8px;font-size:.78rem;color:#a0aec0;}'" +
+            "    +'#_spe select{width:100%;padding:6px 8px;border-radius:5px;border:1px solid #4a5568;" +
+            "background:#2d3748;color:#e2e8f0;font-size:.84rem;margin-bottom:10px;}'" +
+            "    +'#_spe .btns{display:flex;gap:8px;}'" +
+            "    +'#_spe button{flex:1;padding:6px 0;border:none;border-radius:5px;font-size:.82rem;cursor:pointer;}'" +
+            "    +'#_spe .sav{background:#3182ce;color:#fff;}#_spe .sav:hover{background:#2b6cb0;}'" +
+            "    +'#_spe .can{background:#4a5568;color:#e2e8f0;}#_spe .can:hover{background:#2d3748;}';" +
+            "  p.document.head.appendChild(style);" +
+            "  var d=p.document.createElement('div');d.id='_spe';" +
+            "  d.innerHTML=" +
+            "    '<h4 id=\'_sph4\'>Edit shift</h4>'" +
+            "    +'<p id=\'_spcur\'></p>'" +
+            "    +'<select id=\'_spsel\'></select>'" +
+            "    +'<div class=\'btns\'><button class=\'sav\' id=\'_spsav\'>Save</button>" +
+            "<button class=\'can\' id=\'_spcan\'>Cancel</button></div>';" +
+            "  p.document.body.appendChild(d);" +
+            "  p.document.getElementById('_spcan').onclick=function(){d.style.display='none';};" +
+            "  p.document.addEventListener('keydown',function(e){if(e.key==='Escape')d.style.display='none';});" +
+            "  p.document.addEventListener('mousedown',function(e){" +
+            "    if(d.style.display!=='none'&&!d.contains(e.target))d.style.display='none';});" +
+            "}" +
+            "function _go(){" +
+            "  try{" +
+            "    var p=window.parent;" +
+            "    if(!p||!p.document)return;" +
+            "    _mkPopover();" +
+            "    p.document.querySelectorAll('.pill[data-edit-date]').forEach(function(el){" +
+            "      if(el.dataset.ph)return;" +
+            "      el.dataset.ph=1;" +
+            "      el.addEventListener('click',function(ev){" +
+            "        ev.stopPropagation();ev.preventDefault();" +
+            "        var dt=el.getAttribute('data-edit-date');" +
+            "        var role=el.getAttribute('data-edit-role');" +
+            "        var lbl=el.textContent.trim();" +
+            "        var pop=p.document.getElementById('_spe');" +
+            "        var sel=p.document.getElementById('_spsel');" +
+            "        var h4=p.document.getElementById('_sph4');" +
+            "        var cur=p.document.getElementById('_spcur');" +
+            "        var rmap={'aptu':'APTU/UL','intern':'Intern','jeopardy':'Jeopardy','consult':'Consult','holiday':'Holiday'};" +
+            "        h4.textContent=dt+' — '+(rmap[role]||role);" +
+            "        cur.textContent='Currently: '+lbl;" +
+            "        sel.innerHTML='';" +
+            "        var opts=[{id:'',name:'— clear slot —'}].concat(_residents);" +
+            "        opts.forEach(function(r){" +
+            "          var o=p.document.createElement('option');" +
+            "          o.value=r.id;o.textContent=r.name;" +
+            "          if(lbl&&r.name.includes(lbl.replace(/[^A-Za-z]/g,'')))o.selected=true;" +
+            "          sel.appendChild(o);" +
+            "        });" +
+            "        pop._savDate=dt;pop._savRole=role;" +
+            "        var sav=p.document.getElementById('_spsav');" +
+            "        sav.onclick=function(){" +
+            "          var rid=sel.value;" +
+            "          pop.style.display='none';" +
+            "          var url=p.location.pathname" +
+            "            +'?X_date='+encodeURIComponent(pop._savDate)" +
+            "            +'&X_role='+encodeURIComponent(pop._savRole)" +
+            "            +'&X_res='+encodeURIComponent(rid);" +
+            "          p.history.pushState({},'',url);" +
+            "          p.location.reload();" +
+            "        };" +
+            "        var r=el.getBoundingClientRect();" +
+            "        var pw=p.innerWidth;var ph=p.innerHeight;" +
+            "        var lx=Math.min(r.left,pw-240);" +
+            "        var ty=r.bottom+6;" +
+            "        if(ty+200>ph)ty=r.top-210;" +
+            "        pop.style.left=lx+'px';pop.style.top=ty+'px';" +
+            "        pop.style.display='block';" +
+            "      });" +
+            "    });" +
+            "  }catch(e){}" +
+            "}" +
+            "setInterval(_go,500);" +
             "</script>",
             height=0
         )
-        _eq = st.query_params.get('edit_date', '')
-        _er = st.query_params.get('edit_role', '')
-        if _eq and _er:
-            _editable = sorted([dk for dk, de in sched.items() if de.get('type') not in ('no_call',)])
-            if _eq in _editable:
-                st.session_state['edit_date_sel'] = _eq
-                st.session_state['edit_role_sel'] = _er
+        _xd = st.query_params.get('X_date', '')
+        _xr = st.query_params.get('X_role', '')
+        _xres = st.query_params.get('X_res', '')
+        if _xd and _xr:
+            _editable = sorted([dk for dk, de in sched.items() if de.get('type') not in ('none',)])
+            if _xd in _editable:
+                st.session_state['edit_date_sel'] = _xd
+                st.session_state['edit_role_sel'] = _xr
+                if _xres:
+                    st.session_state['edit_res_sel'] = _xres
                 st.session_state['edit_open'] = True
                 st.query_params.clear()
                 st.rerun()

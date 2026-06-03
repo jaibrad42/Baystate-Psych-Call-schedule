@@ -3073,10 +3073,10 @@
         },
         "2026-12-23": {
           "type": "weekday",
-          "aptu": "auclair",
+          "aptu": "ramirez",
           "jeopardy": "ali",
           "flags": [
-            "auclair"
+            "ramirez"
           ]
         },
         "2026-12-24": {
@@ -3103,7 +3103,10 @@
           "name": "Christmas",
           "aptu": "ramirez",
           "consult": "siemiatkoski",
-          "jeopardy": "wilson_braun"
+          "jeopardy": "wilson_braun",
+          "flags": [
+            "ramirez"
+          ]
         },
         "2026-12-28": {
           "type": "weekday",
@@ -3137,7 +3140,8 @@
       "2026-12": [
         "2026-12-12: \u26a0 APTU ramirez at q4 \u2014 needs review",
         "2026-12-13: \u26a0 CONSULT mann at q4 \u2014 needs review",
-        "2026-12-23: \u26a0 APTU auclair at q4 \u2014 needs review"
+        "2026-12-23: \u26a0 APTU ramirez at q4 \u2014 needs review",
+        "2026-12-27: \u26a0 APTU ramirez at q4 \u2014 needs review"
       ]
     }
   }

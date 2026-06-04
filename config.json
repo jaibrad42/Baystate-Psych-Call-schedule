@@ -2647,11 +2647,8 @@
         },
         "2026-10-08": {
           "type": "weekday",
-          "aptu": "auclair",
-          "jeopardy": "wilson_braun",
-          "flags": [
-            "auclair"
-          ]
+          "aptu": "smith",
+          "jeopardy": "wilson_braun"
         },
         "2026-10-09": {
           "type": "no_call"
@@ -3124,9 +3121,7 @@
       "2026-7": [],
       "2026-8": [],
       "2026-9": [],
-      "2026-10": [
-        "2026-10-08: \u26a0 APTU auclair at q4 \u2014 needs review"
-      ],
+      "2026-10": [],
       "2026-11": [],
       "2026-12": []
     }

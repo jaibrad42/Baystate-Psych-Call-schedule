@@ -2609,10 +2609,10 @@
       "2026-10": {
         "2026-10-01": {
           "type": "weekday",
-          "aptu": "mizrach",
+          "aptu": "mastalerz",
           "jeopardy": "dame",
           "flags": [
-            "mizrach"
+            "mastalerz"
           ]
         },
         "2026-10-02": {
@@ -3128,7 +3128,7 @@
       "2026-8": [],
       "2026-9": [],
       "2026-10": [
-        "2026-10-01: \u26a0 APTU mizrach at q4 \u2014 needs review",
+        "2026-10-01: \u26a0 APTU mastalerz at q4 \u2014 needs review",
         "2026-10-03: \u26a0 APTU auclair at q4 \u2014 needs review"
       ],
       "2026-11": [],

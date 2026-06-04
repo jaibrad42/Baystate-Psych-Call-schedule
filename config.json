@@ -2582,7 +2582,7 @@
         },
         "2026-09-26": {
           "type": "weekend",
-          "consult": "siemiatkoski",
+          "consult": "mastalerz",
           "aptu": "kurtz",
           "jeopardy": "wilson_braun"
         },
@@ -2590,7 +2590,10 @@
           "type": "weekend",
           "consult": "mastalerz",
           "aptu": "mizrach",
-          "jeopardy": "dame"
+          "jeopardy": "dame",
+          "flags": [
+            "mastalerz"
+          ]
         },
         "2026-09-28": {
           "type": "weekday",
@@ -3126,7 +3129,9 @@
     "warns": {
       "2026-7": [],
       "2026-8": [],
-      "2026-9": [],
+      "2026-9": [
+        "2026-09-27: \u26a0 CONSULT mastalerz at q4 \u2014 needs review"
+      ],
       "2026-10": [
         "2026-10-01: \u26a0 APTU mastalerz at q4 \u2014 needs review",
         "2026-10-03: \u26a0 APTU auclair at q4 \u2014 needs review"

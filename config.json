@@ -2995,10 +2995,10 @@
         },
         "2026-12-10": {
           "type": "weekday",
-          "aptu": "kurtz",
+          "aptu": "mizrach",
           "jeopardy": "brych",
           "flags": [
-            "kurtz"
+            "mizrach"
           ]
         },
         "2026-12-11": {
@@ -3127,7 +3127,7 @@
       "2026-10": [],
       "2026-11": [],
       "2026-12": [
-        "2026-12-10: \u26a0 APTU kurtz at q4 \u2014 needs review"
+        "2026-12-10: \u26a0 APTU mizrach at q4 \u2014 needs review"
       ]
     }
   }

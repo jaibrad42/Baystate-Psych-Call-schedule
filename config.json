@@ -2958,11 +2958,7 @@
         "2026-12-02": {
           "type": "weekday",
           "aptu": "dame",
-          "intern": "holsonback",
-          "jeopardy": "brych",
-          "flags": [
-            "holsonback"
-          ]
+          "jeopardy": "brych"
         },
         "2026-12-03": {
           "type": "weekday",
@@ -2973,10 +2969,7 @@
           "type": "weekday",
           "aptu": "brych",
           "jeopardy": "mann",
-          "intern": "holsonback",
-          "flags": [
-            "holsonback"
-          ]
+          "intern": "holsonback"
         },
         "2026-12-05": {
           "type": "weekend",
@@ -3139,10 +3132,7 @@
         "2026-10-03: \u26a0 APTU auclair at q4 \u2014 needs review"
       ],
       "2026-11": [],
-      "2026-12": [
-        "2026-12-02: \u26a0 INTERN holsonback at q3 \u2014 needs review",
-        "2026-12-04: \u26a0 INTERN holsonback at q2 \u2014 needs review"
-      ]
+      "2026-12": []
     }
   }
 }

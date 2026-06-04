@@ -2972,7 +2972,11 @@
         "2026-12-04": {
           "type": "weekday",
           "aptu": "brych",
-          "jeopardy": "mann"
+          "jeopardy": "mann",
+          "intern": "holsonback",
+          "flags": [
+            "holsonback"
+          ]
         },
         "2026-12-05": {
           "type": "weekend",
@@ -3136,7 +3140,8 @@
       ],
       "2026-11": [],
       "2026-12": [
-        "2026-12-02: \u26a0 INTERN holsonback at q3 \u2014 needs review"
+        "2026-12-02: \u26a0 INTERN holsonback at q3 \u2014 needs review",
+        "2026-12-04: \u26a0 INTERN holsonback at q2 \u2014 needs review"
       ]
     }
   }

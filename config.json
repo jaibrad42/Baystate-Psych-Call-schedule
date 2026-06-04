@@ -2627,11 +2627,8 @@
         "2026-10-04": {
           "type": "weekend",
           "consult": "brych",
-          "aptu": "gervais",
-          "jeopardy": "mastalerz",
-          "flags": [
-            "gervais"
-          ]
+          "aptu": "auclair",
+          "jeopardy": "mastalerz"
         },
         "2026-10-05": {
           "type": "weekday",
@@ -2651,7 +2648,10 @@
         "2026-10-08": {
           "type": "weekday",
           "aptu": "auclair",
-          "jeopardy": "wilson_braun"
+          "jeopardy": "wilson_braun",
+          "flags": [
+            "auclair"
+          ]
         },
         "2026-10-09": {
           "type": "no_call"
@@ -3125,7 +3125,7 @@
       "2026-8": [],
       "2026-9": [],
       "2026-10": [
-        "2026-10-04: \u26a0 APTU gervais at q4 \u2014 needs review"
+        "2026-10-08: \u26a0 APTU auclair at q4 \u2014 needs review"
       ],
       "2026-11": [],
       "2026-12": []

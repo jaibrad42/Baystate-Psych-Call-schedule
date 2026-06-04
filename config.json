@@ -2968,14 +2968,17 @@
         "2026-12-05": {
           "type": "weekend",
           "consult": "smith",
-          "aptu": "wilson_braun",
+          "aptu": "mizrach",
           "jeopardy": "mastalerz"
         },
         "2026-12-06": {
           "type": "weekend",
           "consult": "mastalerz",
           "aptu": "mizrach",
-          "jeopardy": "siemiatkoski"
+          "jeopardy": "siemiatkoski",
+          "flags": [
+            "mizrach"
+          ]
         },
         "2026-12-07": {
           "type": "weekday",
@@ -3127,6 +3130,7 @@
       "2026-10": [],
       "2026-11": [],
       "2026-12": [
+        "2026-12-06: \u26a0 APTU mizrach at q4 \u2014 needs review",
         "2026-12-10: \u26a0 APTU mizrach at q4 \u2014 needs review"
       ]
     }

@@ -2538,12 +2538,9 @@
         },
         "2026-09-18": {
           "type": "weekday",
-          "aptu": "siemiatkoski",
+          "aptu": "mastalerz",
           "intern": "gervais",
-          "jeopardy": "mastalerz",
-          "flags": [
-            "siemiatkoski"
-          ]
+          "jeopardy": "mastalerz"
         },
         "2026-09-19": {
           "type": "weekend",
@@ -3126,9 +3123,7 @@
     "warns": {
       "2026-7": [],
       "2026-8": [],
-      "2026-9": [
-        "2026-09-18: \u26a0 APTU siemiatkoski at q2 \u2014 needs review"
-      ],
+      "2026-9": [],
       "2026-10": [
         "2026-10-01: \u26a0 APTU mizrach at q4 \u2014 needs review"
       ],
